@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NOLX Pages | Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nolxDark: '#005840',
+                        nolxLime: '#D1F843',
+                        nolxBg: '#ECF0EF'
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #ECF0EF;
+            color: #005840;
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: 0 25px 60px rgba(0,88,64,0.08);
+        }
+
+        .sidebar {
+            background: #005840;
+            color: white;
+        }
+
+        .nav-item {
+            transition: all .25s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,.10);
+            transform: translateX(3px);
+        }
+
+        .nav-item.active {
+            background: #D1F843;
+            color: #005840;
+        }
+
+        .dashboard-card {
+            transition: all .3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0,88,64,.12);
+        }
+
+        .logout-btn {
+            transition: all .25s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            background: #b91c1c;
+        }
+
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: #ECF0EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid rgba(0,88,64,.15);
+            border-top-color: #005840;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar-text {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Loading -->
+
+    <div id="loadingScreen">
+        <div class="text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p class="font-semibold">
+                Loading dashboard...
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Layout -->
+
+    <div class="min-h-screen flex">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar fixed left-0 top-0 bottom-0 w-64 p-5 flex flex-col z-50">
+
+            <!-- Logo -->
+
+            <div class="mb-10 px-3">
+
+                <div class="text-2xl font-black tracking-widest">
+                    NOLX
+                </div>
+
+                <div class="text-xs text-white/60 tracking-[.3em]">
+                    PAGES
+                </div>
+
+            </div>
+
+
+            <!-- Navigation -->
+
+            <nav class="space-y-2 flex-1">
+
+                <a href="#"
+                   class="nav-item active flex items-center gap-4 px-4 py-3 rounded-2xl">
+
+                    <i class="fas fa-chart-pie w-5 text-center"></i>
+
+                    <span class="sidebar-text font-semibold">
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <a href="#"
+                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
+
+                    <i class="fas fa-layer-group w-5 text-center"></i>
+
+                    <span class="sidebar-text font-semibold">
+                        Projects
+                    </span>
+
+                </a>
+
+
+                <a href="#"
+                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
+
+                    <i class="fas fa-file-code w-5 text-center"></i>
+
+                    <span class="sidebar-text font-semibold">
+                        Templates
+                    </span>
+
+                </a>
+
+
+                <a href="#"
+                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
+
+                    <i class="fas fa-gear w-5 text-center"></i>
+
+                    <span class="sidebar-text font-semibold">
+                        Settings
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- Logout -->
+
+            <button
+                id="logoutBtn"
+                class="logout-btn w-full bg-red-600 text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-3">
+
+                <i class="fas fa-right-from-bracket"></i>
+
+                <span class="sidebar-text">
+                    Logout
+                </span>
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- Main -->
+
+        <main class="main-content ml-64 w-full min-h-screen p-5 sm:p-8">
+
+            <!-- Header -->
+
+            <header class="glass rounded-3xl px-5 sm:px-7 py-5 mb-8 flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-xs font-bold uppercase tracking-widest opacity-50">
+                        NOLX PAGES
+                    </p>
+
+                    <h1 class="text-2xl sm:text-3xl font-black mt-1">
+                        Dashboard
+                    </h1>
+
+                </div>
+
+
+                <!-- User -->
+
+                <div class="flex items-center gap-3">
+
+                    <div class="text-right hidden sm:block">
+
+                        <p id="headerUserName"
+                           class="font-bold text-sm">
+                            User
+                        </p>
+
+                        <p id="headerUserEmail"
+                           class="text-xs opacity-50">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <img
+                        id="headerAvatar"
+                        src=""
+                        class="w-11 h-11 rounded-full object-cover border-2 border-white shadow"
+                        alt="User">
+
+                </div>
+
+            </header>
+
+
+
+            <!-- Welcome -->
+
+            <section class="glass rounded-[2rem] p-7 sm:p-10 mb-8">
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+
+                    <div>
+
+                        <p class="text-sm font-semibold opacity-60 mb-2">
+                            Welcome back
+                        </p>
+
+                        <h2 class="text-3xl sm:text-4xl font-black">
+                            Hello,
+                            <span id="welcomeName">
+                                User
+                            </span>
+                        </h2>
+
+                        <p class="mt-3 opacity-60">
+                            Your NOLX Pages workspace is ready.
+                        </p>
+
+                    </div>
+
+
+                    <div class="w-20 h-20 rounded-3xl bg-[#005840] text-[#D1F843] flex items-center justify-center text-3xl">
+
+                        <i class="fas fa-sparkles"></i>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Statistics -->
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+
+
+                <!-- Projects -->
+
+                <div class="dashboard-card glass rounded-3xl p-6">
+
+                    <div class="flex items-center justify-between mb-5">
+
+                        <div class="w-12 h-12 rounded-2xl bg-[#005840]/10 flex items-center justify-center">
+
+                            <i class="fas fa-layer-group text-xl"></i>
+
+                        </div>
+
+                        <span class="text-xs font-bold opacity-40">
+                            PROJECTS
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-3xl font-black">
+                        0
+                    </h3>
+
+                    <p class="text-sm opacity-50 mt-1">
+                        Active projects
+                    </p>
+
+                </div>
+
+
+
+                <!-- Templates -->
+
+                <div class="dashboard-card glass rounded-3xl p-6">
+
+                    <div class="flex items-center justify-between mb-5">
+
+                        <div class="w-12 h-12 rounded-2xl bg-[#D1F843] flex items-center justify-center">
+
+                            <i class="fas fa-file-code text-xl"></i>
+
+                        </div>
+
+                        <span class="text-xs font-bold opacity-40">
+                            TEMPLATES
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-3xl font-black">
+                        0
+                    </h3>
+
+                    <p class="text-sm opacity-50 mt-1">
+                        Saved templates
+                    </p>
+
+                </div>
+
+
+
+                <!-- Account -->
+
+                <div class="dashboard-card glass rounded-3xl p-6">
+
+                    <div class="flex items-center justify-between mb-5">
+
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center">
+
+                            <i class="fas fa-user-check text-xl"></i>
+
+                        </div>
+
+                        <span class="text-xs font-bold opacity-40">
+                            ACCOUNT
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-3xl font-black">
+                        Active
+                    </h3>
+
+                    <p class="text-sm opacity-50 mt-1">
+                        Firebase authenticated
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Account Information -->
+
+            <section class="glass rounded-3xl p-6 sm:p-8">
+
+                <div class="flex items-center gap-3 mb-7">
+
+                    <div class="w-11 h-11 rounded-2xl bg-[#005840] text-[#D1F843] flex items-center justify-center">
+
+                        <i class="fas fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="font-black text-xl">
+                            Account Information
+                        </h2>
+
+                        <p class="text-xs opacity-50">
+                            Your authenticated Firebase account
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+
+                    <div class="bg-white/60 rounded-2xl p-5">
+
+                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
+                            Display Name
+                        </p>
+
+                        <p id="accountName"
+                           class="font-bold">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-white/60 rounded-2xl p-5">
+
+                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
+                            Email
+                        </p>
+
+                        <p id="accountEmail"
+                           class="font-bold break-all">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-white/60 rounded-2xl p-5">
+
+                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
+                            Login Provider
+                        </p>
+
+                        <p id="accountProvider"
+                           class="font-bold">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-white/60 rounded-2xl p-5">
+
+                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
+                            Email Verification
+                        </p>
+
+                        <p id="accountVerification"
+                           class="font-bold">
+                            -
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Footer -->
+
+            <footer class="text-center py-8 text-xs opacity-40">
+
+                NOLX Pages — Dashboard
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- Firebase -->
+
+    <script type="module">
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+
+            authDomain: "nolxpages.firebaseapp.com",
+
+            projectId: "nolxpages",
+
+            storageBucket: "nolxpages.firebasestorage.app",
+
+            messagingSenderId: "672585065953",
+
+            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+
+            measurementId: "G-ENEG3Q96W9"
+
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+
+        const auth = getAuth(app);
+
+
+
+        /*
+         * Firebase Auth session check
+         */
+
+        onAuthStateChanged(auth, (user) => {
+
+            if (!user) {
+
+                window.location.replace("login.html");
+
+                return;
+
+            }
+
+
+            /*
+             * User exists
+             */
+
+            const name =
+                user.displayName ||
+                user.email?.split("@")[0] ||
+                "User";
+
+            const email =
+                user.email ||
+                "No email";
+
+
+            /*
+             * Header
+             */
+
+            document.getElementById("headerUserName").textContent =
+                name;
+
+            document.getElementById("headerUserEmail").textContent =
+                email;
+
+
+            /*
+             * Welcome
+             */
+
+            document.getElementById("welcomeName").textContent =
+                name;
+
+
+            /*
+             * Account information
+             */
+
+            document.getElementById("accountName").textContent =
+                name;
+
+            document.getElementById("accountEmail").textContent =
+                email;
+
+
+            /*
+             * Provider
+             */
+
+            const provider =
+                user.providerData?.[0]?.providerId || "Unknown";
+
+            let providerName = provider;
+
+            if (provider === "google.com") {
+
+                providerName = "Google";
+
+            }
+
+            if (provider === "password") {
+
+                providerName = "Email & Password";
+
+            }
+
+            document.getElementById("accountProvider").textContent =
+                providerName;
+
+
+            /*
+             * Email verification
+             */
+
+            document.getElementById("accountVerification").textContent =
+                user.emailVerified
+                    ? "Verified"
+                    : "Not verified";
+
+
+            /*
+             * Avatar
+             */
+
+            const avatar =
+                document.getElementById("headerAvatar");
+
+            if (user.photoURL) {
+
+                avatar.src = user.photoURL;
+
+            } else {
+
+                avatar.src =
+                    "https://ui-avatars.com/api/?name=" +
+                    encodeURIComponent(name) +
+                    "&background=005840&color=D1F843";
+
+            }
+
+
+            /*
+             * Show dashboard
+             */
+
+            document.getElementById("loadingScreen").style.display =
+                "none";
+
+        });
+
+
+
+        /*
+         * Logout
+         */
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener("click", async () => {
+
+                try {
+
+                    await signOut(auth);
+
+                    window.location.replace("index.html");
+
+                } catch (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+                    alert(
+                        "Could not log out. Please try again."
+                    );
+
+                }
+
+            });
+
+    </script>
+
+</body>
+</html>

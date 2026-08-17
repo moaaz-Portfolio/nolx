@@ -1,329 +1,1270 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-
+<html lang="en" dir="ltr">
 <head>
-  <meta name="facebook-domain-verification" content="5klj0xzpyu1rdpxvrrejm52cyav37x" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NOLX | Luxury Redefined</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-  <style>
-    :root {
-      --gold: #20c73c;
-      --dark-gold: #B38B2D;
-      --black: #0A0A0A;
-      --cream: #299c87;
-      --burgundy: #800020;
-      --leather: #2A1E15;
-      --ivory: #FFFFF0;
-    }
-    
-    body {
-      font-family: 'Cinzel', serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--black);
-      color: var(--cream);
-      transition: all 0.5s ease;
-    }
-    
-    body.light-mode {
-      background-color: var(--ivory);
-      color: var(--leather);
-    }
-    
-    header {
-      padding: 20px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-    }
-    
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 3px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    nav a {
-      margin-left: 30px;
-      text-decoration: none;
-      color: var(--cream);
-      font-weight: 400;
-      letter-spacing: 1px;
-      transition: color 0.3s;
-      position: relative;
-    }
-    
-    nav a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 1px;
-      bottom: -2px;
-      left: 0;
-      background-color: var(--gold);
-      transition: width 0.3s;
-    }
-    
-    nav a:hover {
-      color: var(--gold);
-    }
-    
-    nav a:hover::after {
-      width: 100%;
-    }
-    
-    .hero {
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 10%;
-      background: linear-gradient(rgba(10,10,10,0.7), rgba(10,10,10,0.7)), url('https://images.unsplash.com/photo-1483982258113-b72862e6cff6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-    }
-    
-    .hero h1 {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      color: var(--gold);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      letter-spacing: 2px;
-    }
-    
-    .hero p {
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-    
-    .shop-btn {
-      display: inline-block;
-      padding: 15px 40px;
-      background-color: var(--gold);
-      color: var(--black);
-      text-decoration: none;
-      font-weight: 700;
-      border-radius: 0;
-      border: 1px solid var(--gold);
-      transition: all 0.3s;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-    }
-    
-    .shop-btn:hover {
-      background-color: transparent;
-      color: var(--gold);
-    }
-    
-    .about-section {
-      padding: 100px 10%;
-      text-align: center;
-      background: linear-gradient(to right, var(--black), var(--leather), var(--black));
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .about-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-      opacity: 0.1;
-      z-index: 0;
-    }
-    
-    .about-section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-      color: var(--gold);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .about-section p {
-      max-width: 800px;
-      margin: 0 auto 40px;
-      line-height: 1.8;
-      font-size: 1.1rem;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .discover-link {
-      color: var(--gold);
-      text-decoration: none;
-      font-weight: 700;
-      letter-spacing: 1px;
-      position: relative;
-      z-index: 1;
-      display: inline-block;
-      transition: color 0.3s;
-    }
-    
-    .discover-link:hover {
-      color: var(--cream);
-    }
-    
-    .discover-link span {
-      margin-left: 5px;
-      transition: transform 0.3s;
-    }
-    
-    .discover-link:hover span {
-      transform: translate(3px, -3px);
-    }
-    
-    .social-icons {
-      margin-top: 50px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .social-icons a {
-      color: var(--cream);
-      margin: 0 15px;
-      font-size: 1.2rem;
-      transition: color 0.3s;
-    }
-    
-    .social-icons a:hover {
-      color: var(--gold);
-    }
-    
-    .footer {
-      padding: 30px 5%;
-      text-align: center;
-      border-top: 1px solid rgba(212, 175, 55, 0.2);
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-    }
-    
-    .floating-dark-toggle {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background-color: var(--gold);
-      color: var(--black);
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-    }
-    
-    .floating-dark-toggle:hover {
-      background-color: var(--dark-gold);
-      transform: scale(1.1);
-    }
-    
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      
-      nav a {
-        margin-left: 15px;
-      }
-      
-      .floating-dark-toggle {
-        width: 45px;
-        height: 45px;
-        bottom: 20px;
-        right: 20px;
-      }
-    }
-  </style>
-</head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="pageTitle">Nolx Pages | Absolute Luxury in Web Design</title>
 
-<body class="dark-mode">
-  <header>
-    <div class="logo">NOLX</div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="products.html">Collections</a>
-      <a href="#">Atelier</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
-  
-  <section class="hero" data-aos="fade">
-    <h1>Crafting Timeless Elegance</h1>
-    <p>Where heritage meets contemporary design. Each piece is a testament to uncompromising quality and refined aesthetics.</p>
-    <a class="shop-btn" href="products.html">Explore Collections</a>
-  </section>
-  
-  <section class="about-section">
-    <h2>The NOLX Ethos</h2>
-    <p>
-      Founded on principles of excellence, NOLX redefines luxury through meticulous craftsmanship. 
-      Our atelier combines traditional techniques with innovative design to create pieces that transcend trends.
-    </p>
-    <a href="products.html" class="discover-link">
-      Discover Our Craft <span>↗</span>
-    </a>
-    <div class="social-icons">
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-youtube"></i></a>
-      <a href="https://www.tiktok.com/@noنlx.of"><i class="fab fa-tiktok"></i></a>
-      <a href="#"><i class="fab fa-pinterest-p"></i></a>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nolxDark: '#005840',
+                        nolxLime: '#D1F843',
+                        nolxBg: '#ECF0EF',
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Firebase Auth - Check user state without redirect -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+            authDomain: "nolxpages.firebaseapp.com",
+            projectId: "nolxpages",
+            storageBucket: "nolxpages.firebasestorage.app",
+            messagingSenderId: "672585065953",
+            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+            measurementId: "G-ENEG3Q96W9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Track user state
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+
+            const loginBtn = document.getElementById('loginBtn');
+            const createBtn = document.getElementById('createBtn');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+
+            if (user) {
+                // User is logged in - hide buttons, show user info
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (createBtn) createBtn.style.display = 'none';
+                if (userInfo) userInfo.style.display = 'flex';
+
+                // Set user name
+                const name = user.displayName || user.email?.split('@')[0] || 'User';
+                if (userName) userName.textContent = name;
+
+                // Set avatar
+                if (userAvatar) {
+                    if (user.photoURL) {
+                        userAvatar.src = user.photoURL;
+                    } else {
+                        userAvatar.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=005840&color=D1F843';
+                    }
+                }
+            } else {
+                // User is not logged in - show buttons, hide user info
+                if (loginBtn) loginBtn.style.display = 'inline-flex';
+                if (createBtn) createBtn.style.display = 'inline-flex';
+                if (userInfo) userInfo.style.display = 'none';
+            }
+        });
+
+        // Make currentUser available globally
+        window.__auth = { auth, getCurrentUser: () => currentUser };
+    </script>
+
+    <!-- Google Fonts: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js">
+    </script>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #ECF0EF;
+            color: #005840;
+            overflow-x: hidden;
+        }
+
+        /* ===== اللودر ===== */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #ECF0EF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s cubic-bezier(0.77, 0, 0.175, 1), visibility 1.2s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .loader-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .ring-master-1 {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 88, 64, 0.15);
+            animation: spinClockwise 16s linear infinite;
+        }
+
+        .ring-master-2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 88, 64, 0.08);
+            border-top-color: #005840;
+            border-left-color: #D1F843;
+            animation: spinCounter 6s linear infinite;
+        }
+
+        .ring-master-3 {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 25px 50px rgba(0, 88, 64, 0.1), inset 0 0 15px rgba(209, 248, 67, 0.25);
+            border: 1px solid rgba(255, 255, 255, 1);
+            animation: pulseMasterCore 3s ease-in-out infinite;
+        }
+
+        @keyframes spinClockwise {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinCounter {
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        @keyframes pulseMasterCore {
+            0%,
+            100% {
+                transform: scale(0.92);
+                box-shadow: 0 15px 35px rgba(0, 88, 64, 0.06);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 30px 60px rgba(0, 88, 64, 0.18);
+            }
+        }
+
+        .loader-brand-box {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            direction: ltr;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .loader-word-left {
+            color: #005840;
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(100px) scale(0.5) rotate(15deg);
+            filter: blur(15px);
+            animation: masterExplodeLeft 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.3s;
+        }
+
+        .loader-word-right {
+            color: #4d7c0f;
+            font-weight: 400;
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(-100px) scale(0.5) rotate(-15deg);
+            filter: blur(15px);
+            animation: masterExplodeRight 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes masterExplodeLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(100px) scale(0.5) rotate(15deg);
+                filter: blur(15px);
+            }
+            70% {
+                opacity: 0.95;
+                transform: translateX(-10px) scale(1.06) rotate(-2deg);
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotate(0deg);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes masterExplodeRight {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) scale(0.5) rotate(-15deg);
+                filter: blur(15px);
+            }
+            70% {
+                opacity: 0.95;
+                transform: translateX(10px) scale(1.06) rotate(2deg);
+                filter: blur(1px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1) rotate(0deg);
+                filter: blur(0);
+            }
+        }
+
+        .loader-progress-box {
+            position: relative;
+            z-index: 2;
+            width: 200px;
+            height: 4px;
+            background: rgba(0, 88, 64, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 35px;
+            opacity: 0;
+            animation: fadeInBar 0.8s ease forwards;
+            animation-delay: 0.6s;
+            box-shadow: inset 0 1px 3px rgba(0, 88, 64, 0.12);
+        }
+
+        @keyframes fadeInBar {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .loader-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #005840, #D1F843, #ffffff, #005840);
+            background-size: 300% 100%;
+            animation: fillMasterBar 2.5s cubic-bezier(0.65, 0, 0.35, 1) forwards,
+                glowShimmer 1.5s linear infinite;
+            animation-delay: 0.7s, 0.7s;
+            border-radius: 20px;
+        }
+
+        @keyframes fillMasterBar {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes glowShimmer {
+            0% {
+                background-position: 300% 0;
+            }
+            100% {
+                background-position: -300% 0;
+            }
+        }
+
+        /* ===== التصميمات الداخلية ===== */
+        .global-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #D1F843, #005840, #D1F843);
+            z-index: 9999;
+            width: 0%;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 50px rgba(0, 88, 64, 0.06);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(209, 248, 67, 0.8);
+            box-shadow: 0 35px 70px rgba(0, 88, 64, 0.12);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .btn-primary {
+            background: #005840;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px rgba(0, 88, 64, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #004532;
+            box-shadow: 0 18px 35px rgba(0, 88, 64, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid #005840;
+            color: #005840;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #005840;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 88, 64, 0.15);
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 88, 64, 0.2);
+            color: #005840;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-btn:hover {
+            background: #005840;
+            color: #D1F843;
+            border-color: #005840;
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            position: relative;
+            font-weight: 600;
+            color: #005840;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: #005840;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            border-radius: 20px;
+            background: #D1F843;
+            color: #005840;
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 10px 25px rgba(209, 248, 67, 0.35);
+            transition: transform 0.4s ease;
+        }
+
+        .glass-card:hover .icon-box {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* ===== السهم المتحرك للأسفل ===== */
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+            cursor: pointer;
+            animation: bounceArrow 2s ease-in-out infinite;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        .scroll-indicator .arrow-line {
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(180deg, #005840, transparent);
+            border-radius: 2px;
+        }
+
+        .scroll-indicator .arrow-head {
+            font-size: 1.8rem;
+            color: #005840;
+            animation: pulseArrow 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator .arrow-text {
+            font-size: 0.6rem;
+            color: #005840;
+            font-weight: 600;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            margin-top: 2px;
+        }
+
+        @keyframes bounceArrow {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes pulseArrow {
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        /* ===== الخط الفاصل الأنيق ===== */
+        .divider-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px 0;
+            width: 100%;
+        }
+
+        .divider-section .divider-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #005840, #D1F843, #005840, transparent);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .divider-section .divider-line::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #D1F843;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(209, 248, 67, 0.6);
+        }
+
+        .divider-section .divider-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            border: 2px solid rgba(0, 88, 64, 0.1);
+            color: #005840;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0, 88, 64, 0.05);
+        }
+
+        .divider-section .divider-icon:hover {
+            transform: rotate(180deg) scale(1.1);
+            border-color: #D1F843;
+            box-shadow: 0 15px 40px rgba(209, 248, 67, 0.2);
+        }
+
+        .divider-section .divider-line-glow {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #D1F843, #005840, #D1F843, transparent);
+            border-radius: 4px;
+            position: relative;
+            animation: shimmerDivider 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerDivider {
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .divider-section .divider-dots {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .divider-section .divider-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #005840;
+            opacity: 0.2;
+            transition: all 0.3s ease;
+        }
+
+        .divider-section:hover .divider-dots span {
+            opacity: 0.8;
+            transform: scale(1.3);
+        }
+
+        .divider-section:hover .divider-dots span:nth-child(2) {
+            background: #D1F843;
+            opacity: 1;
+            transform: scale(1.5);
+        }
+
+        /* ===== جدول المميزات الزجاجي ===== */
+        .features-table {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 60px rgba(0, 88, 64, 0.06);
+            border-radius: 2rem;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .features-table:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 40px 80px rgba(0, 88, 64, 0.1);
+            border-color: rgba(209, 248, 67, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .features-table .feature-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr;
+            padding: 1.2rem 1.8rem;
+            border-bottom: 1px solid rgba(0, 88, 64, 0.05);
+            transition: all 0.3s ease;
+            align-items: center;
+        }
+
+        .features-table .feature-row:last-child {
+            border-bottom: none;
+        }
+
+        .features-table .feature-row:hover {
+            background: rgba(209, 248, 67, 0.06);
+        }
+
+        .features-table .feature-row.header-row {
+            background: rgba(0, 88, 64, 0.04);
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #005840;
+            border-bottom: 2px solid rgba(0, 88, 64, 0.08);
+            padding: 1.2rem 1.8rem;
+        }
+
+        .features-table .feature-row .icon-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #005840;
+        }
+
+        .features-table .feature-row .feature-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #005840;
+            text-align: left;
+            padding-left: 0.5rem;
+        }
+
+        .features-table .feature-row .feature-value {
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .feature-value .check {
+            color: #005840;
+            font-size: 1.3rem;
+        }
+
+        .feature-value .check i {
+            background: #D1F843;
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(209, 248, 67, 0.3);
+        }
+
+        .rtl .features-table .feature-row .feature-name {
+            text-align: right;
+            padding-right: 0.5rem;
+            padding-left: 0;
+        }
+
+        /* ===== User Avatar in Header ===== */
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 88, 64, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            border-color: #D1F843;
+        }
+
+        .user-name-display {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #005840;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ===== إخفاء السهم على الشاشات الكبيرة ===== */
+        @media (min-width: 768px) {
+            .scroll-indicator {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .loader-brand-box {
+                font-size: 2rem;
+                gap: 8px;
+            }
+            .features-table .feature-row {
+                grid-template-columns: 40px 1fr 1fr;
+                padding: 0.9rem 1rem;
+            }
+            .features-table .feature-row.header-row {
+                padding: 0.9rem 1rem;
+            }
+            .features-table .feature-row .feature-name {
+                font-size: 0.85rem;
+            }
+            .features-table .feature-row .feature-value {
+                font-size: 0.85rem;
+            }
+            .feature-value .check i {
+                width: 22px;
+                height: 22px;
+                font-size: 0.65rem;
+            }
+            .divider-section .divider-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .divider-section {
+                padding: 20px 0;
+                gap: 15px;
+            }
+            .icon-box {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+            }
+            .user-name-display {
+                font-size: 0.75rem;
+                max-width: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-table .feature-row {
+                grid-template-columns: 30px 1fr 1fr;
+                padding: 0.7rem 0.8rem;
+                gap: 4px;
+            }
+            .features-table .feature-row.header-row {
+                padding: 0.7rem 0.8rem;
+            }
+            .features-table .feature-row .feature-name {
+                font-size: 0.75rem;
+            }
+            .features-table .feature-row .feature-value {
+                font-size: 0.75rem;
+            }
+            .feature-value .check i {
+                width: 18px;
+                height: 18px;
+                font-size: 0.55rem;
+            }
+            .divider-section .divider-dots span {
+                width: 4px;
+                height: 4px;
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- شريط التقدم العلوي -->
+    <div class="global-bar" id="globalBar"></div>
+
+    <!-- اللودر -->
+    <div id="loader">
+        <div class="loader-container">
+            <div class="ring-master-1"></div>
+            <div class="ring-master-2"></div>
+            <div class="ring-master-3"></div>
+            <div class="loader-brand-box">
+                <span class="loader-word-left">NOLX</span>
+                <span class="loader-word-right">PAGES</span>
+            </div>
+            <div class="loader-progress-box">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
     </div>
-  </section>
-  
-  <footer class="footer">
-    &copy; 2025 NOLX Atelier. All rights reserved.
-  </footer>
-  
-  <button class="floating-dark-toggle" onclick="toggleDarkMode()">☀</button>
-<script data-goatcounter="https://nolx.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    // Initialize AOS animations
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out'
-    });
-    
-    // Dark mode toggle function
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      document.body.classList.toggle('light-mode');
-      
-      const isDarkMode = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-      
-      const toggleBtn = document.querySelector('.floating-dark-toggle');
-      toggleBtn.innerHTML = isDarkMode ? '☀' : '☾';
-    }
-    
-    // Check for saved theme preference
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.remove('dark-mode');
-      document.body.classList.add('light-mode');
-      document.querySelector('.floating-dark-toggle').innerHTML = '☾';
-    }
-  </script>
+
+    <!-- الهيدر -->
+    <header class="header-el opacity-0 -translate-y-5 relative z-20 w-full py-5 px-4 sm:px-8 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="text-xl sm:text-2xl font-extrabold tracking-widest text-[#005840] flex items-center gap-3">
+            NOLX <span class="text-emerald-700 font-light">PAGES</span>
+        </div>
+        <nav class="hidden md:flex gap-8 lg:gap-10 items-center text-sm lg:text-base">
+            <a href="#" class="nav-link" data-i18n="navHome">Home</a>
+            <a href="#" class="nav-link" data-i18n="navTemplates">Templates</a>
+            <a href="#" class="nav-link" data-i18n="navFeatures">Features</a>
+            <a href="#" class="nav-link" data-i18n="navContact">Contact Us</a>
+        </nav>
+        <div class="flex items-center gap-3 sm:gap-4">
+
+            <button id="langToggleBtn" class="lang-btn" onclick="toggleLanguage()">
+                <i class="fas fa-globe"></i> <span id="langText">AR</span>
+            </button>
+
+            <!-- ===== Login Button ===== -->
+            <a id="loginBtn" href="login.html" class="btn-outline text-xs sm:text-sm px-5 sm:px-6 py-2.5" data-i18n="btnLogin">Login</a>
+
+            <!-- ===== Create Account Button ===== -->
+            <a id="createBtn" href="login.html?mode=signup" class="btn-primary text-xs sm:text-sm px-6 sm:px-7 py-2.5" data-i18n="btnCreate">Create Account</a>
+
+            <!-- ===== User Info (hidden when logged out) ===== -->
+            <div id="userInfo" class="flex items-center gap-3" style="display: none;">
+                <span id="userName" class="user-name-display">User</span>
+                <a href="dashboard.html">
+                    <img id="userAvatar" class="user-avatar" src="" alt="User" />
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center flex flex-col justify-center items-center">
+
+        <div class="hero-el opacity-0 translate-y-10">
+            <span class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-[#005840] text-xs font-bold px-5 py-2.5 rounded-full mb-6 shadow-sm">
+                <i class="fas fa-crown text-emerald-700"></i> <span data-i18n="badgeText">A New Standard for Luxury Web Design</span>
+            </span>
+        </div>
+
+        <h1 class="hero-el opacity-0 translate-y-10 text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-5 leading-[1.2]">
+            <span data-i18n="heroTitle1">Create Your Professional Website</span> <br />
+            <span class="text-emerald-700 relative inline-block mt-2" data-i18n="heroTitle2">
+                With Absolute Luxury
+            </span>
+        </h1>
+
+        <p class="hero-el opacity-0 translate-y-10 text-[#005840]/75 text-base sm:text-lg md:text-xl max-w-2xl mb-10 font-light leading-relaxed px-2" data-i18n="heroDesc">
+            An advanced platform combining exquisite design beauty with ultimate usability. Launch your business or personal site with a stunning look.
+        </p>
+
+        <div class="hero-el opacity-0 translate-y-10 flex flex-wrap gap-4 sm:gap-5 justify-center mb-16 sm:mb-20">
+            <a href="Dashboard.html" class="btn-primary text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-4.5">
+                <i class="fas fa-compass"></i> <span data-i18n="btnExplore">Explore Templates</span>
+            </a>
+            <a href="#" class="btn-outline text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-4.5">
+                <i class="fas fa-play-circle"></i> <span data-i18n="btnWatch">Watch Showcase</span>
+            </a>
+        </div>
+
+        <div class="scroll-indicator hero-el opacity-0 translate-y-10">
+            <div class="arrow-line"></div>
+            <i class="fas fa-chevron-down arrow-head"></i>
+            <span class="arrow-text" data-i18n="scrollText">SCROLL</span>
+        </div>
+
+    </main>
+
+    <!-- ===== قسم القوالب ===== -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div class="text-center mb-12 sm:mb-16">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-5 py-2.5 rounded-full uppercase tracking-wider" data-i18n="optionsBadge">Launch Options</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#005840] mt-4" data-i18n="optionsTitle">Choose Your Path to Digital Brilliance</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div class="card-el opacity-0 translate-y-12 glass-card p-8 rounded-[2rem] text-start">
+                <div class="icon-box"><i class="fas fa-th-large"></i></div>
+                <h3 class="text-2xl font-bold mb-3" data-i18n="card1Title">Luxury Ready Templates</h3>
+                <p class="text-[#005840]/65 text-sm leading-relaxed mb-6 font-light" data-i18n="card1Desc">
+                    Choose an exceptional design ready for instant customization. Over 50 carefully crafted templates to satisfy refined tastes.
+                </p>
+                <a href="#" class="text-sm font-bold text-[#005840] hover:opacity-70 inline-flex items-center gap-2 transition group">
+                    <span data-i18n="card1Link">Browse Templates</span>
+                    <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+
+            <div class="card-el opacity-0 translate-y-12 glass-card p-8 rounded-[2rem] text-start">
+                <div class="icon-box"><i class="fas fa-paint-brush"></i></div>
+                <h3 class="text-2xl font-bold mb-3" data-i18n="card2Title">Custom Design Request</h3>
+                <p class="text-[#005840]/65 text-sm leading-relaxed mb-6 font-light" data-i18n="card2Desc">
+                    Let our elite designers build you a visual identity and a completely unique website from scratch to match your exact brand aspirations.
+                </p>
+                <a href="#" class="text-sm font-bold text-[#005840] hover:opacity-70 inline-flex items-center gap-2 transition group">
+                    <span data-i18n="card2Link">Request Now</span>
+                    <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== الخط الفاصل ===== -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="divider-section card-el opacity-0 translate-y-12">
+            <div class="divider-line"></div>
+            <div class="divider-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="divider-icon">
+                <i class="fas fa-gem"></i>
+            </div>
+            <div class="divider-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="divider-line-glow"></div>
+        </div>
+    </div>
+
+    <!-- ===== جدول المميزات ===== -->
+    <section class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        <div class="text-center mb-12 sm:mb-16">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-5 py-2.5 rounded-full uppercase tracking-wider" data-i18n="featuresBadge">Exclusive Features</span>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#005840] mt-4 mb-3" data-i18n="featuresTitle">Everything You Need in One Place</h2>
+            <p class="text-[#005840]/70 text-sm sm:text-base md:text-lg mt-3 max-w-xl mx-auto font-light px-2" data-i18n="featuresDesc">Discover the exceptional features that make our platform the perfect choice for you</p>
+        </div>
+
+        <div class="features-table card-el opacity-0 translate-y-12">
+            <div class="feature-row header-row">
+                <div class="icon-col">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="feature-name" data-i18n="featureHeader">Feature</div>
+                <div class="feature-value" data-i18n="featureAvailable">Available</div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat1">Instant Site Readiness</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat2">Free GitHub Hosting</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat3">Free Custom Domain</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat4">All Luxury Templates</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat5">Lightning Fast Performance</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat6">Fully Responsive Design</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat7">Luxury Interactive Animations</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="icon-col">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="feature-name" data-i18n="feat8">Full Design Customization</div>
+                <div class="feature-value">
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-12 card-el opacity-0 translate-y-12">
+            <a href="login.html?mode=signup" class="btn-primary text-base sm:text-lg px-10 py-4 sm:py-4.5">
+                <i class="fas fa-user-plus"></i> <span data-i18n="btnStartJourney">Create Your Account Now</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== الفوتر ===== -->
+    <footer class="footer-el opacity-0 relative z-10 w-full py-8 sm:py-10 text-center text-[#005840]/50 text-xs sm:text-sm max-w-6xl mx-auto border-t border-[#005840]/10 mt-6 sm:mt-10 px-4">
+        <div class="flex flex-wrap justify-center gap-6 sm:gap-10 mb-4 sm:mb-5 text-xs font-semibold">
+            <a href="#" class="hover:text-[#005840] transition" data-i18n="footerPrivacy">Privacy Policy</a>
+            <a href="#" class="hover:text-[#005840] transition" data-i18n="footerTerms">Terms of Use</a>
+            <a href="#" class="hover:text-[#005840] transition" data-i18n="footerSupport">Technical Support</a>
+        </div>
+        <p class="text-xs tracking-wider">
+            <i class="far fa-copyright"></i> 2026 Nolx Pages — <span data-i18n="footerRights">All rights reserved.</span>
+        </p>
+    </footer>
+
+    <!-- السكريبت -->
+    <script>
+        // ========== الترجمة ==========
+        const translations = {
+            en: {
+                pageTitle: "Nolx Pages | Absolute Luxury in Web Design",
+                navHome: "Home",
+                navTemplates: "Templates",
+                navFeatures: "Features",
+                navContact: "Contact Us",
+                btnLogin: "Login",
+                btnCreate: "Create Account",
+                badgeText: "A New Standard for Luxury Web Design",
+                heroTitle1: "Create Your Professional Website",
+                heroTitle2: "With Absolute Luxury",
+                heroDesc: "An advanced platform combining exquisite design beauty with ultimate usability. Launch your business or personal site with a stunning look.",
+                btnExplore: "Explore Templates",
+                btnWatch: "Watch Showcase",
+                scrollText: "SCROLL",
+                optionsBadge: "Launch Options",
+                optionsTitle: "Choose Your Path to Digital Brilliance",
+                card1Title: "Luxury Ready Templates",
+                card1Desc: "Choose an exceptional design ready for instant customization. Over 50 carefully crafted templates to satisfy refined tastes.",
+                card1Link: "Browse Templates",
+                card2Title: "Custom Design Request",
+                card2Desc: "Let our elite designers build you a visual identity and a completely unique website from scratch to match your exact brand aspirations.",
+                card2Link: "Request Now",
+                featuresBadge: "Exclusive Features",
+                featuresTitle: "Everything You Need in One Place",
+                featuresDesc: "Discover the exceptional features that make our platform the perfect choice for you",
+                featureHeader: "Feature",
+                featureAvailable: "Available",
+                feat1: "Instant Site Readiness",
+                feat2: "Free GitHub Hosting",
+                feat3: "Free Custom Domain",
+                feat4: "All Luxury Templates",
+                feat5: "Lightning Fast Performance",
+                feat6: "Fully Responsive Design",
+                feat7: "Luxury Interactive Animations",
+                feat8: "Full Design Customization",
+                btnStartJourney: "Create Your Account Now",
+                footerPrivacy: "Privacy Policy",
+                footerTerms: "Terms of Use",
+                footerSupport: "Technical Support",
+                footerRights: "All rights reserved."
+            },
+            ar: {
+                pageTitle: "Nolx Pages | الفخامة المطلقة في تصميم المواقع",
+                navHome: "الرئيسية",
+                navTemplates: "القوالب",
+                navFeatures: "المميزات",
+                navContact: "اتصل بنا",
+                btnLogin: "دخول",
+                btnCreate: "إنشاء حساب",
+                badgeText: "معيار جديد لتصميم المواقع الفاخرة",
+                heroTitle1: "أنشئ موقعك الاحترافي",
+                heroTitle2: "بأعلى مستويات الفخامة",
+                heroDesc: "منصة متطورة تجمع بين جمال التصميم الفائق وسهولة الاستخدام المطلقة. أطلق موقعك التجاري أو الشخصي بمظهر استثنائي يخطف الأبصار.",
+                btnExplore: "استكشف القوالب",
+                btnWatch: "شاهد العرض",
+                scrollText: "تمرير",
+                optionsBadge: "خيارات الإطلاق",
+                optionsTitle: "اختر طريقك نحو التألق الرقمي",
+                card1Title: "قوالب جاهزة فخمة",
+                card1Desc: "اختر تصميماً استثنائياً جاهزاً للتخصيص الفوري. أكثر من 50 قالباً مصمماً بعناية فائقة لترضي أصحاب الذوق الرفيع.",
+                card1Link: "تصفح القوالب",
+                card2Title: "طلب تصميم خاص",
+                card2Desc: "دع نخبة المصممين لدينا يبنون لك هوية بصرية وموقعاً فريداً بالكامل من الصفر ليناسب تطلعات علامتك التجارية بدقة.",
+                card2Link: "اطلب الآن",
+                featuresBadge: "مميزات حصرية",
+                featuresTitle: "كل ما تحتاجه في مكان واحد",
+                featuresDesc: "اكتشف مجموعة المميزات الاستثنائية التي تجعل منصتنا الخيار الأمثل لك",
+                featureHeader: "الميزة",
+                featureAvailable: "متوفرة",
+                feat1: "جاهزية فورية للموقع",
+                feat2: "استضافة مجانية عبر GitHub",
+                feat3: "دومين مخصص مجاني",
+                feat4: "جميع القوالب الفاخرة",
+                feat5: "سرعة فائقة وأداء مذهل",
+                feat6: "توافق تام مع جميع الشاشات",
+                feat7: "حركات تفاعلية فاخرة",
+                feat8: "تخصيص كامل للتصميم",
+                btnStartJourney: "أنشئ حسابك الآن",
+                footerPrivacy: "سياسة الخصوصية",
+                footerTerms: "شروط الاستخدام",
+                footerSupport: "الدعم الفني",
+                footerRights: "جميع الحقوق محفوظة."
+            }
+        };
+
+        let currentLang = localStorage.getItem('nolxLang') || 'en';
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('nolxLang', lang);
+
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('langText').innerText = lang === 'ar' ? 'EN' : 'AR';
+
+            if (lang === 'ar') {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.group i').forEach(arrow => {
+                if (lang === 'ar') {
+                    arrow.classList.remove('fa-arrow-right', 'group-hover:translate-x-1');
+                    arrow.classList.add('fa-arrow-left', 'group-hover:-translate-x-1');
+                } else {
+                    arrow.classList.remove('fa-arrow-left', 'group-hover:-translate-x-1');
+                    arrow.classList.add('fa-arrow-right', 'group-hover:translate-x-1');
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            applyLanguage(newLang);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
+        });
+
+        // ========== شريط التقدم العلوي ==========
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('globalBar').style.width = scrolled + '%';
+        });
+
+        // ========== إزالة اللودر وتشغيل الأنيميشن ==========
+        let loaderRemoved = false;
+
+        function removeLoader() {
+            if (loaderRemoved) return;
+            loaderRemoved = true;
+
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.add('hidden');
+
+                gsap.to('.header-el', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' });
+                gsap.to('.hero-el', { opacity: 1, y: 0, duration: 1.1, stagger: 0.12, ease: 'power4.out', delay: 0.1 });
+                gsap.to('.card-el', { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: 'power4.out', delay: 0.2 });
+                gsap.to('.footer-el', { opacity: 1, duration: 1, delay: 0.4, ease: 'power3.out' });
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(removeLoader, 1500);
+        });
+
+        setTimeout(removeLoader, 4000);
+
+        document.querySelector('.scroll-indicator')?.addEventListener('click', () => {
+            const target = document.querySelector('.glass-card');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
+
 </body>
 </html>

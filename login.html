@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NOLX Pages | Authentication</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nolxGreen: "#005840",
+                        nolxDark: "#003d2d",
+                        nolxLime: "#D1F843",
+                        nolxBg: "#e9efed"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <!-- GOOGLE CALLBACK -->
+    <script>
+        window.handleGoogleResponse = function(response) {
+            if (!response || !response.credential) {
+                console.error("[NOLX] Google credential missing");
+                return;
+            }
+            window.dispatchEvent(
+                new CustomEvent("nolx-google-login", { detail: response })
+            );
+        };
+    </script>
+
+    <!-- GOOGLE IDENTITY SERVICES -->
+    <script src="https://accounts.google.com/gsi/client"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Cairo", sans-serif;
+            color: #005840;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(209, 249, 67, 0.28), transparent 28%),
+                radial-gradient(circle at 90% 15%, rgba(0, 88, 64, 0.16), transparent 30%),
+                radial-gradient(circle at 50% 100%, rgba(0, 88, 64, 0.13), transparent 35%),
+                #e9efed;
+            overflow-x: hidden;
+        }
+
+        /* === BACKGROUND === */
+        .blob {
+            position: fixed;
+            border-radius: 999px;
+            filter: blur(70px);
+            opacity: 0.45;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-one {
+            width: 300px;
+            height: 300px;
+            background: #D1F843;
+            top: -100px;
+            left: -100px;
+        }
+        .blob-two {
+            width: 350px;
+            height: 350px;
+            background: #005840;
+            right: -150px;
+            bottom: -150px;
+        }
+        .blob-three {
+            width: 180px;
+            height: 180px;
+            background: #8ad9bf;
+            right: 20%;
+            top: 25%;
+        }
+
+        /* === GLASS === */
+        .glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.38));
+            backdrop-filter: blur(35px) saturate(150%);
+            -webkit-backdrop-filter: blur(35px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            box-shadow:
+                0 35px 100px rgba(0, 61, 45, 0.13),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        /* === INPUT === */
+        .input-wrap {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 88, 64, 0.42);
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 2;
+        }
+        [dir="rtl"] .input-icon {
+            left: auto;
+            right: 17px;
+        }
+        .input {
+            width: 100%;
+            height: 55px;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 88, 64, 0.14);
+            background: rgba(255, 255, 255, 0.56);
+            color: #005840;
+            outline: none;
+            padding: 0 18px 0 48px;
+            font-family: inherit;
+            transition: border 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
+        }
+        [dir="rtl"] .input {
+            padding: 0 48px 0 18px;
+        }
+        .input::placeholder {
+            color: rgba(0, 88, 64, 0.34);
+        }
+        .input:focus {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: rgba(0, 88, 64, 0.42);
+            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07), 0 10px 30px rgba(0, 88, 64, 0.05);
+        }
+
+        /* === BUTTON === */
+        .primary-btn {
+            width: 100%;
+            min-height: 55px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0, 88, 64, 0.18);
+            transition: 0.3s;
+        }
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 45px rgba(0, 88, 64, 0.24);
+        }
+        .primary-btn:active {
+            transform: translateY(0);
+        }
+        .primary-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none;
+        }
+
+        /* === GOOGLE === */
+        .google-box {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 18px;
+        }
+        #googleButton {
+            width: 100%;
+            min-height: 44px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* === FACEBOOK BUTTON === */
+        .facebook-box {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        #facebookLoginBtn {
+            background: #1877F2 !important;
+            box-shadow: 0 15px 35px rgba(24, 119, 242, 0.25) !important;
+        }
+        #facebookLoginBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 45px rgba(24, 119, 242, 0.35) !important;
+        }
+        #facebookLoginBtn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none !important;
+        }
+        #facebookLoginBtn i {
+            font-size: 18px;
+        }
+
+        /* === MESSAGE === */
+        .message {
+            display: none;
+            padding: 15px 18px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.7;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .message.show {
+            display: flex;
+        }
+        .message i {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .message .msg-content {
+            flex: 1;
+        }
+        .message .msg-content small {
+            display: block;
+            font-weight: 400;
+            opacity: 0.7;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .message.error {
+            color: #991b1b;
+            background: rgba(254, 226, 226, 0.85);
+            border: 1px solid rgba(220, 38, 38, 0.15);
+        }
+        .message.error i {
+            color: #dc2626;
+        }
+
+        .message.success {
+            color: #065f46;
+            background: rgba(209, 250, 229, 0.85);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        .message.success i {
+            color: #059669;
+        }
+
+        .message.info {
+            color: #005840;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(0, 88, 64, 0.12);
+        }
+        .message.info i {
+            color: #005840;
+        }
+
+        .message.warning {
+            color: #92400e;
+            background: rgba(254, 243, 199, 0.85);
+            border: 1px solid rgba(217, 119, 6, 0.15);
+        }
+        .message.warning i {
+            color: #d97706;
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+        }
+        .divider-line {
+            height: 1px;
+            flex: 1;
+            background: rgba(0, 88, 64, 0.10);
+        }
+        .divider-text {
+            font-size: 10px;
+            font-weight: 800;
+            color: rgba(0, 88, 64, 0.35);
+            letter-spacing: 2px;
+        }
+
+        /* === MODAL === */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 35, 25, 0.32);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-card {
+            width: 100%;
+            max-width: 440px;
+            border-radius: 32px;
+            padding: 30px;
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* === VERIFICATION MODAL === */
+        .verification-card {
+            max-width: 470px;
+            text-align: center;
+            padding: 35px !important;
+        }
+        .verification-icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(209, 249, 67, 0.35), rgba(0, 88, 64, 0.12));
+            border: 1px solid rgba(0, 88, 64, 0.12);
+            box-shadow: 0 15px 40px rgba(0, 88, 64, 0.12);
+            color: #005840;
+            font-size: 32px;
+        }
+        .verification-card h2 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 900;
+            color: #005840;
+        }
+        .verification-card>p {
+            margin: 10px 0 18px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: rgba(0, 88, 64, 0.58);
+        }
+        .verification-email {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(0, 88, 64, 0.10);
+            color: #005840;
+            font-size: 13px;
+            font-weight: 800;
+            word-break: break-all;
+        }
+        .verification-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font-size: 12px;
+            font-weight: 800;
+            color: rgba(0, 88, 64, 0.55);
+            margin-bottom: 18px;
+        }
+        .verification-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #D1F843;
+            box-shadow: 0 0 0 5px rgba(209, 249, 67, 0.15);
+            animation: verificationPulse 1.5s infinite;
+        }
+        @keyframes verificationPulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: .45;
+                transform: scale(.75);
+            }
+        }
+        .verification-loader {
+            width: 100%;
+            height: 4px;
+            overflow: hidden;
+            border-radius: 99px;
+            background: rgba(0, 88, 64, 0.08);
+            margin-bottom: 22px;
+        }
+        .verification-loader div {
+            width: 35%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #005840, #D1F843);
+            animation: verificationLoading 1.4s infinite ease-in-out;
+        }
+        @keyframes verificationLoading {
+            0% {
+                transform: translateX(-120%);
+            }
+            50% {
+                transform: translateX(180%);
+            }
+            100% {
+                transform: translateX(-120%);
+            }
+        }
+        .verification-logout {
+            margin-top: 15px;
+            border: none;
+            background: transparent;
+            color: rgba(0, 88, 64, 0.55);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .verification-logout:hover {
+            color: #005840;
+        }
+
+        /* === CLOSE === */
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 88, 64, 0.10);
+            background: rgba(255, 255, 255, 0.5);
+            color: #005840;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: rotate(5deg);
+        }
+
+        /* === RESPONSIVE === */
+        @media(max-width: 640px) {
+            .glass {
+                border-radius: 30px;
+                padding: 20px !important;
+            }
+            .modal-card {
+                padding: 20px !important;
+            }
+            .input {
+                height: 50px;
+                font-size: 15px;
+            }
+            .primary-btn {
+                min-height: 50px;
+                font-size: 15px;
+            }
+            .text-xl {
+                font-size: 1.1rem !important;
+            }
+            .close-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+            .verification-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 27px;
+            }
+            .verification-card h2 {
+                font-size: 22px;
+            }
+            .message {
+                padding: 12px 14px;
+                font-size: 12px;
+            }
+            .message i {
+                font-size: 16px;
+            }
+        }
+        @media(max-width: 400px) {
+            .glass {
+                padding: 16px !important;
+            }
+            .input {
+                height: 44px;
+                font-size: 14px;
+                padding: 0 14px 0 42px;
+            }
+            [dir="rtl"] .input {
+                padding: 0 42px 0 14px;
+            }
+            .primary-btn {
+                min-height: 44px;
+                font-size: 14px;
+            }
+            .input-icon {
+                left: 14px;
+                font-size: 14px;
+            }
+            [dir="rtl"] .input-icon {
+                left: auto;
+                right: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="blob blob-one"></div>
+    <div class="blob blob-two"></div>
+    <div class="blob blob-three"></div>
+
+    <!-- HEADER -->
+    <header class="relative z-10 w-full px-4 sm:px-6 py-4 sm:py-6">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="text-lg sm:text-2xl font-black tracking-[0.15em] sm:tracking-[0.18em]">
+                <span id="brandText">NOLX</span>
+                <span class="font-light text-emerald-700" id="brandSubText">PAGES</span>
+            </a>
+            <button id="languageButton" onclick="toggleLanguage()" class="glass px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-black">
+                AR
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="relative z-10 min-h-[calc(100vh-150px)] flex items-center justify-center px-4 sm:px-5 py-8 sm:py-10">
+        <section class="glass w-full max-w-[470px] rounded-[30px] sm:rounded-[38px] p-5 sm:p-10">
+
+            <div class="text-center mb-6 sm:mb-8">
+                <h1 id="title" class="text-2xl sm:text-4xl font-black tracking-tight">Welcome Back</h1>
+                <p id="subtitle" class="mt-1.5 sm:mt-2 text-xs sm:text-sm text-[#005840]/55">Sign in to access your NOLX dashboard</p>
+            </div>
+
+            <!-- MESSAGE -->
+            <div id="message" class="message"></div>
+
+            <!-- LOGIN -->
+            <div id="loginView">
+                <!-- GOOGLE -->
+                <div class="google-box">
+                    <div id="g_id_onload"
+                         data-client_id="672585065953-svfvuaqfn64h8uged2k9579i38nc61r0.apps.googleusercontent.com"
+                         data-callback="handleGoogleResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div id="googleButton"
+                         class="g_id_signin"
+                         data-type="standard"
+                         data-theme="outline"
+                         data-size="large"
+                         data-text="signin_with"
+                         data-shape="pill"
+                         data-logo_alignment="left"
+                         data-width="350">
+                    </div>
+                </div>
+
+                <!-- FACEBOOK -->
+                <div class="facebook-box mt-4">
+                    <button id="facebookLoginBtn" onclick="loginWithFacebook()" class="primary-btn flex items-center justify-center gap-3 text-sm sm:text-base">
+                        <i class="fab fa-facebook-f"></i>
+                        <span id="facebookLoginText">Sign in with Facebook</span>
+                    </button>
+                </div>
+
+                <!-- DIVIDER -->
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text" id="dividerText">OR</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- EMAIL LOGIN -->
+                <form id="loginForm" onsubmit="loginEmail(event)" class="space-y-4 sm:space-y-5">
+                    <div>
+                        <label id="loginEmailLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Email Address</label>
+                        <div class="input-wrap">
+                            <input id="emailInput" class="input" type="email" autocomplete="email" placeholder="name@example.com" required>
+                            <i class="input-icon fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label id="loginPasswordLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Password</label>
+                        <div class="input-wrap">
+                            <input id="passwordInput" class="input" type="password" autocomplete="current-password" placeholder="••••••••" required>
+                            <i class="input-icon fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button id="forgotPasswordBtn" type="button" onclick="openResetModal()" class="text-[11px] sm:text-xs font-bold underline opacity-75 hover:opacity-100">Forgot password?</button>
+                    </div>
+                    <button id="loginButton" type="submit" class="primary-btn flex items-center justify-center gap-3 text-sm sm:text-base">
+                        <span id="loginButtonText">Sign In</span>
+                        <i class="fas fa-arrow-right text-xs sm:text-sm"></i>
+                    </button>
+                </form>
+
+                <div class="text-center mt-6 sm:mt-8 text-xs sm:text-sm">
+                    <span id="noAccountText" class="text-[#005840]/55">Don't have an account?</span>
+                    <button id="createAccountBtn" onclick="showSignup()" class="font-black underline ml-1">Create Account</button>
+                </div>
+            </div>
+
+            <!-- SIGNUP -->
+            <div id="signupView" style="display:none;">
+                <form onsubmit="createAccount(event)" class="space-y-4 sm:space-y-5">
+                    <div>
+                        <label id="signupUsernameLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Username</label>
+                        <div class="input-wrap">
+                            <input id="usernameInput" class="input" type="text" maxlength="40" autocomplete="name" placeholder="Your username" required>
+                            <i class="input-icon fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label id="signupPhoneLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Phone Number</label>
+                        <div class="input-wrap">
+                            <input id="phoneInput" class="input" type="tel" maxlength="25" autocomplete="tel" placeholder="+20 10xxxxxxxx" required>
+                            <i class="input-icon fas fa-phone"></i>
+                        </div>
+                        <p id="phoneNote" class="mt-1.5 sm:mt-2 text-[10px] sm:text-[11px] text-[#005840]/45">Used as profile information only. No SMS verification.</p>
+                    </div>
+                    <div>
+                        <label id="signupEmailLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Email Address</label>
+                        <div class="input-wrap">
+                            <input id="signupEmail" class="input" type="email" autocomplete="email" placeholder="name@example.com" required>
+                            <i class="input-icon fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label id="signupPasswordLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Password</label>
+                        <div class="input-wrap">
+                            <input id="signupPassword" class="input" type="password" minlength="6" autocomplete="new-password" placeholder="At least 6 characters" required>
+                            <i class="input-icon fas fa-key"></i>
+                        </div>
+                    </div>
+                    <button id="signupButtonSubmit" type="submit" class="primary-btn text-sm sm:text-base">Create Account</button>
+                    <button id="backToLoginBtn" type="button" onclick="showLogin()" class="w-full text-[11px] sm:text-xs font-bold underline mt-1 sm:mt-2">Back to Login</button>
+                </form>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ===== RESET PASSWORD MODAL ===== -->
+    <div id="resetModal" class="modal" onclick="closeResetOutside(event)">
+        <div class="modal-card glass">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <div>
+                    <h2 id="resetTitle" class="text-xl sm:text-2xl font-black">Reset Password</h2>
+                    <p id="resetSub" class="text-[11px] sm:text-xs text-[#005840]/55 mt-0.5 sm:mt-1">Enter the email connected to your account.</p>
+                </div>
+                <button onclick="closeResetModal()" class="close-btn">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+            <div id="resetMessage" class="message"></div>
+            <form onsubmit="sendResetEmail(event)" class="space-y-4 sm:space-y-5">
+                <div>
+                    <label id="resetEmailLabel" class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Email Address</label>
+                    <div class="input-wrap">
+                        <input id="resetEmail" class="input" type="email" autocomplete="email" placeholder="name@example.com" required>
+                        <i class="input-icon fas fa-envelope"></i>
+                    </div>
+                </div>
+                <button id="resetButton" type="submit" class="primary-btn text-sm sm:text-base">Send Reset Link</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== EMAIL VERIFICATION MODAL ===== -->
+    <div id="verificationModal" class="modal">
+        <div class="modal-card glass verification-card">
+            <div class="verification-icon">
+                <i class="fas fa-envelope-circle-check"></i>
+            </div>
+            <h2 id="verificationTitle">Verify Your Email</h2>
+            <p id="verificationText">We've sent a verification link to your email address.</p>
+            <div class="verification-email">
+                <i class="fas fa-envelope"></i>
+                <span id="verificationEmail"></span>
+            </div>
+            <div class="verification-status">
+                <span class="verification-dot"></span>
+                <span id="verificationStatus">Waiting for verification...</span>
+            </div>
+            <div class="verification-loader"><div></div></div>
+            <button id="resendVerificationButton" type="button" onclick="resendVerificationEmail()" class="primary-btn">Resend Verification Email</button>
+            <button type="button" onclick="logoutFromVerification()" class="verification-logout">Sign out</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 text-center py-4 sm:py-6 text-[10px] sm:text-xs text-[#005840]/40">
+        © <span id="currentYear"></span> NOLX Pages — All rights reserved.
+    </footer>
+
+    <!-- =========================
+         FIREBASE - SINGLE SCRIPT (ES Module)
+    ========================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {
+            getAuth,
+            setPersistence,
+            browserLocalPersistence,
+            onAuthStateChanged,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
+            sendEmailVerification,
+            GoogleAuthProvider,
+            signInWithCredential,
+            signOut,
+            FacebookAuthProvider,
+            signInWithPopup,
+            signInWithRedirect,
+            getRedirectResult
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            setDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        /* =========================
+           FIREBASE CONFIG
+        ========================== */
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+            authDomain: "nolxpages.firebaseapp.com",
+            projectId: "nolxpages",
+            storageBucket: "nolxpages.firebasestorage.app",
+            messagingSenderId: "672585065953",
+            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+            measurementId: "G-ENEG3Q96W9"
+        };
+
+        /* =========================
+           INITIALIZE FIREBASE
+        ========================== */
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        await setPersistence(auth, browserLocalPersistence);
+
+        /* =========================
+           TRANSLATIONS
+        ========================== */
+        const translations = {
+            en: {
+                brand: "NOLX",
+                brandSub: "PAGES",
+                langBtn: "AR",
+                loginTitle: "Welcome Back",
+                loginSub: "Sign in to access your NOLX dashboard",
+                signupTitle: "Create Account",
+                signupSub: "Create your secure NOLX profile",
+                emailLabel: "Email Address",
+                emailPlaceholder: "name@example.com",
+                passwordLabel: "Password",
+                passwordPlaceholder: "••••••••",
+                forgotPassword: "Forgot password?",
+                signIn: "Sign In",
+                noAccount: "Don't have an account?",
+                createAccount: "Create Account",
+                usernameLabel: "Username",
+                usernamePlaceholder: "Your username",
+                phoneLabel: "Phone Number",
+                phonePlaceholder: "+20 10xxxxxxxx",
+                phoneNote: "Used as profile information only. No SMS verification.",
+                signupEmailLabel: "Email Address",
+                signupEmailPlaceholder: "name@example.com",
+                signupPasswordLabel: "Password",
+                signupPasswordPlaceholder: "At least 6 characters",
+                createAccountBtn: "Create Account",
+                backToLogin: "Back to Login",
+                or: "OR",
+                resetTitle: "Reset Password",
+                resetSub: "Enter the email connected to your account.",
+                resetEmailLabel: "Email Address",
+                resetEmailPlaceholder: "name@example.com",
+                sendResetLink: "Send Reset Link",
+                signingIn: "Signing in...",
+                googleSuccess: "Google login successful.",
+                loginSuccess: "Login successful.",
+                createSuccess: "Account created successfully.",
+                verifyEmail: "Please verify your email before logging in.",
+                googleNoReset: "This account uses Google Sign-In. You do not need a password reset.",
+                alreadyLoggedIn: "You are already logged in.",
+                resetSent: "Password reset link has been sent to your email.",
+                enterEmail: "Please enter your email.",
+                emailNotFound: "No account found with this email address.",
+                incorrectCredentials: "Incorrect email or password.",
+                noAccountError: "No account was found with these credentials.",
+                wrongPassword: "Incorrect password.",
+                emailInUse: "This email is already registered.",
+                weakPassword: "Password must contain at least 6 characters.",
+                invalidEmail: "Please enter a valid email address.",
+                operationNotAllowed: "This authentication method is not enabled in Firebase.",
+                unauthorizedDomain: "This website is not authorized in Firebase.",
+                popupBlocked: "The browser blocked the popup. Click again to continue.",
+                popupCancelled: "Login was cancelled.",
+                accountExists: "This email is already registered with another sign-in method.",
+                networkError: "Network error. Check your internet connection.",
+                tooManyRequests: "Too many failed attempts. Please try again later.",
+                defaultError: "Authentication failed.",
+                usernameError: "Please enter a valid username.",
+                phoneError: "Please enter your phone number.",
+                verificationTitle: "Verify Your Email",
+                verificationText: "We've sent a verification link to your email. Verify it and you will be signed in automatically.",
+                waitingVerification: "Waiting for verification...",
+                verified: "Verified! Signing you in...",
+                resend: "Resend Verification Email",
+                sending: "Sending...",
+                emailSent: "Email Sent ✓",
+                signOut: "Sign out",
+                userDisabled: "This account has been disabled. Please contact support.",
+                userDisabledDesc: "If you believe this is a mistake, please reach out to our support team.",
+                facebookSignIn: "Sign in with Facebook",
+                facebookSuccess: "Facebook login successful.",
+                facebookAccountExists: "This email is already associated with a different account.",
+                facebookAccountExistsDesc: "Please sign in using your original provider (Google or Email)."
+            },
+            ar: {
+                brand: "نولكس",
+                brandSub: "بيجز",
+                langBtn: "EN",
+                loginTitle: "مرحباً بعودتك",
+                loginSub: "سجل الدخول للوصول إلى لوحة تحكم نولكس",
+                signupTitle: "إنشاء حساب",
+                signupSub: "أنشئ ملفك الشخصي الآمن على نولكس",
+                emailLabel: "البريد الإلكتروني",
+                emailPlaceholder: "name@example.com",
+                passwordLabel: "كلمة المرور",
+                passwordPlaceholder: "••••••••",
+                forgotPassword: "نسيت كلمة المرور؟",
+                signIn: "تسجيل الدخول",
+                noAccount: "ليس لديك حساب؟",
+                createAccount: "إنشاء حساب",
+                usernameLabel: "اسم المستخدم",
+                usernamePlaceholder: "اسم المستخدم الخاص بك",
+                phoneLabel: "رقم الهاتف",
+                phonePlaceholder: "+20 10xxxxxxxx",
+                phoneNote: "يستخدم كمعلومات للملف الشخصي فقط. لا يوجد تحقق عبر الرسائل النصية.",
+                signupEmailLabel: "البريد الإلكتروني",
+                signupEmailPlaceholder: "name@example.com",
+                signupPasswordLabel: "كلمة المرور",
+                signupPasswordPlaceholder: "6 أحرف على الأقل",
+                createAccountBtn: "إنشاء حساب",
+                backToLogin: "العودة لتسجيل الدخول",
+                or: "أو",
+                resetTitle: "إعادة تعيين كلمة المرور",
+                resetSub: "أدخل البريد الإلكتروني المرتبط بحسابك.",
+                resetEmailLabel: "البريد الإلكتروني",
+                resetEmailPlaceholder: "name@example.com",
+                sendResetLink: "إرسال رابط إعادة التعيين",
+                signingIn: "جاري تسجيل الدخول...",
+                googleSuccess: "تم تسجيل الدخول عبر جوجل بنجاح.",
+                loginSuccess: "تم تسجيل الدخول بنجاح.",
+                createSuccess: "تم إنشاء الحساب بنجاح.",
+                verifyEmail: "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
+                googleNoReset: "هذا الحساب يستخدم تسجيل الدخول عبر جوجل، ولا يحتاج إلى إعادة تعيين كلمة المرور.",
+                alreadyLoggedIn: "أنت مسجل الدخول بالفعل.",
+                resetSent: "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
+                enterEmail: "يرجى إدخال بريدك الإلكتروني.",
+                emailNotFound: "لا يوجد حساب مرتبط بهذا البريد الإلكتروني.",
+                incorrectCredentials: "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+                noAccountError: "لم يتم العثور على حساب بهذه البيانات.",
+                wrongPassword: "كلمة المرور غير صحيحة.",
+                emailInUse: "هذا البريد الإلكتروني مسجل بالفعل.",
+                weakPassword: "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.",
+                invalidEmail: "يرجى إدخال بريد إلكتروني صحيح.",
+                operationNotAllowed: "طريقة المصادقة هذه غير مفعلة في Firebase.",
+                unauthorizedDomain: "هذا الموقع غير مصرح به في Firebase.",
+                popupBlocked: "المتصفح حجب النافذة المنبثقة. اضغط مرة أخرى للمتابعة.",
+                popupCancelled: "تم إلغاء تسجيل الدخول.",
+                accountExists: "هذا البريد الإلكتروني مسجل بالفعل بطريقة أخرى.",
+                networkError: "خطأ في الشبكة. تحقق من اتصالك بالإنترنت.",
+                tooManyRequests: "عدد كبير جداً من المحاولات. حاول مرة أخرى لاحقاً.",
+                defaultError: "فشلت عملية المصادقة.",
+                usernameError: "يرجى إدخال اسم مستخدم صحيح.",
+                phoneError: "يرجى إدخال رقم هاتفك.",
+                verificationTitle: "تحقق من بريدك الإلكتروني",
+                verificationText: "أرسلنا رابط تحقق إلى بريدك الإلكتروني. قم بالتحقق وسيتم تسجيل دخولك تلقائياً.",
+                waitingVerification: "في انتظار التحقق من البريد...",
+                verified: "تم التحقق! جاري تسجيل الدخول...",
+                resend: "إعادة إرسال رسالة التحقق",
+                sending: "جاري الإرسال...",
+                emailSent: "تم إرسال البريد ✓",
+                signOut: "تسجيل الخروج",
+                userDisabled: "تم تعطيل هذا الحساب. يرجى التواصل مع الدعم.",
+                userDisabledDesc: "إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع فريق الدعم.",
+                facebookSignIn: "تسجيل الدخول عبر فيسبوك",
+                facebookSuccess: "تم تسجيل الدخول عبر فيسبوك بنجاح.",
+                facebookAccountExists: "هذا البريد الإلكتروني مرتبط بحساب آخر.",
+                facebookAccountExistsDesc: "يرجى تسجيل الدخول باستخدام المزود الأصلي (جوجل أو البريد الإلكتروني)."
+            }
+        };
+
+        /* =========================
+           GLOBAL VARIABLES
+        ========================== */
+        let currentUser = null;
+        let verificationCheckInterval = null;
+        let verificationSending = false;
+
+        /* =========================
+           TRANSLATE FUNCTION
+        ========================== */
+        function translate(lang) {
+            const t = translations[lang] || translations.en;
+            document.getElementById("brandText").textContent = t.brand;
+            document.getElementById("brandSubText").textContent = t.brandSub;
+            document.getElementById("languageButton").textContent = t.langBtn;
+
+            const signup = document.getElementById("signupView").style.display === "block";
+            document.getElementById("title").textContent = signup ? t.signupTitle : t.loginTitle;
+            document.getElementById("subtitle").textContent = signup ? t.signupSub : t.loginSub;
+
+            document.getElementById("loginEmailLabel").textContent = t.emailLabel;
+            document.getElementById("emailInput").placeholder = t.emailPlaceholder;
+            document.getElementById("loginPasswordLabel").textContent = t.passwordLabel;
+            document.getElementById("passwordInput").placeholder = t.passwordPlaceholder;
+            document.getElementById("forgotPasswordBtn").textContent = t.forgotPassword;
+            document.getElementById("loginButtonText").textContent = t.signIn;
+            document.getElementById("noAccountText").textContent = t.noAccount;
+            document.getElementById("createAccountBtn").textContent = t.createAccount;
+
+            document.getElementById("signupUsernameLabel").textContent = t.usernameLabel;
+            document.getElementById("usernameInput").placeholder = t.usernamePlaceholder;
+            document.getElementById("signupPhoneLabel").textContent = t.phoneLabel;
+            document.getElementById("phoneInput").placeholder = t.phonePlaceholder;
+            document.getElementById("phoneNote").textContent = t.phoneNote;
+            document.getElementById("signupEmailLabel").textContent = t.signupEmailLabel;
+            document.getElementById("signupEmail").placeholder = t.signupEmailPlaceholder;
+            document.getElementById("signupPasswordLabel").textContent = t.signupPasswordLabel;
+            document.getElementById("signupPassword").placeholder = t.signupPasswordPlaceholder;
+            document.getElementById("signupButtonSubmit").textContent = t.createAccountBtn;
+            document.getElementById("backToLoginBtn").textContent = t.backToLogin;
+            document.getElementById("dividerText").textContent = t.or;
+
+            document.getElementById("resetTitle").textContent = t.resetTitle;
+            document.getElementById("resetSub").textContent = t.resetSub;
+            document.getElementById("resetEmailLabel").textContent = t.resetEmailLabel;
+            document.getElementById("resetEmail").placeholder = t.resetEmailPlaceholder;
+            document.getElementById("resetButton").textContent = t.sendResetLink;
+
+            document.getElementById("verificationTitle").textContent = t.verificationTitle;
+            document.getElementById("verificationText").textContent = t.verificationText;
+            document.getElementById("verificationStatus").textContent = t.waitingVerification;
+            document.getElementById("resendVerificationButton").textContent = t.resend;
+            document.querySelector(".verification-logout").textContent = t.signOut;
+
+            document.getElementById("facebookLoginText").textContent = t.facebookSignIn;
+        }
+
+        /* =========================
+           HANDLE FACEBOOK REDIRECT RESULT
+        ========================== */
+        async function handleFacebookRedirect() {
+            try {
+                const result = await getRedirectResult(auth);
+                if (result) {
+                    const user = result.user;
+                    await saveUserProfile(user, {
+                        username: user.displayName || "",
+                        phone: "",
+                        authProvider: "facebook"
+                    });
+                    showMessage(translations[document.documentElement.lang].facebookSuccess, "success");
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 500);
+                }
+            } catch (error) {
+                console.error("[NOLX] Facebook redirect error:", error);
+                if (error.code !== 'auth/account-exists-with-different-credential') {
+                    showFirebaseError(error);
+                }
+            }
+        }
+
+        /* =========================
+           AUTH STATE OBSERVER
+        ========================== */
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                console.log("[NOLX] Logged in:", user.email);
+
+                if (user.emailVerified) {
+                    hideVerificationModal();
+                    if (window.location.pathname.endsWith("login.html") ||
+                        window.location.pathname === "/" ||
+                        window.location.pathname === "") {
+                        setTimeout(() => {
+                            window.location.href = "dashboard.html";
+                        }, 300);
+                    }
+                } else {
+                    showVerificationModal(user);
+                    startVerificationChecker();
+                }
+            } else {
+                currentUser = null;
+                hideVerificationModal();
+                document.getElementById("loginView").style.display = "block";
+                document.getElementById("signupView").style.display = "none";
+                translate(document.documentElement.lang);
+                // Check for Facebook redirect result
+                await handleFacebookRedirect();
+            }
+        });
+
+        /* =========================
+           GOOGLE LOGIN
+        ========================== */
+        window.addEventListener("nolx-google-login", async (event) => {
+            try {
+                const lang = document.documentElement.lang;
+                const t = translations[lang];
+                showMessage(t.signingIn, "info");
+
+                const credential = GoogleAuthProvider.credential(event.detail.credential);
+                const result = await signInWithCredential(auth, credential);
+                const user = result.user;
+
+                await saveUserProfile(user, {
+                    username: user.displayName || "",
+                    phone: "",
+                    authProvider: "google"
+                });
+
+                showMessage(t.googleSuccess, "success");
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 500);
+            } catch (error) {
+                console.error("[NOLX] Google error:", error);
+                showFirebaseError(error);
+            }
+        });
+
+        /* =========================
+           FACEBOOK LOGIN (مع Fallback لإعادة التوجيه)
+        ========================== */
+        window.loginWithFacebook = async function() {
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            const button = document.getElementById('facebookLoginBtn');
+            const originalHTML = button.innerHTML;
+
+            try {
+                button.disabled = true;
+                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t.signingIn || 'Signing in...'}`;
+                showMessage(t.signingIn || 'Signing in with Facebook...', 'info');
+
+                const provider = new FacebookAuthProvider();
+                provider.addScope('email');
+
+                try {
+                    // المحاولة الأولى: نافذة منبثقة
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+
+                    await saveUserProfile(user, {
+                        username: user.displayName || "",
+                        phone: "",
+                        authProvider: "facebook"
+                    });
+
+                    showMessage(t.facebookSuccess || 'Facebook login successful.', 'success');
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 500);
+                } catch (popupError) {
+                    // إذا تم حظر النافذة المنبثقة، استخدم إعادة التوجيه
+                    if (popupError.code === 'auth/popup-blocked') {
+                        showMessage(
+                            t.popupBlocked || 'Popup was blocked. Redirecting...',
+                            'info',
+                            'You will be redirected to Facebook for authentication.'
+                        );
+                        await signInWithRedirect(auth, provider);
+                    } else {
+                        throw popupError;
+                    }
+                }
+
+            } catch (error) {
+                console.error("[NOLX] Facebook error:", error);
+
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    showMessage(
+                        t.facebookAccountExists || 'This email is already associated with a different account.',
+                        'warning',
+                        t.facebookAccountExistsDesc || 'Please sign in using your original provider (Google or Email).'
+                    );
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    showMessage(t.popupCancelled, 'info');
+                } else {
+                    showFirebaseError(error);
+                }
+
+                button.disabled = false;
+                button.innerHTML = originalHTML;
+            }
+        };
+
+        /* =========================
+           EMAIL LOGIN
+        ========================== */
+        window.loginEmail = async function(event) {
+            event.preventDefault();
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            const email = document.getElementById("emailInput").value.trim();
+            const password = document.getElementById("passwordInput").value;
+
+            try {
+                setLoginLoading(true);
+                const result = await signInWithEmailAndPassword(auth, email, password);
+                const user = result.user;
+                currentUser = user;
+
+                if (!user.emailVerified) {
+                    await sendEmailVerification(user);
+                    showMessage(t.verifyEmail, "info");
+                    showVerificationModal(user);
+                    setLoginLoading(false);
+                    return;
+                }
+
+                await saveUserProfile(user, {
+                    username: "",
+                    phone: "",
+                    authProvider: "password"
+                });
+
+                showMessage(t.loginSuccess, "success");
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 500);
+            } catch (error) {
+                console.error("[NOLX] Email login:", error);
+                showFirebaseError(error);
+                setLoginLoading(false);
+            }
+        };
+
+        /* =========================
+           CREATE ACCOUNT
+        ========================== */
+        window.createAccount = async function(event) {
+            event.preventDefault();
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            const username = document.getElementById("usernameInput").value.trim();
+            const phone = document.getElementById("phoneInput").value.trim();
+            const email = document.getElementById("signupEmail").value.trim();
+            const password = document.getElementById("signupPassword").value;
+
+            if (username.length < 2) {
+                showMessage(t.usernameError, "error");
+                return;
+            }
+            if (phone.length < 5) {
+                showMessage(t.phoneError, "error");
+                return;
+            }
+
+            try {
+                setSignupLoading(true);
+                const result = await createUserWithEmailAndPassword(auth, email, password);
+                const user = result.user;
+                currentUser = user;
+
+                await saveUserProfile(user, {
+                    username: username,
+                    phone: phone,
+                    authProvider: "password"
+                });
+
+                await sendEmailVerification(user);
+
+                document.getElementById("loginView").style.display = "none";
+                document.getElementById("signupView").style.display = "none";
+                clearMessage();
+                showVerificationModal(user);
+                setSignupLoading(false);
+            } catch (error) {
+                console.error("[NOLX] Signup:", error);
+                showFirebaseError(error);
+                setSignupLoading(false);
+            }
+        };
+
+        /* =========================
+           SAVE USER PROFILE
+        ========================== */
+        async function saveUserProfile(user, extra) {
+            const userRef = doc(db, "users", user.uid);
+            await setDoc(userRef, {
+                uid: user.uid,
+                email: user.email || "",
+                username: extra.username || "",
+                phone: extra.phone || "",
+                authProvider: extra.authProvider || "",
+                photoURL: user.photoURL || "",
+                emailVerified: user.emailVerified || false,
+                createdAt: serverTimestamp(),
+                lastLoginAt: serverTimestamp()
+            }, { merge: true });
+        }
+
+        /* =========================
+           VERIFICATION MODAL
+        ========================== */
+        function showVerificationModal(user) {
+            const modal = document.getElementById("verificationModal");
+            if (!modal || !user) return;
+            document.getElementById("verificationEmail").textContent = user.email || "";
+            document.getElementById("verificationStatus").textContent =
+                translations[document.documentElement.lang].waitingVerification;
+            modal.classList.add("show");
+        }
+
+        function hideVerificationModal() {
+            const modal = document.getElementById("verificationModal");
+            if (modal) modal.classList.remove("show");
+            stopVerificationChecker();
+        }
+
+        /* =========================
+           VERIFICATION CHECKER
+        ========================== */
+        function startVerificationChecker() {
+            stopVerificationChecker();
+            verificationCheckInterval = setInterval(checkEmailVerification, 3000);
+        }
+
+        function stopVerificationChecker() {
+            if (verificationCheckInterval) {
+                clearInterval(verificationCheckInterval);
+                verificationCheckInterval = null;
+            }
+        }
+
+        async function checkEmailVerification() {
+            if (!currentUser) {
+                stopVerificationChecker();
+                return;
+            }
+            try {
+                await currentUser.reload();
+                const user = auth.currentUser;
+                if (!user) {
+                    stopVerificationChecker();
+                    return;
+                }
+                currentUser = user;
+                if (user.emailVerified) {
+                    stopVerificationChecker();
+                    const lang = document.documentElement.lang;
+                    const t = translations[lang];
+                    document.getElementById("verificationStatus").textContent = t.verified;
+                    await saveUserProfile(user, {
+                        username: "",
+                        phone: "",
+                        authProvider: "password"
+                    });
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 700);
+                }
+            } catch (error) {
+                console.error("[NOLX] Verification check:", error);
+            }
+        }
+
+        /* =========================
+           RESEND VERIFICATION
+        ========================== */
+        window.resendVerificationEmail = async function() {
+            if (!currentUser || verificationSending) return;
+            const button = document.getElementById("resendVerificationButton");
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            verificationSending = true;
+            if (button) {
+                button.disabled = true;
+                button.textContent = t.sending;
+            }
+            try {
+                await sendEmailVerification(currentUser);
+                if (button) {
+                    button.textContent = t.emailSent;
+                }
+                setTimeout(() => {
+                    if (button) {
+                        button.disabled = false;
+                        button.textContent = t.resend;
+                    }
+                    verificationSending = false;
+                }, 4000);
+            } catch (error) {
+                console.error("[NOLX] Resend verification:", error);
+                verificationSending = false;
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = t.resend;
+                }
+                showFirebaseError(error);
+            }
+        };
+
+        /* =========================
+           LOGOUT FROM VERIFICATION
+        ========================== */
+        window.logoutFromVerification = async function() {
+            stopVerificationChecker();
+            await signOut(auth);
+            currentUser = null;
+            hideVerificationModal();
+            document.getElementById("signupView").style.display = "none";
+            document.getElementById("loginView").style.display = "block";
+            translate(document.documentElement.lang);
+        };
+
+        /* =========================
+           RESET PASSWORD
+        ========================== */
+        window.openResetModal = function() {
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+
+            if (currentUser) {
+                const providers = currentUser.providerData.map(p => p.providerId);
+                if (providers.includes("google.com") || providers.includes("facebook.com")) {
+                    showMessage(
+                        "This account uses social login. You don't need a password.",
+                        "info"
+                    );
+                    return;
+                }
+            }
+
+            document.getElementById("resetModal").classList.add("show");
+            document.getElementById("resetEmail").focus();
+            clearResetMessage();
+        };
+
+        window.closeResetModal = function() {
+            document.getElementById("resetModal").classList.remove("show");
+        };
+
+        window.closeResetOutside = function(event) {
+            if (event.target.id === "resetModal") {
+                closeResetModal();
+            }
+        };
+
+        window.sendResetEmail = async function(event) {
+            event.preventDefault();
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+
+            if (currentUser) {
+                const providers = currentUser.providerData.map(p => p.providerId);
+                if (providers.includes("google.com") || providers.includes("facebook.com")) {
+                    showResetMessage(
+                        "Social login accounts don't need password reset.",
+                        "warning"
+                    );
+                    return;
+                }
+            }
+
+            const email = document.getElementById("resetEmail").value.trim();
+            if (!email) {
+                showResetMessage(t.enterEmail, "error");
+                return;
+            }
+
+            const button = document.getElementById("resetButton");
+            button.disabled = true;
+            button.textContent = t.sending;
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showResetMessage(t.resetSent, "success");
+            } catch (error) {
+                console.error("[NOLX] Reset:", error);
+                if (error.code === "auth/user-not-found") {
+                    showResetMessage(t.emailNotFound, "error");
+                } else {
+                    showFirebaseError(error, true);
+                }
+            } finally {
+                button.disabled = false;
+                button.textContent = t.sendResetLink;
+            }
+        };
+
+        /* =========================
+           SHOW SIGNUP / LOGIN
+        ========================== */
+        window.showSignup = function() {
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            if (currentUser) {
+                if (!currentUser.emailVerified) {
+                    showVerificationModal(currentUser);
+                    return;
+                }
+                showMessage(t.alreadyLoggedIn, "info");
+                return;
+            }
+            document.getElementById("loginView").style.display = "none";
+            document.getElementById("signupView").style.display = "block";
+            translate(lang);
+            clearMessage();
+        };
+
+        window.showLogin = function() {
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            if (currentUser) {
+                if (!currentUser.emailVerified) {
+                    showVerificationModal(currentUser);
+                    return;
+                }
+                showMessage(t.alreadyLoggedIn, "info");
+                return;
+            }
+            document.getElementById("signupView").style.display = "none";
+            document.getElementById("loginView").style.display = "block";
+            translate(lang);
+            clearMessage();
+        };
+
+        /* =========================
+           LOADING STATES
+        ========================== */
+        function setLoginLoading(loading) {
+            const button = document.getElementById("loginButton");
+            const text = document.getElementById("loginButtonText");
+            if (!button) return;
+            button.disabled = loading;
+            if (loading) {
+                text.textContent = document.documentElement.lang === "ar" ? "جاري تسجيل الدخول..." : "Signing in...";
+            } else {
+                text.textContent = translations[document.documentElement.lang].signIn;
+            }
+        }
+
+        function setSignupLoading(loading) {
+            const button = document.getElementById("signupButtonSubmit");
+            if (!button) return;
+            button.disabled = loading;
+            if (loading) {
+                button.textContent = document.documentElement.lang === "ar" ? "جاري إنشاء الحساب..." : "Creating Account...";
+            } else {
+                button.textContent = translations[document.documentElement.lang].createAccountBtn;
+            }
+        }
+
+        /* =========================
+           MESSAGE HELPERS
+        ========================== */
+        function showMessage(text, type, subText = "") {
+            const box = document.getElementById("message");
+            let icon = "fa-circle-info";
+            if (type === "error") icon = "fa-circle-exclamation";
+            else if (type === "success") icon = "fa-circle-check";
+            else if (type === "warning") icon = "fa-triangle-exclamation";
+
+            box.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <div class="msg-content">
+                    ${text}
+                    ${subText ? `<small>${subText}</small>` : ""}
+                </div>
+            `;
+            box.className = `message show ${type}`;
+        }
+
+        function clearMessage() {
+            const box = document.getElementById("message");
+            box.innerHTML = "";
+            box.className = "message";
+        }
+
+        function showResetMessage(text, type, subText = "") {
+            const box = document.getElementById("resetMessage");
+            let icon = "fa-circle-info";
+            if (type === "error") icon = "fa-circle-exclamation";
+            else if (type === "success") icon = "fa-circle-check";
+            else if (type === "warning") icon = "fa-triangle-exclamation";
+
+            box.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <div class="msg-content">
+                    ${text}
+                    ${subText ? `<small>${subText}</small>` : ""}
+                </div>
+            `;
+            box.className = `message show ${type}`;
+        }
+
+        function clearResetMessage() {
+            const box = document.getElementById("resetMessage");
+            box.innerHTML = "";
+            box.className = "message";
+        }
+
+        /* =========================
+           FIREBASE ERROR HANDLER
+        ========================== */
+        function showFirebaseError(error, reset = false) {
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            console.error("[NOLX] Firebase Error:", error.code, error.message);
+
+            let message = t.defaultError;
+            let subText = "";
+            let type = "error";
+
+            switch (error.code) {
+                case "auth/invalid-credential":
+                    message = t.incorrectCredentials;
+                    subText = "Double-check your email and password and try again.";
+                    break;
+
+                case "auth/user-not-found":
+                    message = reset ? t.emailNotFound : t.noAccountError;
+                    subText = reset ? "Make sure you're using the correct email address." :
+                        "Try creating a new account or use a different email.";
+                    break;
+
+                case "auth/wrong-password":
+                    message = t.wrongPassword;
+                    subText = "Forgot your password? Click 'Forgot password?' to reset it.";
+                    break;
+
+                case "auth/email-already-in-use":
+                    message = t.emailInUse;
+                    subText = "Try logging in instead, or use a different email address.";
+                    break;
+
+                case "auth/weak-password":
+                    message = t.weakPassword;
+                    subText = "Choose a stronger password with at least 6 characters.";
+                    break;
+
+                case "auth/invalid-email":
+                    message = t.invalidEmail;
+                    subText = "Make sure your email address is formatted correctly (e.g., name@example.com).";
+                    break;
+
+                case "auth/operation-not-allowed":
+                    message = t.operationNotAllowed;
+                    subText = "Please contact support for assistance.";
+                    break;
+
+                case "auth/unauthorized-domain":
+                    message = t.unauthorizedDomain;
+                    subText = "This domain is not whitelisted. Contact your administrator.";
+                    break;
+
+                case "auth/popup-blocked":
+                    message = t.popupBlocked;
+                    subText = "The browser blocked the popup. Click the button again to continue.";
+                    type = "warning";
+                    break;
+
+                case "auth/popup-closed-by-user":
+                    message = t.popupCancelled;
+                    subText = "You closed the sign-in window. Please try again when you're ready.";
+                    break;
+
+                case "auth/account-exists-with-different-credential":
+                    message = t.accountExists;
+                    subText = "Try signing in with Google or another method.";
+                    type = "warning";
+                    break;
+
+                case "auth/network-request-failed":
+                    message = t.networkError;
+                    subText = "Check your internet connection and try again.";
+                    break;
+
+                case "auth/too-many-requests":
+                    message = t.tooManyRequests;
+                    subText = "Wait a few minutes before trying again.";
+                    break;
+
+                case "auth/user-disabled":
+                    message = t.userDisabled;
+                    subText = t.userDisabledDesc;
+                    type = "warning";
+                    break;
+
+                default:
+                    message = error.message || t.defaultError;
+                    subText = "If the problem persists, please contact support.";
+            }
+
+            if (reset) {
+                showResetMessage(message, type, subText);
+            } else {
+                showMessage(message, type, subText);
+            }
+        }
+
+        /* =========================
+           LANGUAGE TOGGLE
+        ========================== */
+        window.toggleLanguage = function() {
+            const html = document.documentElement;
+            const arabic = html.lang !== "ar";
+            html.lang = arabic ? "ar" : "en";
+            html.dir = arabic ? "rtl" : "ltr";
+            translate(html.lang);
+            localStorage.setItem("preferredLang", html.lang);
+        };
+
+        /* =========================
+           YEAR
+        ========================== */
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+
+        /* =========================
+           RESTORE LANGUAGE
+        ========================== */
+        const savedLang = localStorage.getItem("preferredLang") || "en";
+        document.documentElement.lang = savedLang;
+        document.documentElement.dir = savedLang === "ar" ? "rtl" : "ltr";
+        translate(savedLang);
+
+        /* =========================
+           AUTO SHOW SIGNUP (URL param)
+        ========================== */
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('mode') === 'signup') {
+            setTimeout(() => {
+                window.showSignup();
+            }, 400);
+        }
+
+        console.log("[NOLX] Authentication page initialized successfully.");
+    </script>
+
+</body>
+
+</html>

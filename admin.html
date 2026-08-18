@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOLX | لوحة تحكم الدعم</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nolxGreen: "#005840",
+                        nolxDark: "#003d2d",
+                        nolxLime: "#D1F843",
+                        nolxBg: "#e9efed"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Cairo", sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+        }
+
+        .admin-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 320px;
+            min-width: 320px;
+            background: #111;
+            border-left: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #1a1a1a;
+            font-weight: 900;
+            color: #D1F843;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-header span {
+            font-size: 14px;
+        }
+        .sidebar-header .badge {
+            font-size: 10px;
+            background: #005840;
+            color: #D1F843;
+            padding: 2px 10px;
+            border-radius: 99px;
+        }
+
+        .sidebar-section {
+            padding: 8px 16px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .chat-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-list::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 99px;
+        }
+
+        .chat-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #151515;
+            transition: 0.2s;
+        }
+        .chat-item:hover {
+            background: #1a1a1a;
+        }
+        .chat-item.active {
+            background: #1a2a24;
+            border-right: 3px solid #005840;
+        }
+        .chat-item .name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .chat-item .last-msg {
+            font-size: 11px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        .chat-item .time {
+            font-size: 9px;
+            color: #444;
+        }
+        .chat-item .status-badge {
+            font-size: 8px;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 700;
+        }
+        .status-badge.pending {
+            background: #f59e0b;
+            color: #000;
+        }
+        .status-badge.active {
+            background: #22c55e;
+            color: #000;
+        }
+        .status-badge.closed {
+            background: #6b7280;
+            color: #fff;
+        }
+
+        /* ===== MAIN CHAT ===== */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0f0f0f;
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header .title {
+            font-weight: 900;
+            font-size: 16px;
+            color: #D1F843;
+        }
+        .chat-header .sub {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .chat-actions button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: "Cairo", sans-serif;
+        }
+        .btn-close {
+            background: #dc2626;
+            color: #fff;
+        }
+        .btn-close:hover {
+            background: #b91c1c;
+        }
+        .btn-ticket {
+            background: #f59e0b;
+            color: #000;
+        }
+        .btn-ticket:hover {
+            background: #d97706;
+        }
+        .btn-delete {
+            background: #6b7280;
+            color: #fff;
+        }
+        .btn-delete:hover {
+            background: #4b5563;
+        }
+
+        /* ===== MESSAGES AREA ===== */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+        .messages-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .messages-area::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 99px;
+        }
+
+        .msg-user {
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
+            border-radius: 18px 18px 0 18px;
+            padding: 10px 16px;
+            max-width: 75%;
+            word-wrap: break-word;
+        }
+        .msg-admin {
+            background: #1a1a1a;
+            color: #e5e5e5;
+            border-radius: 18px 18px 18px 0;
+            padding: 10px 16px;
+            max-width: 75%;
+            word-wrap: break-word;
+            border: 1px solid #2a2a2a;
+        }
+        .msg-system {
+            background: rgba(209, 249, 67, 0.08);
+            color: #D1F843;
+            border-radius: 99px;
+            padding: 4px 16px;
+            font-size: 11px;
+            text-align: center;
+            margin: 4px auto;
+            border: 1px dashed rgba(209, 249, 67, 0.15);
+        }
+        .msg-time {
+            font-size: 9px;
+            opacity: 0.4;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ===== ADMIN JOIN CARD ===== */
+        .admin-join-card {
+            background: linear-gradient(135deg, rgba(0, 88, 64, 0.06), rgba(209, 249, 67, 0.06));
+            border: 2px solid rgba(0, 88, 64, 0.12);
+            border-radius: 18px;
+            padding: 14px 20px;
+            max-width: 85%;
+            margin: 8px auto;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            animation: adminJoinAnim 0.6s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-join-card .admin-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #005840, #003d2d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D1F843;
+            font-size: 20px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 88, 64, 0.15);
+        }
+
+        .admin-join-card .admin-info {
+            text-align: right;
+        }
+        .admin-join-card .admin-info .name {
+            font-weight: 900;
+            color: #D1F843;
+            font-size: 14px;
+        }
+        .admin-join-card .admin-info .status {
+            font-size: 11px;
+            color: rgba(209, 249, 67, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .admin-join-card .admin-info .status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes adminJoinAnim {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+        }
+
+        .message-badge {
+            display: inline-block;
+            background: rgba(209, 249, 67, 0.06);
+            border: 1px solid rgba(209, 249, 67, 0.06);
+            border-radius: 99px;
+            padding: 2px 12px;
+            font-size: 9px;
+            color: rgba(209, 249, 67, 0.3);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* ===== QUICK REPLIES ===== */
+        .quick-replies {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 8px 16px;
+            border-top: 1px solid #1a1a1a;
+        }
+        .quick-reply-btn {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 99px;
+            padding: 4px 14px;
+            font-size: 10px;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 700;
+            font-family: "Cairo", sans-serif;
+        }
+        .quick-reply-btn:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        /* ===== INPUT AREA ===== */
+        .input-area {
+            padding: 12px 16px 16px;
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .input-area input[type="text"] {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 18px;
+            padding: 10px 18px;
+            color: #e5e5e5;
+            font-family: "Cairo", sans-serif;
+            outline: none;
+            font-size: 13px;
+        }
+        .input-area input[type="text"]:focus {
+            border-color: #005840;
+        }
+        .input-area input[type="text"]::placeholder {
+            color: #444;
+        }
+
+        .input-area button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: "Cairo", sans-serif;
+            font-size: 13px;
+        }
+        .btn-send {
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
+        }
+        .btn-send:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(0, 88, 64, 0.2);
+        }
+        .btn-send:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            color: #333;
+            margin-top: 40%;
+        }
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .empty-state h3 {
+            font-weight: 900;
+            color: #444;
+            font-size: 18px;
+        }
+        .empty-state p {
+            font-size: 13px;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            padding: 10px 20px;
+            background: #0a0a0a;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 11px;
+        }
+        .stats-bar .stat-item {
+            color: #666;
+        }
+        .stats-bar .stat-item strong {
+            color: #D1F843;
+            font-weight: 900;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px) {
+            .sidebar {
+                width: 240px;
+                min-width: 240px;
+            }
+            .chat-header .title {
+                font-size: 13px;
+            }
+            .quick-reply-btn {
+                font-size: 9px;
+                padding: 3px 10px;
+            }
+        }
+        @media(max-width: 640px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                height: 45vh;
+                border-left: none;
+                border-bottom: 1px solid #1a1a1a;
+            }
+            .main-chat {
+                height: 55vh;
+            }
+            .chat-header {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .messages-area {
+                padding: 12px 16px;
+            }
+            .input-area {
+                padding: 8px 12px 12px;
+                flex-wrap: wrap;
+            }
+            .input-area input[type="text"] {
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+            .input-area button {
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+            .admin-join-card {
+                padding: 10px 14px;
+                gap: 10px;
+            }
+            .admin-join-card .admin-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+            .admin-join-card .admin-info .name {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+
+        <!-- ===== SIDEBAR ===== -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span><i class="fas fa-headset ml-2"></i>فريق الدعم</span>
+                <span class="badge" id="adminStatusBadge">🟢 متصل</span>
+            </div>
+
+            <div class="stats-bar">
+                <span class="stat-item">⏳ انتظار: <strong id="pendingCount">0</strong></span>
+                <span class="stat-item">🟢 نشط: <strong id="activeCount">0</strong></span>
+                <span class="stat-item">📦 مغلق: <strong id="closedCount">0</strong></span>
+            </div>
+
+            <div class="sidebar-section">⏳ قيد الانتظار</div>
+            <div id="pending-list" class="chat-list"></div>
+
+            <div class="sidebar-section" style="border-top:1px solid #151515;">🟢 محادثات نشطة</div>
+            <div id="active-list" class="chat-list"></div>
+
+            <div class="sidebar-section" style="border-top:1px solid #151515;">📦 أرشيف مغلقة</div>
+            <div id="closed-list" class="chat-list" style="max-height:200px;"></div>
+        </div>
+
+        <!-- ===== MAIN CHAT ===== -->
+        <div class="main-chat">
+
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div>
+                    <div class="title" id="chatTitle">اختر محادثة</div>
+                    <div class="sub" id="chatSub">للبدء في الرد على المستخدم</div>
+                </div>
+                <div class="chat-actions" id="chatActions" style="display:none;">
+                    <button class="btn-ticket" onclick="convertToTicket()" title="تحويل لتذكرة">
+                        <i class="fas fa-ticket-alt"></i> تذكرة
+                    </button>
+                    <button class="btn-close" onclick="closeChat()" title="إنهاء المحادثة">
+                        <i class="fas fa-check"></i> إنهاء
+                    </button>
+                    <button class="btn-delete" onclick="deleteChat()" title="حذف المحادثة">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div id="messages-area" class="messages-area">
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <h3>لا توجد محادثة مفتوحة</h3>
+                    <p>اختر محادثة من القائمة الجانبية</p>
+                </div>
+            </div>
+
+            <!-- Quick Replies -->
+            <div class="quick-replies" id="quickReplies" style="display:none;">
+                <button class="quick-reply-btn" onclick="sendQuickReply('شكراً لتواصلك معنا، سيتم الرد قريباً')">شكراً لتواصلك</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('جاري المراجعة والبحث في المشكلة')">جاري المراجعة</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('تم حل المشكلة، يرجى التأكيد')">تم الحل ✓</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('سنقوم بتحويلك لقسم آخر')">تحويل لقسم آخر</button>
+                <button class="quick-reply-btn" onclick="sendQuickReply('نعتذر عن التأخير')">نعتذر عن التأخير</button>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area" id="chatInput" style="display:none;">
+                <input type="text" id="adminInput" placeholder="اكتب ردك للمستخدم..." onkeydown="if(event.key==='Enter') sendAdminMessage()">
+                <button class="btn-send" onclick="sendAdminMessage()">
+                    <i class="fas fa-paper-plane ml-1"></i> إرسال
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // FIREBASE CONFIG
+        // =====================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+            authDomain: "nolxpages.firebaseapp.com",
+            projectId: "nolxpages",
+            storageBucket: "nolxpages.firebasestorage.app",
+            messagingSenderId: "672585065953",
+            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+            measurementId: "G-ENEG3Q96W9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let currentUser = null;
+        let unsubscribeMessages = null;
+        let currentChatId = null;
+
+        // =====================================================
+        // SET ADMIN ONLINE
+        // =====================================================
+        db.collection("adminStatus").doc("online").set({
+            online: true,
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // =====================================================
+        // LOAD CHATS
+        // =====================================================
+        db.collection("chats")
+            .orderBy("updatedAt", "desc")
+            .onSnapshot((snapshot) => {
+                const pendingList = document.getElementById('pending-list');
+                const activeList = document.getElementById('active-list');
+                const closedList = document.getElementById('closed-list');
+                pendingList.innerHTML = '';
+                activeList.innerHTML = '';
+                closedList.innerHTML = '';
+
+                let pendingCount = 0,
+                    activeCount = 0,
+                    closedCount = 0;
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const userId = doc.id;
+                    const status = data.status || 'pending';
+
+                    const item = document.createElement('div');
+                    item.className = `chat-item ${currentChatId === userId ? 'active' : ''}`;
+                    item.setAttribute('data-user', userId);
+                    item.onclick = () => openChat(userId);
+
+                    const statusBadge = status === 'pending' ? 'pending' : status === 'active' ? 'active' :
+                    'closed';
+                    const statusLabel = status === 'pending' ? '⏳ انتظار' : status === 'active' ? '🟢 نشط' :
+                        '📦 مغلق';
+
+                    const lastMsg = data.lastMessage || 'لا توجد رسائل';
+                    const time = data.updatedAt?.toDate?.() || new Date();
+                    const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+                    let displayName = `مستخدم ${userId.substring(0, 6)}...`;
+                    if (data.userName) displayName = data.userName;
+
+                    item.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="name">${displayName}</div>
+                                <div class="last-msg">${lastMsg}</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="time">${timeStr}</div>
+                                <div><span class="status-badge ${statusBadge}">${statusLabel}</span></div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (status === 'pending') {
+                        pendingList.appendChild(item);
+                        pendingCount++;
+                    } else if (status === 'active') {
+                        activeList.appendChild(item);
+                        activeCount++;
+                    } else {
+                        closedList.appendChild(item);
+                        closedCount++;
+                    }
+                });
+
+                document.getElementById('pendingCount').textContent = pendingCount;
+                document.getElementById('activeCount').textContent = activeCount;
+                document.getElementById('closedCount').textContent = closedCount;
+            });
+
+        // =====================================================
+        // OPEN CHAT
+        // =====================================================
+        function openChat(userId) {
+            currentChatId = userId;
+
+            // تحديث الـ UI
+            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.chat-item[data-user="${userId}"]`)?.classList.add('active');
+
+            document.getElementById('chatTitle').textContent = `🟢 محادثة مع المستخدم`;
+            document.getElementById('chatSub').textContent = `ID: ${userId.substring(0, 12)}...`;
+            document.getElementById('chatActions').style.display = 'flex';
+            document.getElementById('quickReplies').style.display = 'flex';
+            document.getElementById('chatInput').style.display = 'flex';
+
+            // ===== التحقق من حالة المحادثة =====
+            db.collection("chats").doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const status = data.status || 'pending';
+
+                    // ===== فقط لو المحادثة pending (جديدة) =====
+                    if (status === 'pending') {
+                        // تحديث الحالة إلى active
+                        db.collection("chats").doc(userId).set({
+                            status: 'active',
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
+
+                        // ===== إرسال رسالة انضمام فريق الدعم =====
+                        db.collection("chats").doc(userId).collection("messages").add({
+                            text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
+                            sender: 'system',
+                            type: 'admin_join',
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                    // لو active أو closed، منرسلش رسالة الانضمام
+                }
+            });
+
+            // إلغاء الاستماع القديم
+            if (unsubscribeMessages) unsubscribeMessages();
+
+            // تحميل الرسائل
+            unsubscribeMessages = db.collection("chats").doc(userId).collection("messages")
+                .orderBy('timestamp', 'asc')
+                .onSnapshot((snapshot) => {
+                    const container = document.getElementById('messages-area');
+                    container.innerHTML = '';
+
+                    if (snapshot.empty) {
+                        container.innerHTML =
+                            `<div class="empty-state"><i class="fas fa-comment"></i><h3>لا توجد رسائل</h3></div>`;
+                        return;
+                    }
+
+                    snapshot.forEach((doc) => {
+                        const msg = doc.data();
+                        const isUser = msg.sender === 'user';
+                        const isAdmin = msg.sender === 'admin';
+                        const isSystem = msg.sender === 'system';
+                        const isAdminJoin = msg.type === 'admin_join';
+
+                        const div = document.createElement('div');
+
+                        // ===== رسالة انضمام الدعم (كارت) =====
+                        if (isAdminJoin) {
+                            div.className = 'flex justify-center my-2';
+                            div.innerHTML = `
+                                <div class="admin-join-card">
+                                    <div class="admin-icon">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <div class="admin-info">
+                                        <div class="name">🟢 فريق الدعم</div>
+                                        <div class="status">
+                                            <span class="dot"></span>
+                                            انضم إلى المحادثة
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            container.appendChild(div);
+                            return;
+                        }
+
+                        if (isSystem) {
+                            div.className = 'flex justify-center my-1';
+                            div.innerHTML = `<div class="msg-system">${msg.text}</div>`;
+                        } else {
+                            div.className = `flex ${isUser ? 'justify-end' : 'justify-start'} mb-2`;
+                            const bubble = document.createElement('div');
+                            bubble.className = isUser ? 'msg-user' : 'msg-admin';
+
+                            let badgeHtml = '';
+                            if (isAdmin) {
+                                badgeHtml =
+                                    `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
+                            }
+
+                            const time = msg.timestamp?.toDate?.() || new Date();
+                            const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+                            bubble.innerHTML = `
+                                ${badgeHtml}
+                                ${msg.text}
+                                <span class="msg-time">${timeStr}</span>
+                            `;
+                            div.appendChild(bubble);
+                        }
+
+                        container.appendChild(div);
+                    });
+
+                    container.scrollTop = container.scrollHeight;
+                });
+
+            document.getElementById('adminInput').focus();
+        }
+
+        // =====================================================
+        // SEND ADMIN MESSAGE
+        // =====================================================
+        async function sendAdminMessage() {
+            const input = document.getElementById('adminInput');
+            const text = input.value.trim();
+            if (!text || !currentChatId) return;
+
+            try {
+                await db.collection("chats").doc(currentChatId).collection("messages").add({
+                    text: text,
+                    sender: 'admin',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await db.collection("chats").doc(currentChatId).set({
+                    lastMessage: text,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                input.value = '';
+                input.focus();
+            } catch (error) {
+                console.error("[ADMIN] Send error:", error);
+                alert('حدث خطأ أثناء الإرسال');
+            }
+        }
+
+        // =====================================================
+        // SEND QUICK REPLY
+        // =====================================================
+        function sendQuickReply(text) {
+            document.getElementById('adminInput').value = text;
+            sendAdminMessage();
+        }
+
+        // =====================================================
+        // CLOSE CHAT
+        // =====================================================
+        async function closeChat() {
+            if (!currentChatId) return;
+            if (!confirm('هل تريد إنهاء هذه المحادثة؟')) return;
+
+            try {
+                await db.collection("chats").doc(currentChatId).collection("messages").add({
+                    text: '🔴 تم إنهاء المحادثة بواسطة فريق الدعم',
+                    sender: 'system',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await db.collection("chats").doc(currentChatId).set({
+                    status: 'closed',
+                    closedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                resetChatView();
+                alert('✅ تم إنهاء المحادثة بنجاح');
+            } catch (error) {
+                console.error("[ADMIN] Close error:", error);
+                alert('حدث خطأ أثناء إنهاء المحادثة');
+            }
+        }
+
+        // =====================================================
+        // DELETE CHAT
+        // =====================================================
+        async function deleteChat() {
+            if (!currentChatId) return;
+            if (!confirm('⚠️ هل تريد حذف هذه المحادثة نهائياً؟ لا يمكن التراجع!')) return;
+
+            try {
+                const messages = await db.collection("chats").doc(currentChatId).collection("messages").get();
+                const batch = db.batch();
+                messages.forEach((doc) => batch.delete(doc.ref));
+                await batch.commit();
+
+                await db.collection("chats").doc(currentChatId).delete();
+
+                resetChatView();
+                alert('🗑️ تم حذف المحادثة نهائياً');
+            } catch (error) {
+                console.error("[ADMIN] Delete error:", error);
+                alert('حدث خطأ أثناء الحذف');
+            }
+        }
+
+        // =====================================================
+        // CONVERT TO TICKET
+        // =====================================================
+        async function convertToTicket() {
+            if (!currentChatId) return;
+            if (!confirm('هل تريد تحويل هذه المحادثة إلى تذكرة دعم؟')) return;
+
+            try {
+                const messages = await db.collection("chats").doc(currentChatId).collection("messages")
+                    .orderBy('timestamp', 'asc').get();
+
+                let messagesText = '';
+                messages.forEach((doc) => {
+                    const msg = doc.data();
+                    const sender = msg.sender === 'user' ? 'المستخدم' : 'فريق الدعم';
+                    const text = msg.text || '';
+                    messagesText += `[${sender}] ${text}\n`;
+                });
+
+                await db.collection("tickets").add({
+                    chatId: currentChatId,
+                    messages: messagesText,
+                    status: 'open',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: currentChatId
+                });
+
+                await db.collection("chats").doc(currentChatId).set({
+                    ticketCreated: true,
+                    ticketDate: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                alert('✅ تم تحويل المحادثة إلى تذكرة بنجاح');
+            } catch (error) {
+                console.error("[ADMIN] Ticket error:", error);
+                alert('حدث خطأ أثناء التحويل للتذكرة');
+            }
+        }
+
+        // =====================================================
+        // RESET CHAT VIEW
+        // =====================================================
+        function resetChatView() {
+            if (unsubscribeMessages) unsubscribeMessages();
+            currentChatId = null;
+            document.getElementById('chatTitle').textContent = 'اختر محادثة';
+            document.getElementById('chatSub').textContent = 'للبدء في الرد على المستخدم';
+            document.getElementById('chatActions').style.display = 'none';
+            document.getElementById('quickReplies').style.display = 'none';
+            document.getElementById('chatInput').style.display = 'none';
+            document.getElementById('messages-area').innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <h3>لا توجد محادثة مفتوحة</h3>
+                    <p>اختر محادثة من القائمة الجانبية</p>
+                </div>
+            `;
+            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+        }
+
+        // =====================================================
+        // KEYBOARD SHORTCUTS
+        // =====================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey && document.activeElement?.id === 'adminInput') {
+                e.preventDefault();
+                sendAdminMessage();
+            }
+        });
+
+        console.log("[ADMIN] Dashboard initialized.");
+    </script>
+
+</body>
+</html>

@@ -140,46 +140,6 @@
             box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07), 0 10px 30px rgba(0, 88, 64, 0.05);
         }
 
-        .country-select-wrap {
-            position: relative;
-        }
-        .country-select-wrap select {
-            width: 100%;
-            height: 55px;
-            border-radius: 18px;
-            border: 1px solid rgba(0, 88, 64, 0.14);
-            background: rgba(255, 255, 255, 0.56);
-            color: #005840;
-            outline: none;
-            padding: 0 18px 0 48px;
-            font-family: inherit;
-            appearance: none;
-            transition: border 0.25s, background 0.25s, box-shadow 0.25s;
-            cursor: pointer;
-        }
-        .country-select-wrap select:focus {
-            background: rgba(255, 255, 255, 0.88);
-            border-color: rgba(0, 88, 64, 0.42);
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07), 0 10px 30px rgba(0, 88, 64, 0.05);
-        }
-        .country-select-wrap .fi {
-            position: absolute;
-            left: 17px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 22px;
-            z-index: 2;
-            pointer-events: none;
-            border-radius: 2px;
-        }
-        [dir="rtl"] .country-select-wrap .fi {
-            left: auto;
-            right: 17px;
-        }
-        [dir="rtl"] .country-select-wrap select {
-            padding: 0 48px 0 18px;
-        }
-
         .auth-tabs {
             display: flex;
             border-radius: 18px;
@@ -207,44 +167,6 @@
         }
         .auth-tab:hover:not(.active) {
             background: rgba(255, 255, 255, 0.6);
-        }
-
-        .method-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            padding: 4px;
-        }
-        .method-tab {
-            flex: 1;
-            padding: 10px 12px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 14px;
-            border: none;
-            background: transparent;
-            color: rgba(0, 88, 64, 0.5);
-            font-family: inherit;
-        }
-        .method-tab.active {
-            background: rgba(255, 255, 255, 0.8);
-            color: #005840;
-            box-shadow: 0 2px 10px rgba(0, 88, 64, 0.08);
-        }
-        .method-tab:hover:not(.active) {
-            color: #005840;
-        }
-        .method-tab i {
-            margin-right: 6px;
-        }
-        [dir="rtl"] .method-tab i {
-            margin-right: 0;
-            margin-left: 6px;
         }
 
         .primary-btn {
@@ -415,73 +337,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        /* ===== VERIFICATION CODE INPUT - مُحسَّن ===== */
-        .verification-code-input {
-            display: none;
-            gap: 10px;
-            margin-top: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .verification-code-input.show {
-            display: flex;
-        }
-        .verification-code-input .input-wrap {
-            flex: 1;
-            min-width: 150px;
-        }
-        .verification-code-input .input-wrap input {
-            width: 100%;
-            height: 55px;
-            border-radius: 18px;
-            border: 1px solid rgba(0, 88, 64, 0.14);
-            background: rgba(255, 255, 255, 0.56);
-            color: #005840;
-            outline: none;
-            padding: 0 18px 0 48px;
-            font-family: inherit;
-            font-size: 16px;
-            letter-spacing: 4px;
-            text-align: center;
-            transition: border 0.25s, background 0.25s, box-shadow 0.25s;
-        }
-        .verification-code-input .input-wrap input:focus {
-            background: rgba(255, 255, 255, 0.88);
-            border-color: rgba(0, 88, 64, 0.42);
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07), 0 10px 30px rgba(0, 88, 64, 0.05);
-        }
-        .verification-code-input .input-wrap .input-icon {
-            left: 17px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(0, 88, 64, 0.42);
-            pointer-events: none;
-            position: absolute;
-            z-index: 2;
-        }
-        .verification-code-input .primary-btn {
-            flex: 0 0 auto;
-            min-width: 100px;
-            min-height: 55px;
-            padding: 0 24px;
-            white-space: nowrap;
-        }
-        [dir="rtl"] .verification-code-input .input-wrap .input-icon {
-            left: auto;
-            right: 17px;
-        }
-        [dir="rtl"] .verification-code-input .input-wrap input {
-            padding: 0 48px 0 18px;
-        }
-
-        .phone-consent {
-            margin: -4px 2px 10px;
-            font-size: 10px;
-            line-height: 1.6;
-            color: rgba(0, 88, 64, 0.55);
-            text-align: center;
         }
 
         .modal {
@@ -694,37 +549,9 @@
             .message i {
                 font-size: 16px;
             }
-            .phone-consent {
-                font-size: 9px;
-            }
-            .verification-code-input {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .verification-code-input .input-wrap {
-                width: 100%;
-                min-width: unset;
-            }
-            .verification-code-input .primary-btn {
-                width: 100%;
-                min-width: unset;
-            }
-            .verification-code-input .input-wrap input {
-                height: 50px;
-                font-size: 18px;
-                letter-spacing: 6px;
-            }
             .auth-tab {
                 font-size: 11px;
                 padding: 10px 12px;
-            }
-            .method-tab {
-                font-size: 11px;
-                padding: 8px 10px;
-            }
-            .country-select-wrap select {
-                height: 50px;
-                font-size: 15px;
             }
         }
         @media(max-width: 400px) {
@@ -754,22 +581,6 @@
             [dir="rtl"] .input-icon {
                 left: auto;
                 right: 14px;
-            }
-            .country-select-wrap select {
-                height: 44px;
-                font-size: 14px;
-                padding: 0 14px 0 42px;
-            }
-            [dir="rtl"] .country-select-wrap select {
-                padding: 0 42px 0 14px;
-            }
-            .country-select-wrap .fi {
-                left: 12px;
-                font-size: 18px;
-            }
-            [dir="rtl"] .country-select-wrap .fi {
-                left: auto;
-                right: 12px;
             }
         }
     </style>
@@ -810,15 +621,6 @@
 
             <!-- ===== LOGIN ===== -->
             <div id="loginContainer" class="form-container active">
-
-                <div class="method-tabs">
-                    <button id="loginMethodEmail" class="method-tab active" onclick="switchLoginMethod('email')">
-                        <i class="fas fa-envelope"></i> Email
-                    </button>
-                    <button id="loginMethodPhone" class="method-tab" onclick="switchLoginMethod('phone')">
-                        <i class="fas fa-phone"></i> Phone
-                    </button>
-                </div>
 
                 <!-- LOGIN - EMAIL -->
                 <div id="loginEmailForm" class="form-container active">
@@ -863,50 +665,10 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- LOGIN - PHONE -->
-                <div id="loginPhoneForm" class="form-container">
-                    <form onsubmit="loginWithPhone(event)" class="space-y-4 sm:space-y-5">
-                        <div>
-                            <label class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Phone Number</label>
-                            <div class="country-select-wrap">
-                                <span class="fi fi-eg" id="loginPhoneFlag"></span>
-                                <select id="loginPhoneCountry" onchange="updateLoginPhoneFlag()"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="input-wrap">
-                                <input id="loginPhoneInput" class="input" type="tel" placeholder="10xxxxxxxx" required>
-                                <i class="input-icon fas fa-phone"></i>
-                            </div>
-                        </div>
-                        <p id="loginPhoneConsent" class="phone-consent">
-                            By continuing, you may receive an SMS verification message. Standard message rates may apply.
-                        </p>
-                        <div id="loginRecaptchaContainer"></div>
-                        <div id="loginVerificationContainer" class="verification-code-input">
-                            <div class="input-wrap">
-                                <input id="loginVerificationCode" type="text" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*">
-                                <i class="input-icon fas fa-key"></i>
-                            </div>
-                            <button type="button" onclick="verifyLoginPhoneCode()" class="primary-btn">Verify</button>
-                        </div>
-                        <button id="loginPhoneButton" type="submit" class="primary-btn text-sm sm:text-base">Send Verification Code</button>
-                    </form>
-                </div>
             </div>
 
             <!-- ===== SIGNUP ===== -->
             <div id="signupContainer" class="form-container">
-
-                <div class="method-tabs">
-                    <button id="signupMethodEmail" class="method-tab active" onclick="switchSignupMethod('email')">
-                        <i class="fas fa-envelope"></i> Email
-                    </button>
-                    <button id="signupMethodPhone" class="method-tab" onclick="switchSignupMethod('phone')">
-                        <i class="fas fa-phone"></i> Phone
-                    </button>
-                </div>
 
                 <!-- SIGNUP - EMAIL -->
                 <div id="signupEmailForm" class="form-container active">
@@ -959,37 +721,6 @@
                             <span>Sign up with Facebook</span>
                         </button>
                     </div>
-                </div>
-
-                <!-- SIGNUP - PHONE -->
-                <div id="signupPhoneForm" class="form-container">
-                    <form onsubmit="signupWithPhone(event)" class="space-y-4 sm:space-y-5">
-                        <div>
-                            <label class="block text-[11px] sm:text-xs font-black mb-1.5 sm:mb-2">Phone Number</label>
-                            <div class="country-select-wrap">
-                                <span class="fi fi-eg" id="signupPhoneFlag"></span>
-                                <select id="signupPhoneCountry" onchange="updateSignupPhoneFlag()"></select>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="input-wrap">
-                                <input id="signupPhoneInput" class="input" type="tel" placeholder="10xxxxxxxx" required>
-                                <i class="input-icon fas fa-phone"></i>
-                            </div>
-                        </div>
-                        <p id="signupPhoneConsent" class="phone-consent">
-                            By continuing, you may receive an SMS verification message. Standard message rates may apply.
-                        </p>
-                        <div id="signupRecaptchaContainer"></div>
-                        <div id="signupVerificationContainer" class="verification-code-input">
-                            <div class="input-wrap">
-                                <input id="signupVerificationCode" type="text" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*">
-                                <i class="input-icon fas fa-key"></i>
-                            </div>
-                            <button type="button" onclick="verifySignupPhoneCode()" class="primary-btn">Verify</button>
-                        </div>
-                        <button id="signupPhoneButton" type="submit" class="primary-btn text-sm sm:text-base">Send Verification Code</button>
-                    </form>
                 </div>
             </div>
 
@@ -1069,10 +800,7 @@
             FacebookAuthProvider,
             signInWithPopup,
             signInWithRedirect,
-            getRedirectResult,
-            RecaptchaVerifier,
-            initializeRecaptchaConfig,
-            signInWithPhoneNumber
+            getRedirectResult
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             getFirestore,
@@ -1096,216 +824,6 @@
         const db = getFirestore(app);
 
         await setPersistence(auth, browserLocalPersistence);
-
-        // Firebase Phone Auth requires a real authorized domain.
-        // localhost is intentionally blocked for production phone authentication.
-        const isLocalhost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
-        let recaptchaConfigReady = false;
-        async function ensureRecaptchaConfig() {
-            if (recaptchaConfigReady) return;
-            try {
-                await initializeRecaptchaConfig(auth);
-                recaptchaConfigReady = true;
-            } catch (error) {
-                console.warn('[NOLX] Could not preload reCAPTCHA config:', error);
-            }
-        }
-
-        // ========================= COUNTRY DATA =========================
-        const countries = [
-            { code: 'AF', dial: '+93', name: 'Afghanistan' },
-            { code: 'AL', dial: '+355', name: 'Albania' },
-            { code: 'DZ', dial: '+213', name: 'Algeria' },
-            { code: 'AD', dial: '+376', name: 'Andorra' },
-            { code: 'AO', dial: '+244', name: 'Angola' },
-            { code: 'AG', dial: '+1-268', name: 'Antigua and Barbuda' },
-            { code: 'AR', dial: '+54', name: 'Argentina' },
-            { code: 'AM', dial: '+374', name: 'Armenia' },
-            { code: 'AU', dial: '+61', name: 'Australia' },
-            { code: 'AT', dial: '+43', name: 'Austria' },
-            { code: 'AZ', dial: '+994', name: 'Azerbaijan' },
-            { code: 'BS', dial: '+1-242', name: 'Bahamas' },
-            { code: 'BH', dial: '+973', name: 'Bahrain' },
-            { code: 'BD', dial: '+880', name: 'Bangladesh' },
-            { code: 'BB', dial: '+1-246', name: 'Barbados' },
-            { code: 'BY', dial: '+375', name: 'Belarus' },
-            { code: 'BE', dial: '+32', name: 'Belgium' },
-            { code: 'BZ', dial: '+501', name: 'Belize' },
-            { code: 'BJ', dial: '+229', name: 'Benin' },
-            { code: 'BT', dial: '+975', name: 'Bhutan' },
-            { code: 'BO', dial: '+591', name: 'Bolivia' },
-            { code: 'BA', dial: '+387', name: 'Bosnia and Herzegovina' },
-            { code: 'BW', dial: '+267', name: 'Botswana' },
-            { code: 'BR', dial: '+55', name: 'Brazil' },
-            { code: 'BN', dial: '+673', name: 'Brunei' },
-            { code: 'BG', dial: '+359', name: 'Bulgaria' },
-            { code: 'BF', dial: '+226', name: 'Burkina Faso' },
-            { code: 'BI', dial: '+257', name: 'Burundi' },
-            { code: 'KH', dial: '+855', name: 'Cambodia' },
-            { code: 'CM', dial: '+237', name: 'Cameroon' },
-            { code: 'CA', dial: '+1', name: 'Canada' },
-            { code: 'CV', dial: '+238', name: 'Cape Verde' },
-            { code: 'CF', dial: '+236', name: 'Central African Republic' },
-            { code: 'TD', dial: '+235', name: 'Chad' },
-            { code: 'CL', dial: '+56', name: 'Chile' },
-            { code: 'CN', dial: '+86', name: 'China' },
-            { code: 'CO', dial: '+57', name: 'Colombia' },
-            { code: 'KM', dial: '+269', name: 'Comoros' },
-            { code: 'CD', dial: '+243', name: 'Congo (DRC)' },
-            { code: 'CG', dial: '+242', name: 'Congo (Republic)' },
-            { code: 'CR', dial: '+506', name: 'Costa Rica' },
-            { code: 'HR', dial: '+385', name: 'Croatia' },
-            { code: 'CU', dial: '+53', name: 'Cuba' },
-            { code: 'CY', dial: '+357', name: 'Cyprus' },
-            { code: 'CZ', dial: '+420', name: 'Czech Republic' },
-            { code: 'DK', dial: '+45', name: 'Denmark' },
-            { code: 'DJ', dial: '+253', name: 'Djibouti' },
-            { code: 'DM', dial: '+1-767', name: 'Dominica' },
-            { code: 'DO', dial: '+1-809', name: 'Dominican Republic' },
-            { code: 'EC', dial: '+593', name: 'Ecuador' },
-            { code: 'EG', dial: '+20', name: 'Egypt' },
-            { code: 'SV', dial: '+503', name: 'El Salvador' },
-            { code: 'GQ', dial: '+240', name: 'Equatorial Guinea' },
-            { code: 'ER', dial: '+291', name: 'Eritrea' },
-            { code: 'EE', dial: '+372', name: 'Estonia' },
-            { code: 'ET', dial: '+251', name: 'Ethiopia' },
-            { code: 'FJ', dial: '+679', name: 'Fiji' },
-            { code: 'FI', dial: '+358', name: 'Finland' },
-            { code: 'FR', dial: '+33', name: 'France' },
-            { code: 'GA', dial: '+241', name: 'Gabon' },
-            { code: 'GM', dial: '+220', name: 'Gambia' },
-            { code: 'GE', dial: '+995', name: 'Georgia' },
-            { code: 'DE', dial: '+49', name: 'Germany' },
-            { code: 'GH', dial: '+233', name: 'Ghana' },
-            { code: 'GR', dial: '+30', name: 'Greece' },
-            { code: 'GT', dial: '+502', name: 'Guatemala' },
-            { code: 'GN', dial: '+224', name: 'Guinea' },
-            { code: 'GW', dial: '+245', name: 'Guinea-Bissau' },
-            { code: 'GY', dial: '+592', name: 'Guyana' },
-            { code: 'HT', dial: '+509', name: 'Haiti' },
-            { code: 'HN', dial: '+504', name: 'Honduras' },
-            { code: 'HU', dial: '+36', name: 'Hungary' },
-            { code: 'IS', dial: '+354', name: 'Iceland' },
-            { code: 'IN', dial: '+91', name: 'India' },
-            { code: 'ID', dial: '+62', name: 'Indonesia' },
-            { code: 'IR', dial: '+98', name: 'Iran' },
-            { code: 'IQ', dial: '+964', name: 'Iraq' },
-            { code: 'IE', dial: '+353', name: 'Ireland' },
-            { code: 'IL', dial: '+972', name: 'Israel' },
-            { code: 'IT', dial: '+39', name: 'Italy' },
-            { code: 'JM', dial: '+1-876', name: 'Jamaica' },
-            { code: 'JP', dial: '+81', name: 'Japan' },
-            { code: 'JO', dial: '+962', name: 'Jordan' },
-            { code: 'KZ', dial: '+7', name: 'Kazakhstan' },
-            { code: 'KE', dial: '+254', name: 'Kenya' },
-            { code: 'KI', dial: '+686', name: 'Kiribati' },
-            { code: 'KP', dial: '+850', name: 'North Korea' },
-            { code: 'KR', dial: '+82', name: 'South Korea' },
-            { code: 'KW', dial: '+965', name: 'Kuwait' },
-            { code: 'KG', dial: '+996', name: 'Kyrgyzstan' },
-            { code: 'LA', dial: '+856', name: 'Laos' },
-            { code: 'LV', dial: '+371', name: 'Latvia' },
-            { code: 'LB', dial: '+961', name: 'Lebanon' },
-            { code: 'LS', dial: '+266', name: 'Lesotho' },
-            { code: 'LR', dial: '+231', name: 'Liberia' },
-            { code: 'LY', dial: '+218', name: 'Libya' },
-            { code: 'LI', dial: '+423', name: 'Liechtenstein' },
-            { code: 'LT', dial: '+370', name: 'Lithuania' },
-            { code: 'LU', dial: '+352', name: 'Luxembourg' },
-            { code: 'MG', dial: '+261', name: 'Madagascar' },
-            { code: 'MW', dial: '+265', name: 'Malawi' },
-            { code: 'MY', dial: '+60', name: 'Malaysia' },
-            { code: 'MV', dial: '+960', name: 'Maldives' },
-            { code: 'ML', dial: '+223', name: 'Mali' },
-            { code: 'MT', dial: '+356', name: 'Malta' },
-            { code: 'MH', dial: '+692', name: 'Marshall Islands' },
-            { code: 'MR', dial: '+222', name: 'Mauritania' },
-            { code: 'MU', dial: '+230', name: 'Mauritius' },
-            { code: 'MX', dial: '+52', name: 'Mexico' },
-            { code: 'FM', dial: '+691', name: 'Micronesia' },
-            { code: 'MD', dial: '+373', name: 'Moldova' },
-            { code: 'MC', dial: '+377', name: 'Monaco' },
-            { code: 'MN', dial: '+976', name: 'Mongolia' },
-            { code: 'ME', dial: '+382', name: 'Montenegro' },
-            { code: 'MA', dial: '+212', name: 'Morocco' },
-            { code: 'MZ', dial: '+258', name: 'Mozambique' },
-            { code: 'MM', dial: '+95', name: 'Myanmar' },
-            { code: 'NA', dial: '+264', name: 'Namibia' },
-            { code: 'NR', dial: '+674', name: 'Nauru' },
-            { code: 'NP', dial: '+977', name: 'Nepal' },
-            { code: 'NL', dial: '+31', name: 'Netherlands' },
-            { code: 'NZ', dial: '+64', name: 'New Zealand' },
-            { code: 'NI', dial: '+505', name: 'Nicaragua' },
-            { code: 'NE', dial: '+227', name: 'Niger' },
-            { code: 'NG', dial: '+234', name: 'Nigeria' },
-            { code: 'NO', dial: '+47', name: 'Norway' },
-            { code: 'OM', dial: '+968', name: 'Oman' },
-            { code: 'PK', dial: '+92', name: 'Pakistan' },
-            { code: 'PW', dial: '+680', name: 'Palau' },
-            { code: 'PA', dial: '+507', name: 'Panama' },
-            { code: 'PG', dial: '+675', name: 'Papua New Guinea' },
-            { code: 'PY', dial: '+595', name: 'Paraguay' },
-            { code: 'PE', dial: '+51', name: 'Peru' },
-            { code: 'PH', dial: '+63', name: 'Philippines' },
-            { code: 'PL', dial: '+48', name: 'Poland' },
-            { code: 'PT', dial: '+351', name: 'Portugal' },
-            { code: 'QA', dial: '+974', name: 'Qatar' },
-            { code: 'RO', dial: '+40', name: 'Romania' },
-            { code: 'RU', dial: '+7', name: 'Russia' },
-            { code: 'RW', dial: '+250', name: 'Rwanda' },
-            { code: 'KN', dial: '+1-869', name: 'Saint Kitts and Nevis' },
-            { code: 'LC', dial: '+1-758', name: 'Saint Lucia' },
-            { code: 'VC', dial: '+1-784', name: 'Saint Vincent and the Grenadines' },
-            { code: 'WS', dial: '+685', name: 'Samoa' },
-            { code: 'SM', dial: '+378', name: 'San Marino' },
-            { code: 'ST', dial: '+239', name: 'Sao Tome and Principe' },
-            { code: 'SA', dial: '+966', name: 'Saudi Arabia' },
-            { code: 'SN', dial: '+221', name: 'Senegal' },
-            { code: 'RS', dial: '+381', name: 'Serbia' },
-            { code: 'SC', dial: '+248', name: 'Seychelles' },
-            { code: 'SL', dial: '+232', name: 'Sierra Leone' },
-            { code: 'SG', dial: '+65', name: 'Singapore' },
-            { code: 'SK', dial: '+421', name: 'Slovakia' },
-            { code: 'SI', dial: '+386', name: 'Slovenia' },
-            { code: 'SB', dial: '+677', name: 'Solomon Islands' },
-            { code: 'SO', dial: '+252', name: 'Somalia' },
-            { code: 'ZA', dial: '+27', name: 'South Africa' },
-            { code: 'SS', dial: '+211', name: 'South Sudan' },
-            { code: 'ES', dial: '+34', name: 'Spain' },
-            { code: 'LK', dial: '+94', name: 'Sri Lanka' },
-            { code: 'SD', dial: '+249', name: 'Sudan' },
-            { code: 'SR', dial: '+597', name: 'Suriname' },
-            { code: 'SZ', dial: '+268', name: 'Swaziland' },
-            { code: 'SE', dial: '+46', name: 'Sweden' },
-            { code: 'CH', dial: '+41', name: 'Switzerland' },
-            { code: 'SY', dial: '+963', name: 'Syria' },
-            { code: 'TW', dial: '+886', name: 'Taiwan' },
-            { code: 'TJ', dial: '+992', name: 'Tajikistan' },
-            { code: 'TZ', dial: '+255', name: 'Tanzania' },
-            { code: 'TH', dial: '+66', name: 'Thailand' },
-            { code: 'TL', dial: '+670', name: 'Timor-Leste' },
-            { code: 'TG', dial: '+228', name: 'Togo' },
-            { code: 'TO', dial: '+676', name: 'Tonga' },
-            { code: 'TT', dial: '+1-868', name: 'Trinidad and Tobago' },
-            { code: 'TN', dial: '+216', name: 'Tunisia' },
-            { code: 'TR', dial: '+90', name: 'Turkey' },
-            { code: 'TM', dial: '+993', name: 'Turkmenistan' },
-            { code: 'TV', dial: '+688', name: 'Tuvalu' },
-            { code: 'UG', dial: '+256', name: 'Uganda' },
-            { code: 'UA', dial: '+380', name: 'Ukraine' },
-            { code: 'AE', dial: '+971', name: 'United Arab Emirates' },
-            { code: 'GB', dial: '+44', name: 'United Kingdom' },
-            { code: 'US', dial: '+1', name: 'United States' },
-            { code: 'UY', dial: '+598', name: 'Uruguay' },
-            { code: 'UZ', dial: '+998', name: 'Uzbekistan' },
-            { code: 'VU', dial: '+678', name: 'Vanuatu' },
-            { code: 'VA', dial: '+379', name: 'Vatican City' },
-            { code: 'VE', dial: '+58', name: 'Venezuela' },
-            { code: 'VN', dial: '+84', name: 'Vietnam' },
-            { code: 'YE', dial: '+967', name: 'Yemen' },
-            { code: 'ZM', dial: '+260', name: 'Zambia' },
-            { code: 'ZW', dial: '+263', name: 'Zimbabwe' }
-        ];
 
         // ========================= TRANSLATIONS =========================
         const translations = {
@@ -1384,28 +902,8 @@
                 facebookAccountExists: "This email is already associated with a different account.",
                 facebookAccountExistsDesc: "Please sign in using your original provider (Google or Email).",
                 spamHint: "📬 If you didn't receive the verification email, please check your Spam or Junk folder.",
-                phoneSignupLabel: "Phone Number",
-                phoneSignupNote: "Enter your phone number",
-                phoneSignupBtn: "Send Verification Code",
-                phoneVerifyBtn: "Verify",
-                phoneCodePlaceholder: "6-digit code",
-                phoneInvalid: "Please enter a valid phone number.",
-                phoneCodeSent: "Verification code sent to your phone.",
-                phoneCodeVerified: "Phone number verified successfully.",
-                phoneCodeError: "Invalid verification code. Please try again.",
-                phoneSignupSuccess: "Account created with phone number.",
-                phoneAlreadyLinked: "This phone number is already linked to an account.",
-                phoneSignupOption: "Sign up with Phone",
-                loginPhoneTitle: "Sign in with Phone",
-                loginPhoneSub: "Enter your phone number to receive a verification code.",
-                signupPhoneTitle: "Sign up with Phone",
-                signupPhoneSub: "Enter your phone number to create an account.",
                 tabLogin: "Sign In",
                 tabSignup: "Create Account",
-                methodEmail: "Email",
-                methodPhone: "Phone",
-                phoneConsent: "By continuing, you may receive an SMS verification message. Standard message rates may apply.",
-                verifying: "Verifying...",
                 signupWithGoogle: "Sign up with Google",
                 signupWithFacebook: "Sign up with Facebook"
             },
@@ -1484,28 +982,8 @@
                 facebookAccountExists: "هذا البريد الإلكتروني مرتبط بحساب آخر.",
                 facebookAccountExistsDesc: "يرجى تسجيل الدخول باستخدام المزود الأصلي (جوجل أو البريد الإلكتروني).",
                 spamHint: "📬 إذا لم تصلك رسالة التأكيد، يُرجى التحقق من مجلد البريد المزعج (Spam) أو الرسائل غير المرغوب فيها في بريدك الإلكتروني.",
-                phoneSignupLabel: "رقم الهاتف",
-                phoneSignupNote: "أدخل رقم هاتفك",
-                phoneSignupBtn: "إرسال رمز التحقق",
-                phoneVerifyBtn: "تحقق",
-                phoneCodePlaceholder: "رمز مكون من 6 أرقام",
-                phoneInvalid: "يرجى إدخال رقم هاتف صحيح.",
-                phoneCodeSent: "تم إرسال رمز التحقق إلى هاتفك.",
-                phoneCodeVerified: "تم التحقق من رقم الهاتف بنجاح.",
-                phoneCodeError: "رمز التحقق غير صحيح. يرجى المحاولة مرة أخرى.",
-                phoneSignupSuccess: "تم إنشاء الحساب برقم الهاتف.",
-                phoneAlreadyLinked: "رقم الهاتف هذا مرتبط بالفعل بحساب آخر.",
-                phoneSignupOption: "إنشاء حساب برقم الهاتف",
-                loginPhoneTitle: "تسجيل الدخول برقم الهاتف",
-                loginPhoneSub: "أدخل رقم هاتفك لاستلام رمز التحقق.",
-                signupPhoneTitle: "إنشاء حساب برقم الهاتف",
-                signupPhoneSub: "أدخل رقم هاتفك لإنشاء حساب.",
                 tabLogin: "تسجيل الدخول",
                 tabSignup: "إنشاء حساب",
-                methodEmail: "البريد الإلكتروني",
-                methodPhone: "رقم الهاتف",
-                phoneConsent: "بالمتابعة، قد تصلك رسالة SMS للتحقق من رقم الهاتف. قد تُطبق أسعار الرسائل العادية.",
-                verifying: "جاري التحقق...",
                 signupWithGoogle: "إنشاء حساب عبر جوجل",
                 signupWithFacebook: "إنشاء حساب عبر فيسبوك"
             }
@@ -1516,60 +994,7 @@
         let verificationCheckInterval = null;
         let verificationSending = false;
         let isVerificationModalOpen = false;
-        let loginPhoneConfirmationResult = null;
-        let signupPhoneConfirmationResult = null;
-        let loginRecaptchaVerifier = null;
-        let signupRecaptchaVerifier = null;
         let currentTab = 'login';
-        let loginMethod = 'email';
-        let signupMethod = 'email';
-
-        // ========================= COUNTRY FUNCTIONS =========================
-        function populateCountrySelects() {
-            const selects = ['loginPhoneCountry', 'signupPhoneCountry'];
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                if (!select) return;
-                select.innerHTML = '';
-                countries.forEach(c => {
-                    const option = document.createElement('option');
-                    option.value = c.dial;
-                    option.dataset.code = c.code;
-                    option.textContent = `${c.name} (${c.dial})`;
-                    if (c.code === 'EG') option.selected = true;
-                    select.appendChild(option);
-                });
-            });
-            updateLoginPhoneFlag();
-            updateSignupPhoneFlag();
-        }
-
-        window.updateLoginPhoneFlag = function() {
-            const select = document.getElementById('loginPhoneCountry');
-            const flag = document.getElementById('loginPhoneFlag');
-            if (select && flag) {
-                const code = select.options[select.selectedIndex]?.dataset.code || 'EG';
-                flag.className = `fi fi-${code.toLowerCase()}`;
-            }
-        };
-
-        window.updateSignupPhoneFlag = function() {
-            const select = document.getElementById('signupPhoneCountry');
-            const flag = document.getElementById('signupPhoneFlag');
-            if (select && flag) {
-                const code = select.options[select.selectedIndex]?.dataset.code || 'EG';
-                flag.className = `fi fi-${code.toLowerCase()}`;
-            }
-        };
-
-        function getFullPhoneNumber(prefix, input) {
-            let phone = (input?.value || "").trim().replace(/[\s()-]/g, "");
-            phone = phone.replace(/^0+/, "");
-            const cleanPrefix = String(prefix || "").replace(/[^+\d]/g, "");
-            if (!phone) return "";
-            if (phone.startsWith("+")) return phone;
-            return cleanPrefix + phone;
-        }
 
         // ========================= TAB SWITCHING =========================
         window.switchTab = function(tab) {
@@ -1592,276 +1017,6 @@
             }
             translate(document.documentElement.lang);
             clearMessage();
-        };
-
-        window.switchLoginMethod = async function(method) {
-            loginMethod = method;
-            document.getElementById('loginMethodEmail').classList.toggle('active', method === 'email');
-            document.getElementById('loginMethodPhone').classList.toggle('active', method === 'phone');
-            document.getElementById('loginEmailForm').classList.toggle('active', method === 'email');
-            document.getElementById('loginPhoneForm').classList.toggle('active', method === 'phone');
-            clearMessage();
-            if (method === 'phone') {
-                await setupLoginRecaptcha();
-            }
-        };
-
-        window.switchSignupMethod = async function(method) {
-            signupMethod = method;
-            document.getElementById('signupMethodEmail').classList.toggle('active', method === 'email');
-            document.getElementById('signupMethodPhone').classList.toggle('active', method === 'phone');
-            document.getElementById('signupEmailForm').classList.toggle('active', method === 'email');
-            document.getElementById('signupPhoneForm').classList.toggle('active', method === 'phone');
-            clearMessage();
-            if (method === 'phone') {
-                await setupSignupRecaptcha();
-            }
-        };
-
-        // ========================= RECAPTCHA =========================
-        async function createRecaptcha(containerId, currentVerifierSetter, getCurrentVerifier) {
-            if (isLocalhost) {
-                console.warn('[NOLX] Phone Auth/reCAPTCHA is not supported on localhost.');
-                return null;
-            }
-
-            const container = document.getElementById(containerId);
-            if (!container) {
-                console.error(`[NOLX] Missing reCAPTCHA container: #${containerId}`);
-                return null;
-            }
-
-            const oldVerifier = getCurrentVerifier();
-            if (oldVerifier) {
-                try { oldVerifier.clear(); } catch (_) {}
-                currentVerifierSetter(null);
-            }
-
-            container.innerHTML = '';
-            await ensureRecaptchaConfig();
-
-            try {
-                const verifier = new RecaptchaVerifier(auth, container, {
-                    size: 'normal',
-                    callback: () => {
-                        console.log(`[NOLX] reCAPTCHA solved for #${containerId}`);
-                    },
-                    'expired-callback': () => {
-                        console.warn(`[NOLX] reCAPTCHA expired for #${containerId}`);
-                    }
-                });
-
-                currentVerifierSetter(verifier);
-                await verifier.render();
-                return verifier;
-            } catch (error) {
-                console.error(`[NOLX] Failed to initialize reCAPTCHA for #${containerId}:`, error);
-                currentVerifierSetter(null);
-                container.innerHTML = '';
-                return null;
-            }
-        }
-
-        async function setupLoginRecaptcha() {
-            return createRecaptcha(
-                'loginRecaptchaContainer',
-                value => { loginRecaptchaVerifier = value; },
-                () => loginRecaptchaVerifier
-            );
-        }
-
-        async function setupSignupRecaptcha() {
-            return createRecaptcha(
-                'signupRecaptchaContainer',
-                value => { signupRecaptchaVerifier = value; },
-                () => signupRecaptchaVerifier
-            );
-        }
-
-        // ========================= PHONE LOGIN =========================
-        window.loginWithPhone = async function(event) {
-            event.preventDefault();
-            const lang = document.documentElement.lang;
-            const t = translations[lang];
-            const prefix = document.getElementById('loginPhoneCountry').value;
-            const input = document.getElementById('loginPhoneInput');
-            const phoneNumber = getFullPhoneNumber(prefix, input);
-            const button = document.getElementById('loginPhoneButton');
-
-            if (!input.value.trim() || input.value.trim().length < 5) {
-                showMessage(t.phoneInvalid, 'error');
-                return;
-            }
-
-            try {
-                button.disabled = true;
-                button.textContent = t.sending || 'Sending...';
-                showMessage(t.phoneCodeSent, 'info');
-
-                if (!loginRecaptchaVerifier) {
-                    await setupLoginRecaptcha();
-                }
-                if (!loginRecaptchaVerifier) {
-                    throw new Error("reCAPTCHA could not be initialized.");
-                }
-                await loginRecaptchaVerifier.render();
-                const appVerifier = loginRecaptchaVerifier;
-                const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-                loginPhoneConfirmationResult = confirmationResult;
-
-                document.getElementById('loginVerificationContainer').classList.add('show');
-                button.textContent = t.phoneSignupBtn;
-                button.disabled = false;
-                showMessage(t.phoneCodeSent, 'success');
-
-            } catch (error) {
-                if (loginRecaptchaVerifier && error?.message !== "PHONE_AUTH_LOCALHOST") {
-                    try { loginRecaptchaVerifier.clear(); } catch (_) {}
-                    loginRecaptchaVerifier = null;
-                }
-                console.error("[NOLX] Login phone error:", error);
-                button.textContent = t.phoneSignupBtn;
-                button.disabled = false;
-                showFirebaseError(error);
-                await setupLoginRecaptcha();
-            }
-        };
-
-        window.verifyLoginPhoneCode = async function() {
-            const lang = document.documentElement.lang;
-            const t = translations[lang];
-            const codeInput = document.getElementById('loginVerificationCode');
-            const code = codeInput.value.trim();
-            const button = document.querySelector('#loginVerificationContainer .primary-btn');
-
-            if (!code || code.length < 6) {
-                showMessage(t.phoneCodeError, 'error');
-                return;
-            }
-
-            if (!loginPhoneConfirmationResult) {
-                showMessage('Please request a verification code first.', 'error');
-                return;
-            }
-
-            try {
-                button.disabled = true;
-                button.textContent = t.verifying || 'Verifying...';
-                showMessage(t.phoneCodeVerified, 'info');
-
-                const result = await loginPhoneConfirmationResult.confirm(code);
-                const user = result.user;
-
-                await saveUserProfile(user, {
-                    username: user.phoneNumber || "",
-                    phone: user.phoneNumber || "",
-                    authProvider: "phone"
-                });
-
-                showMessage(t.phoneSignupSuccess, 'success');
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 500);
-
-            } catch (error) {
-                console.error("[NOLX] Login phone verify error:", error);
-                showFirebaseError(error);
-                button.disabled = false;
-                button.textContent = t.phoneVerifyBtn;
-            }
-        };
-
-        // ========================= PHONE SIGNUP =========================
-        window.signupWithPhone = async function(event) {
-            event.preventDefault();
-            const lang = document.documentElement.lang;
-            const t = translations[lang];
-            const prefix = document.getElementById('signupPhoneCountry').value;
-            const input = document.getElementById('signupPhoneInput');
-            const phoneNumber = getFullPhoneNumber(prefix, input);
-            const button = document.getElementById('signupPhoneButton');
-
-            if (!input.value.trim() || input.value.trim().length < 5) {
-                showMessage(t.phoneInvalid, 'error');
-                return;
-            }
-
-            try {
-                button.disabled = true;
-                button.textContent = t.sending || 'Sending...';
-                showMessage(t.phoneCodeSent, 'info');
-
-                if (!signupRecaptchaVerifier) {
-                    await setupSignupRecaptcha();
-                }
-                if (!signupRecaptchaVerifier) {
-                    throw new Error("reCAPTCHA could not be initialized.");
-                }
-                await signupRecaptchaVerifier.render();
-                const appVerifier = signupRecaptchaVerifier;
-                const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-                signupPhoneConfirmationResult = confirmationResult;
-
-                document.getElementById('signupVerificationContainer').classList.add('show');
-                button.textContent = t.phoneSignupBtn;
-                button.disabled = false;
-                showMessage(t.phoneCodeSent, 'success');
-
-            } catch (error) {
-                if (signupRecaptchaVerifier && error?.message !== "PHONE_AUTH_LOCALHOST") {
-                    try { signupRecaptchaVerifier.clear(); } catch (_) {}
-                    signupRecaptchaVerifier = null;
-                }
-                console.error("[NOLX] Signup phone error:", error);
-                button.textContent = t.phoneSignupBtn;
-                button.disabled = false;
-                showFirebaseError(error);
-                await setupSignupRecaptcha();
-            }
-        };
-
-        window.verifySignupPhoneCode = async function() {
-            const lang = document.documentElement.lang;
-            const t = translations[lang];
-            const codeInput = document.getElementById('signupVerificationCode');
-            const code = codeInput.value.trim();
-            const button = document.querySelector('#signupVerificationContainer .primary-btn');
-
-            if (!code || code.length < 6) {
-                showMessage(t.phoneCodeError, 'error');
-                return;
-            }
-
-            if (!signupPhoneConfirmationResult) {
-                showMessage('Please request a verification code first.', 'error');
-                return;
-            }
-
-            try {
-                button.disabled = true;
-                button.textContent = t.verifying || 'Verifying...';
-                showMessage(t.phoneCodeVerified, 'info');
-
-                const result = await signupPhoneConfirmationResult.confirm(code);
-                const user = result.user;
-
-                await saveUserProfile(user, {
-                    username: user.phoneNumber || "",
-                    phone: user.phoneNumber || "",
-                    authProvider: "phone"
-                });
-
-                showMessage(t.phoneSignupSuccess, 'success');
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 500);
-
-            } catch (error) {
-                console.error("[NOLX] Signup phone verify error:", error);
-                showFirebaseError(error);
-                button.disabled = false;
-                button.textContent = t.phoneVerifyBtn;
-            }
         };
 
         // ========================= TRANSLATE =========================
@@ -1931,26 +1086,6 @@
 
             setText("googleLoginText", t.googleLoginText);
             setText("facebookLoginText", t.facebookSignIn);
-
-            setText("signupPhoneButton", t.phoneSignupBtn);
-            setText("loginPhoneButton", t.phoneSignupBtn);
-            setText("loginPhoneConsent", t.phoneConsent);
-            setText("signupPhoneConsent", t.phoneConsent);
-            setPlaceholder("signupVerificationCode", t.phoneCodePlaceholder);
-            setPlaceholder("loginVerificationCode", t.phoneCodePlaceholder);
-
-            const verifyBtns = document.querySelectorAll('#loginVerificationContainer .primary-btn, #signupVerificationContainer .primary-btn');
-            verifyBtns.forEach(btn => {
-                if (btn) btn.textContent = t.phoneVerifyBtn;
-            });
-
-            document.querySelectorAll('.method-tab').forEach(el => {
-                if (el.textContent.includes('Email') || el.textContent.includes('البريد')) {
-                    el.innerHTML = `<i class="fas fa-envelope"></i> ${t.methodEmail}`;
-                } else if (el.textContent.includes('Phone') || el.textContent.includes('رقم')) {
-                    el.innerHTML = `<i class="fas fa-phone"></i> ${t.methodPhone}`;
-                }
-            });
 
             document.querySelectorAll('#signupContainer .social-btn span').forEach(el => {
                 if (el.textContent.includes('Google') || el.textContent.includes('جوجل')) {
@@ -2589,25 +1724,6 @@
                     subText = t.userDisabledDesc;
                     type = "warning";
                     break;
-                case "auth/invalid-phone-number":
-                    message = t.phoneInvalid;
-                    subText = lang === "ar" ? "تأكد من إدخال رقم الهاتف مع رمز الدولة." :
-                        "Make sure to enter the phone number with country code.";
-                    type = "warning";
-                    break;
-                case "PHONE_AUTH_LOCALHOST":
-                    message = lang === "ar" ? "تسجيل الدخول بالهاتف لا يعمل على localhost." :
-                        "Phone authentication does not work on localhost.";
-                    subText = lang === "ar" ? "ارفع الموقع على نطاق مُصرّح به في Firebase Authentication، أو اختبر البريد الإلكتروني محليًا." :
-                        "Deploy the site on a Firebase-authorized domain, or use email authentication locally.";
-                    type = "warning";
-                    break;
-                case "RECAPTCHA_INIT_FAILED":
-                    message = lang === "ar" ? "تعذر تشغيل reCAPTCHA." : "Could not initialize reCAPTCHA.";
-                    subText = lang === "ar" ? "تأكد أن النطاق مضاف إلى Authorized domains في Firebase وأن Phone provider مفعّل." :
-                        "Make sure this domain is in Firebase Authorized domains and Phone provider is enabled.";
-                    type = "warning";
-                    break;
                 default:
                     message = error.message || t.defaultError;
                     subText = lang === "ar" ? "إذا استمرت المشكلة، يرجى التواصل مع الدعم." :
@@ -2640,7 +1756,6 @@
         document.documentElement.lang = savedLang;
         document.documentElement.dir = savedLang === "ar" ? "rtl" : "ltr";
 
-        populateCountrySelects();
         translate(savedLang);
 
         console.log("[NOLX] Authentication page initialized successfully.");

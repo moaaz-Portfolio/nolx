@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شات الدعم الفني المباشر</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: Tahoma, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; height: 100vh; box-sizing: border-box; }
+        .chat-container { width: 100%; max-width: 600px; background: #1e1e1e; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.6); height: 90vh; }
+        .chat-header { background: #252525; padding: 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h3 { margin: 0; font-size: 16px; color: #fff; }
+        .chat-header span { font-size: 12px; color: #888; }
+        
+        /* صندوق الرسائل */
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #121212; }
+        .message { max-width: 75%; padding: 10px 14px; border-radius: 8px; font-size: 14px; line-height: 1.4; word-wrap: break-word; }
+        .message.user { background: #6200ee; color: #fff; align-self: flex-end; border-bottom-left-radius: 0; }
+        .message.support { background: #333; color: #fff; align-self: flex-start; border-bottom-right-radius: 0; }
+        
+        /* شريط الكتابة */
+        .chat-input-box { display: flex; padding: 10px; background: #1e1e1e; border-top: 1px solid #333; }
+        .chat-input-box input { flex: 1; background: #2c2c2c; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 6px; outline: none; font-size: 14px; }
+        .chat-input-box button { background: #6200ee; color: #fff; border: none; padding: 0 20px; border-radius: 6px; margin-right: 8px; cursor: pointer; font-weight: bold; }
+        .chat-input-box button:hover { background: #7c4dff; }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <!-- هيدر الشات يوضح اسم المستخدم -->
+        <div class="chat-header">
+            <div>
+                <h3 id="user-name-title">الدعم الفني المباشر</h3>
+                <span id="user-email-subtitle">جاري التحميل...</span>
+            </div>
+            <span style="color: #4caf50; font-size: 12px;">● متصل الآن</span>
+        </div>
+
+        <!-- رسائل الشات الحية -->
+        <div class="chat-messages" id="messages-box">
+            <!-- الرسائل بتظهر هنا أوتوماتيك -->
+        </div>
+
+        <!-- إرسال رسالة جديدة -->
+        <div class="chat-input-box">
+            <input type="text" id="message-input" placeholder="اكتب رسالتك هنا..." onkeypress="checkEnter(event)">
+            <button onclick="sendMessage()">إرسال</button>
+        </div>
+    </div>
+
+    <!-- سكربت Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // التحقق من تسجيل الدخول
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('user-name-title').innerText = user.displayName || "مستخدم";
+                document.getElementById('user-email-subtitle').innerText = user.email;
+                
+                // بدء مراقبة الرسائل الخاصة بهذا المستخدم فقط
+                loadUserMessages(user.uid);
+            } else {
+                window.location.href = "login.html"; // لو مش مسجل يروح لتسجيل الدخول
+            }
+        });
+
+        // دالة جلب وعرض الرسائل لحظياً (Real-time)
+        function loadUserMessages(uid) {
+            // بنعمل كولكشن خاص بكل مستخدم عشان شات كل عميل يكون منفصل لوحده
+            const messagesRef = collection(db, `users_chats/${uid}/messages`);
+            const q = query(messagesRef, orderBy("createdAt", "asc"));
+
+            onSnapshot(q, (snapshot) => {
+                const messagesBox = document.getElementById('messages-box');
+                messagesBox.innerHTML = ""; // تفريغ الصندوق لتحديثه
+
+                if (snapshot.empty) {
+                    messagesBox.innerHTML = `<div style="text-align:center; color:#666; margin-top:20px;">لا توجد رسائل سابقة. ابدأ المحادثة الآن!</div>`;
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const messageDiv = document.createElement('div');
+                    
+                    // تحديد هل الرسالة من المستخدم نفسه ولا من الدعم الفني
+                    if (data.sender === "user") {
+                        messageDiv.className = "message user";
+                    } else {
+                        messageDiv.className = "message support";
+                    }
+                    
+                    messageDiv.innerText = data.text;
+                    messagesBox.appendChild(messageDiv);
+                });
+
+                // النزول لآخر الشات تلقائياً
+                messagesBox.scrollTop = messagesBox.scrollHeight;
+            });
+        }
+
+        // دالة إرسال الرسالة
+        window.sendMessage = async function() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+
+            if (!text || !currentUser) return;
+
+            try {
+                input.value = "";
+                await addDoc(collection(db, `users_chats/${currentUser.uid}/messages`), {
+                    text: text,
+                    sender: "user", // مرسل من المستخدم
+                    createdAt: serverTimestamp(),
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || "مستخدم",
+                    userPhone: currentUser.phoneNumber || "لا يوجد"
+                });
+            } catch (error) {
+                console.error("Error sending message: ", error);
+            }
+        };
+
+        // إرسال بالضغط على زر Enter
+        window.checkEnter = function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

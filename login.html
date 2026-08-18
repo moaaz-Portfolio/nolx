@@ -417,71 +417,29 @@
             }
         }
 
-        /* ===== VERIFICATION CODE INPUT - مُحسَّن ===== */
-        .verification-code-input {
-            display: none;
-            gap: 10px;
-            margin-top: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .verification-code-input.show {
-            display: flex;
-        }
-        .verification-code-input .input-wrap {
-            flex: 1;
-            min-width: 150px;
-        }
-        .verification-code-input .input-wrap input {
-            width: 100%;
-            height: 55px;
-            border-radius: 18px;
-            border: 1px solid rgba(0, 88, 64, 0.14);
-            background: rgba(255, 255, 255, 0.56);
-            color: #005840;
-            outline: none;
-            padding: 0 18px 0 48px;
-            font-family: inherit;
-            font-size: 16px;
-            letter-spacing: 4px;
-            text-align: center;
-            transition: border 0.25s, background 0.25s, box-shadow 0.25s;
-        }
-        .verification-code-input .input-wrap input:focus {
-            background: rgba(255, 255, 255, 0.88);
-            border-color: rgba(0, 88, 64, 0.42);
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07), 0 10px 30px rgba(0, 88, 64, 0.05);
-        }
-        .verification-code-input .input-wrap .input-icon {
-            left: 17px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(0, 88, 64, 0.42);
-            pointer-events: none;
-            position: absolute;
-            z-index: 2;
-        }
-        .verification-code-input .primary-btn {
-            flex: 0 0 auto;
-            min-width: 100px;
-            min-height: 55px;
-            padding: 0 24px;
-            white-space: nowrap;
-        }
-        [dir="rtl"] .verification-code-input .input-wrap .input-icon {
-            left: auto;
-            right: 17px;
-        }
-        [dir="rtl"] .verification-code-input .input-wrap input {
-            padding: 0 48px 0 18px;
-        }
-
         .phone-consent {
             margin: -4px 2px 10px;
             font-size: 10px;
             line-height: 1.6;
             color: rgba(0, 88, 64, 0.55);
             text-align: center;
+        }
+
+        .verification-code-input {
+            display: none;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .verification-code-input.show {
+            display: flex;
+        }
+        .verification-code-input input {
+            flex: 1;
+        }
+        .verification-code-input button {
+            flex: 0 0 auto;
+            min-width: 100px;
+            min-height: 55px;
         }
 
         .modal {
@@ -695,24 +653,18 @@
                 font-size: 16px;
             }
             .phone-consent {
-                font-size: 9px;
-            }
-            .verification-code-input {
+            margin: -4px 2px 10px;
+            font-size: 10px;
+            line-height: 1.6;
+            color: rgba(0, 88, 64, 0.55);
+            text-align: center;
+        }
+
+        .verification-code-input {
                 flex-direction: column;
-                gap: 8px;
             }
-            .verification-code-input .input-wrap {
-                width: 100%;
+            .verification-code-input button {
                 min-width: unset;
-            }
-            .verification-code-input .primary-btn {
-                width: 100%;
-                min-width: unset;
-            }
-            .verification-code-input .input-wrap input {
-                height: 50px;
-                font-size: 18px;
-                letter-spacing: 6px;
             }
             .auth-tab {
                 font-size: 11px;
@@ -881,15 +833,15 @@
                             </div>
                         </div>
                         <p id="loginPhoneConsent" class="phone-consent">
-                            By continuing, you may receive an SMS verification message. Standard message rates may apply.
-                        </p>
-                        <div id="loginRecaptchaContainer"></div>
+    By continuing, you may receive an SMS verification message. Standard message rates may apply.
+</p>
+<div id="loginRecaptchaContainer"></div>
                         <div id="loginVerificationContainer" class="verification-code-input">
-                            <div class="input-wrap">
-                                <input id="loginVerificationCode" type="text" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*">
+                            <div class="input-wrap" style="flex:1;">
+                                <input id="loginVerificationCode" class="input" type="text" placeholder="6-digit code" maxlength="6">
                                 <i class="input-icon fas fa-key"></i>
                             </div>
-                            <button type="button" onclick="verifyLoginPhoneCode()" class="primary-btn">Verify</button>
+                            <button type="button" onclick="verifyLoginPhoneCode()" class="primary-btn" style="min-height:55px; flex:0 0 auto; padding:0 20px;">Verify</button>
                         </div>
                         <button id="loginPhoneButton" type="submit" class="primary-btn text-sm sm:text-base">Send Verification Code</button>
                     </form>
@@ -978,15 +930,15 @@
                             </div>
                         </div>
                         <p id="signupPhoneConsent" class="phone-consent">
-                            By continuing, you may receive an SMS verification message. Standard message rates may apply.
-                        </p>
-                        <div id="signupRecaptchaContainer"></div>
+    By continuing, you may receive an SMS verification message. Standard message rates may apply.
+</p>
+<div id="signupRecaptchaContainer"></div>
                         <div id="signupVerificationContainer" class="verification-code-input">
-                            <div class="input-wrap">
-                                <input id="signupVerificationCode" type="text" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*">
+                            <div class="input-wrap" style="flex:1;">
+                                <input id="signupVerificationCode" class="input" type="text" placeholder="6-digit code" maxlength="6">
                                 <i class="input-icon fas fa-key"></i>
                             </div>
-                            <button type="button" onclick="verifySignupPhoneCode()" class="primary-btn">Verify</button>
+                            <button type="button" onclick="verifySignupPhoneCode()" class="primary-btn" style="min-height:55px; flex:0 0 auto; padding:0 20px;">Verify</button>
                         </div>
                         <button id="signupPhoneButton" type="submit" class="primary-btn text-sm sm:text-base">Send Verification Code</button>
                     </form>
@@ -1407,7 +1359,7 @@
                 phoneConsent: "By continuing, you may receive an SMS verification message. Standard message rates may apply.",
                 verifying: "Verifying...",
                 signupWithGoogle: "Sign up with Google",
-                signupWithFacebook: "Sign up with Facebook"
+                signupWithFacebook: "Sign up with Facebook",
             },
             ar: {
                 brand: "نولكس",
@@ -1507,7 +1459,7 @@
                 phoneConsent: "بالمتابعة، قد تصلك رسالة SMS للتحقق من رقم الهاتف. قد تُطبق أسعار الرسائل العادية.",
                 verifying: "جاري التحقق...",
                 signupWithGoogle: "إنشاء حساب عبر جوجل",
-                signupWithFacebook: "إنشاء حساب عبر فيسبوك"
+                signupWithFacebook: "إنشاء حساب عبر فيسبوك",
             }
         };
 
@@ -1699,7 +1651,7 @@
                 showMessage(t.phoneCodeSent, 'info');
 
                 if (!loginRecaptchaVerifier) {
-                    await setupLoginRecaptcha();
+                    setupLoginRecaptcha()
                 }
                 if (!loginRecaptchaVerifier) {
                     throw new Error("reCAPTCHA could not be initialized.");
@@ -1723,7 +1675,7 @@
                 button.textContent = t.phoneSignupBtn;
                 button.disabled = false;
                 showFirebaseError(error);
-                await setupLoginRecaptcha();
+                setupLoginRecaptcha();
             }
         };
 
@@ -1792,7 +1744,7 @@
                 showMessage(t.phoneCodeSent, 'info');
 
                 if (!signupRecaptchaVerifier) {
-                    await setupSignupRecaptcha();
+                    setupSignupRecaptcha()
                 }
                 if (!signupRecaptchaVerifier) {
                     throw new Error("reCAPTCHA could not be initialized.");
@@ -1816,7 +1768,7 @@
                 button.textContent = t.phoneSignupBtn;
                 button.disabled = false;
                 showFirebaseError(error);
-                await setupSignupRecaptcha();
+                setupSignupRecaptcha();
             }
         };
 
@@ -2647,5 +2599,4 @@
     </script>
 
 </body>
-
 </html>

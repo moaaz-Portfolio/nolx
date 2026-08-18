@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>NOLX Pages | Authentication</title>
 
     <!-- GOOGLE FONTS -->
@@ -31,22 +30,6 @@
             }
         };
     </script>
-
-    <!-- GOOGLE CALLBACK -->
-    <script>
-        window.handleGoogleResponse = function(response) {
-            if (!response || !response.credential) {
-                console.error("[NOLX] Google credential missing");
-                return;
-            }
-            window.dispatchEvent(
-                new CustomEvent("nolx-google-login", { detail: response })
-            );
-        };
-    </script>
-
-    <!-- GOOGLE IDENTITY SERVICES -->
-    <script src="https://accounts.google.com/gsi/client"></script>
 
     <style>
         * {
@@ -178,21 +161,6 @@
             opacity: 0.65;
             cursor: wait;
             transform: none;
-        }
-
-        /* === GOOGLE === */
-        .google-box {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-            border-radius: 18px;
-        }
-        #googleButton {
-            width: 100%;
-            min-height: 44px;
-            display: flex;
-            justify-content: center;
         }
 
         /* === FACEBOOK BUTTON === */
@@ -579,12 +547,12 @@
             <div id="loginView">
         
                 <!-- GOOGLE -->
-<div class="facebook-box mt-4">
-    <button id="googleLoginBtn" onclick="loginWithGoogle()" class="primary-btn flex items-center justify-center gap-3 text-sm sm:text-base" style="background: #005840 !important; box-shadow: 0 15px 35px rgba(66, 133, 244, 0.25) !important;">
-        <i class="fab fa-google"></i>
-        <span id="googleLoginText">Sign in with Google</span>
-    </button>
-</div>
+                <div class="facebook-box mt-4">
+                    <button id="googleLoginBtn" onclick="loginWithGoogle()" class="primary-btn flex items-center justify-center gap-3 text-sm sm:text-base" style="background: #005840 !important; box-shadow: 0 15px 35px rgba(66, 133, 244, 0.25) !important;">
+                        <i class="fab fa-google"></i>
+                        <span id="googleLoginText">Sign in with Google</span>
+                    </button>
+                </div>
 
                 <!-- FACEBOOK -->
                 <div class="facebook-box mt-4">
@@ -815,6 +783,7 @@
                 sendResetLink: "Send Reset Link",
                 signingIn: "Signing in...",
                 googleSuccess: "Google login successful.",
+                googleSignIn: "Sign in with Google",
                 loginSuccess: "Login successful.",
                 createSuccess: "Account created successfully.",
                 verifyEmail: "Please verify your email before logging in.",
@@ -890,6 +859,7 @@
                 sendResetLink: "إرسال رابط إعادة التعيين",
                 signingIn: "جاري تسجيل الدخول...",
                 googleSuccess: "تم تسجيل الدخول عبر جوجل بنجاح.",
+                googleSignIn: "تسجيل الدخول عبر جوجل",
                 loginSuccess: "تم تسجيل الدخول بنجاح.",
                 createSuccess: "تم إنشاء الحساب بنجاح.",
                 verifyEmail: "يرجى التحقق من بريدك الإلكتروني قبل تسجيل الدخول.",
@@ -938,6 +908,7 @@
         let currentUser = null;
         let verificationCheckInterval = null;
         let verificationSending = false;
+        let isFacebookRedirectHandled = false;
 
         /* =========================
            TRANSLATE FUNCTION
@@ -987,6 +958,7 @@
             document.querySelector(".verification-logout").textContent = t.signOut;
 
             document.getElementById("facebookLoginText").textContent = t.facebookSignIn;
+            document.getElementById("googleLoginText").textContent = t.googleSignIn;
         }
 
         /* =========================
@@ -1009,9 +981,7 @@
                 }
             } catch (error) {
                 console.error("[NOLX] Facebook redirect error:", error);
-                if (error.code !== 'auth/account-exists-with-different-credential') {
-                    showFirebaseError(error);
-                }
+                // مش بنعمل حاجة عشان نمنع الـ loop
             }
         }
 
@@ -1025,7 +995,6 @@
 
                 if (user.emailVerified) {
                     hideVerificationModal();
-                    // التوجيه السلس للوحة التحكم إذا كان المستخدم في صفحة الدخول
                     setTimeout(() => {
                         window.location.href = "dashboard.html";
                     }, 300);
@@ -1039,7 +1008,12 @@
                 document.getElementById("loginView").style.display = "block";
                 document.getElementById("signupView").style.display = "none";
                 translate(document.documentElement.lang);
-                await handleFacebookRedirect();
+                
+                // تشغيلها مرة واحدة بس
+                if (!isFacebookRedirectHandled) {
+                    isFacebookRedirectHandled = true;
+                    await handleFacebookRedirect();
+                }
             }
         });
 
@@ -1047,66 +1021,66 @@
            GOOGLE LOGIN
         ========================== */
        window.loginWithGoogle = async function() {
-    const lang = document.documentElement.lang;
-    const t = translations[lang];
-    const button = document.getElementById('googleLoginBtn');
-    const originalHTML = button.innerHTML;
+            const lang = document.documentElement.lang;
+            const t = translations[lang];
+            const button = document.getElementById('googleLoginBtn');
+            const originalHTML = button.innerHTML;
 
-    try {
-        button.disabled = true;
-        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t.signingIn || 'Signing in...'}`;
-        showMessage(t.signingIn || 'Signing in with Google...', 'info');
+            try {
+                button.disabled = true;
+                button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${t.signingIn || 'Signing in...'}`;
+                showMessage(t.signingIn || 'Signing in with Google...', 'info');
 
-        const provider = new GoogleAuthProvider();
-        provider.addScope('email');
-        provider.addScope('profile');
+                const provider = new GoogleAuthProvider();
+                provider.addScope('email');
+                provider.addScope('profile');
 
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
 
-            await saveUserProfile(user, {
-                username: user.displayName || "",
-                phone: "",
-                authProvider: "google"
-            });
+                    await saveUserProfile(user, {
+                        username: user.displayName || "",
+                        phone: "",
+                        authProvider: "google"
+                    });
 
-            showMessage(t.googleSuccess || 'Google login successful.', 'success');
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 500);
-        } catch (popupError) {
-            if (popupError.code === 'auth/popup-blocked') {
-                showMessage(
-                    t.popupBlocked || 'Popup was blocked. Redirecting...',
-                    'info',
-                    'You will be redirected to Google for authentication.'
-                );
-                await signInWithRedirect(auth, provider);
-            } else {
-                throw popupError;
+                    showMessage(t.googleSuccess || 'Google login successful.', 'success');
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 500);
+                } catch (popupError) {
+                    if (popupError.code === 'auth/popup-blocked') {
+                        showMessage(
+                            t.popupBlocked || 'Popup was blocked. Redirecting...',
+                            'info',
+                            'You will be redirected to Google for authentication.'
+                        );
+                        await signInWithRedirect(auth, provider);
+                    } else {
+                        throw popupError;
+                    }
+                }
+
+            } catch (error) {
+                console.error("[NOLX] Google error:", error);
+
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    showMessage(
+                        t.accountExists || 'This email is already associated with a different account.',
+                        'warning',
+                        'Please sign in using your original provider (Facebook or Email).'
+                    );
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    showMessage(t.popupCancelled, 'info');
+                } else {
+                    showFirebaseError(error);
+                }
+
+                button.disabled = false;
+                button.innerHTML = originalHTML;
             }
-        }
-
-    } catch (error) {
-        console.error("[NOLX] Google error:", error);
-
-        if (error.code === 'auth/account-exists-with-different-credential') {
-            showMessage(
-                t.accountExists || 'This email is already associated with a different account.',
-                'warning',
-                'Please sign in using your original provider (Facebook or Email).'
-            );
-        } else if (error.code === 'auth/popup-closed-by-user') {
-            showMessage(t.popupCancelled, 'info');
-        } else {
-            showFirebaseError(error);
-        }
-
-        button.disabled = false;
-        button.innerHTML = originalHTML;
-    }
-};
+        };
 
         /* =========================
            FACEBOOK LOGIN

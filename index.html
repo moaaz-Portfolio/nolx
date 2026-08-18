@@ -52,10 +52,14 @@
             const userInfo = document.getElementById('userInfo');
             const userName = document.getElementById('userName');
             const userAvatar = document.getElementById('userAvatar');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const mobileCreateBtn = document.getElementById('mobileCreateBtn');
 
             if (user) {
                 if (loginBtn) loginBtn.style.display = 'none';
                 if (createBtn) createBtn.style.display = 'none';
+                if (mobileLoginBtn) mobileLoginBtn.style.display = 'none';
+                if (mobileCreateBtn) mobileCreateBtn.style.display = 'none';
                 if (userInfo) userInfo.style.display = 'flex';
 
                 const name = user.displayName || user.email?.split('@')[0] || 'User';
@@ -71,6 +75,8 @@
             } else {
                 if (loginBtn) loginBtn.style.display = 'inline-flex';
                 if (createBtn) createBtn.style.display = 'inline-flex';
+                if (mobileLoginBtn) mobileLoginBtn.style.display = 'flex';
+                if (mobileCreateBtn) mobileCreateBtn.style.display = 'flex';
                 if (userInfo) userInfo.style.display = 'none';
             }
         });
@@ -738,10 +744,215 @@
             white-space: nowrap;
         }
 
-        /* ===== إظهار السهم على الجوال فقط ===== */
+        /* ===== Mobile Menu ===== */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            position: relative;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #005840;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 320px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: -10px 0 40px rgba(0, 88, 64, 0.1);
+            z-index: 999;
+            padding: 80px 30px 30px;
+            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open {
+            right: 0;
+        }
+
+        .mobile-menu .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .mobile-menu.open .menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-menu .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 88, 64, 0.1);
+        }
+
+        .mobile-menu .menu-header .brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #005840;
+        }
+
+        .mobile-menu .menu-header .brand span {
+            color: #D1F843;
+            font-weight: 400;
+        }
+
+        .mobile-menu .menu-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #005840;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu .menu-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .mobile-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            color: #005840;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .mobile-menu .menu-item:hover {
+            background: rgba(209, 248, 67, 0.2);
+            transform: translateX(6px);
+        }
+
+        .mobile-menu .menu-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: #D1F843;
+        }
+
+        .mobile-menu .menu-divider {
+            height: 1px;
+            background: rgba(0, 88, 64, 0.1);
+            margin: 6px 0;
+        }
+
+        .mobile-menu .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .mobile-menu .menu-buttons .btn-primary,
+        .mobile-menu .menu-buttons .btn-outline {
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .mobile-menu .menu-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 88, 64, 0.1);
+            font-size: 0.8rem;
+            color: rgba(0, 88, 64, 0.5);
+            text-align: center;
+        }
+
+        /* ===== Mobile Lang Button ===== */
+        .mobile-lang-btn {
+            display: none;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 88, 64, 0.2);
+            color: #005840;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mobile-lang-btn:hover {
+            background: #005840;
+            color: #D1F843;
+            border-color: #005840;
+            transform: translateY(-2px);
+        }
+
+        /* ===== إظهار أزرار الجوال ===== */
         @media (max-width: 768px) {
             .scroll-indicator {
                 display: flex !important;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .mobile-lang-btn {
+                display: flex !important;
+            }
+            .desktop-actions {
+                display: none !important;
             }
         }
 
@@ -749,36 +960,12 @@
         @media (max-width: 640px) {
             .header-el {
                 flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center !important;
-                padding: 12px 16px !important;
+                gap: 8px;
+                justify-content: space-between !important;
+                padding: 10px 16px !important;
             }
             .header-el nav {
                 display: none !important;
-            }
-            .header-el .flex {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
-            }
-            #loginBtn, #createBtn {
-                font-size: 11px !important;
-                padding: 8px 14px !important;
-            }
-            .lang-btn {
-                font-size: 11px !important;
-                padding: 6px 12px !important;
-            }
-            .user-name-display {
-                font-size: 11px !important;
-                max-width: 60px !important;
-            }
-            .user-avatar {
-                width: 32px !important;
-                height: 32px !important;
-            }
-            #userInfo {
-                gap: 6px !important;
             }
 
             .loader-brand-box {
@@ -871,6 +1058,15 @@
                 height: 4px !important;
             }
 
+            .mobile-menu {
+                width: 85%;
+                padding: 70px 20px 20px;
+            }
+            .mobile-menu .menu-item {
+                font-size: 1rem;
+                padding: 12px 14px;
+            }
+
             footer {
                 padding: 16px !important;
             }
@@ -905,24 +1101,23 @@
         }
 
         @media (max-width: 400px) {
-            .header-el .flex {
-                gap: 4px !important;
+            .header-el {
+                padding: 8px 12px !important;
             }
-            #loginBtn, #createBtn {
-                font-size: 10px !important;
-                padding: 6px 10px !important;
+            .header-el .text-xl {
+                font-size: 1.1rem !important;
             }
             .lang-btn {
                 font-size: 10px !important;
-                padding: 4px 8px !important;
+                padding: 4px 10px !important;
             }
-            .user-name-display {
-                font-size: 10px !important;
-                max-width: 50px !important;
+            .mobile-menu-btn {
+                width: 38px;
+                height: 38px;
             }
-            .user-avatar {
-                width: 28px !important;
-                height: 28px !important;
+            .mobile-menu-btn span {
+                width: 18px;
+                height: 2px;
             }
             main h1 {
                 font-size: 1.5rem !important;
@@ -978,20 +1173,23 @@
         <div class="text-xl sm:text-2xl font-extrabold tracking-widest text-[#005840] flex items-center gap-3">
             NOLX <span class="text-[#D1F843] font-light">PAGES</span>
         </div>
+
+        <!-- Navigation Desktop -->
         <nav class="hidden md:flex gap-8 lg:gap-10 items-center text-sm lg:text-base">
             <a href="#" class="nav-link" data-i18n="navHome">Home</a>
             <a href="#" class="nav-link" data-i18n="navTemplates">Templates</a>
             <a href="#" class="nav-link" data-i18n="navFeatures">Features</a>
             <a href="#" class="nav-link" data-i18n="navContact">Contact Us</a>
         </nav>
-        <div class="flex items-center gap-3 sm:gap-4">
 
-            <button id="langToggleBtn" class="lang-btn" onclick="toggleLanguage()">
+        <!-- Desktop Actions -->
+        <div class="desktop-actions flex items-center gap-3 sm:gap-4">
+            <!-- زر اللغة على الديسكتوب -->
+            <button class="lang-btn" onclick="toggleLanguage()">
                 <i class="fas fa-globe"></i> <span id="langText">AR</span>
             </button>
 
             <a id="loginBtn" href="login.html" class="btn-outline text-xs sm:text-sm px-5 sm:px-6 py-2.5" data-i18n="btnLogin">Login</a>
-
             <a id="createBtn" href="login.html?mode=signup" class="btn-primary text-xs sm:text-sm px-6 sm:px-7 py-2.5" data-i18n="btnCreate">Create Account</a>
 
             <div id="userInfo" class="flex items-center gap-3" style="display: none;">
@@ -1000,9 +1198,58 @@
                     <img id="userAvatar" class="user-avatar" src="" alt="User" />
                 </a>
             </div>
-
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="menu-overlay" onclick="closeMobileMenu()"></div>
+
+        <div class="menu-header">
+            <div class="brand">NOLX <span>PAGES</span></div>
+            <button class="menu-close" onclick="closeMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <a href="#" class="menu-item" data-i18n="navHome">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" class="menu-item" data-i18n="navTemplates">
+            <i class="fas fa-th-large"></i> Templates
+        </a>
+        <a href="#" class="menu-item" data-i18n="navFeatures">
+            <i class="fas fa-gem"></i> Features
+        </a>
+        <a href="#" class="menu-item" data-i18n="navContact">
+            <i class="fas fa-envelope"></i> Contact Us
+        </a>
+
+        <div class="menu-divider"></div>
+
+        <!-- زر اللغة في القائمة الجانبية -->
+        <button class="mobile-lang-btn" onclick="toggleLanguage()" style="width:100%;justify-content:center;padding:12px;">
+            <i class="fas fa-globe"></i> <span id="mobileLangText">AR</span>
+        </button>
+
+        <div class="menu-divider"></div>
+
+        <div class="menu-buttons">
+            <a id="mobileLoginBtn" href="login.html" class="btn-outline text-center" data-i18n="btnLogin">Login</a>
+            <a id="mobileCreateBtn" href="login.html?mode=signup" class="btn-primary text-center" data-i18n="btnCreate">Create Account</a>
+        </div>
+
+        <div class="menu-footer">
+            <p>© 2026 Nolx Pages</p>
+        </div>
+    </div>
 
     <!-- المحتوى الرئيسي -->
     <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center flex flex-col justify-center items-center">
@@ -1313,6 +1560,7 @@
             document.documentElement.lang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
             document.getElementById('langText').innerText = lang === 'ar' ? 'EN' : 'AR';
+            document.getElementById('mobileLangText').innerText = lang === 'ar' ? 'EN' : 'AR';
 
             if (lang === 'ar') {
                 document.body.classList.add('rtl');
@@ -1345,6 +1593,34 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
+        });
+
+        // ========== Mobile Menu ==========
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            mobileMenuBtn.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.mobile-menu .menu-item, .mobile-menu .menu-buttons a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeMobileMenu();
         });
 
         // ========== شريط التقدم العلوي ==========

@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NOLX | الدعم الفني</title>
 
     <!-- GOOGLE FONTS -->
@@ -36,164 +36,302 @@
     </script>
 
     <style>
+        /* ===== RESET & BASE ===== */
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            font-family: "Cairo", sans-serif;
+            background: #e9efed;
         }
         body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: "Cairo", sans-serif;
             background:
                 radial-gradient(circle at 10% 10%, rgba(209, 249, 67, 0.20), transparent 28%),
                 radial-gradient(circle at 90% 15%, rgba(0, 88, 64, 0.12), transparent 30%),
                 radial-gradient(circle at 50% 100%, rgba(0, 88, 64, 0.10), transparent 35%),
                 #e9efed;
-            overflow-x: hidden;
         }
 
-        .glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.38));
-            backdrop-filter: blur(35px) saturate(150%);
-            -webkit-backdrop-filter: blur(35px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.75);
-            box-shadow: 0 35px 100px rgba(0, 61, 45, 0.13);
-        }
-
+        /* ===== BLOBS ===== */
         .blob {
             position: fixed;
             border-radius: 999px;
-            filter: blur(70px);
-            opacity: 0.35;
+            filter: blur(80px);
+            opacity: 0.30;
             pointer-events: none;
             z-index: 0;
+            animation: blobFloat 10s ease-in-out infinite alternate;
         }
         .blob-one {
-            width: 300px;
-            height: 300px;
-            background: #D1F843;
-            top: -100px;
-            left: -100px;
-        }
-        .blob-two {
             width: 350px;
             height: 350px;
+            background: #D1F843;
+            top: -120px;
+            left: -120px;
+            animation-delay: 0s;
+        }
+        .blob-two {
+            width: 400px;
+            height: 400px;
             background: #005840;
-            right: -150px;
-            bottom: -150px;
+            right: -180px;
+            bottom: -180px;
+            animation-delay: 4s;
+        }
+        .blob-three {
+            width: 200px;
+            height: 200px;
+            background: rgba(0, 88, 64, 0.10);
+            top: 40%;
+            right: 20%;
+            animation-delay: 8s;
         }
 
-        .chat-container {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-            margin: 20px auto;
-            height: calc(100vh - 40px);
-            display: flex;
-            flex-direction: column;
-            border-radius: 32px;
-            overflow: hidden;
+        @keyframes blobFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(20px, -30px) scale(1.05);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+            100% {
+                transform: translate(30px, -10px) scale(1.08);
+            }
         }
 
-        /* ===== BUBBLES ===== */
-        .message-bubble-user {
-            background: linear-gradient(135deg, #005840, #003d2d);
-            color: #D1F843;
-            border-radius: 18px 18px 0 18px;
-            padding: 12px 18px;
-            max-width: 80%;
-            word-wrap: break-word;
-            box-shadow: 0 4px 15px rgba(0, 88, 64, 0.15);
-        }
-
-        .message-bubble-admin {
-            background: rgba(255, 255, 255, 0.85);
-            color: #005840;
-            border-radius: 18px 18px 18px 0;
-            padding: 12px 18px;
-            max-width: 80%;
-            word-wrap: break-word;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .message-bubble-system {
-            background: rgba(209, 249, 67, 0.15);
-            color: #005840;
-            border-radius: 99px;
-            padding: 6px 18px;
-            font-size: 11px;
-            font-weight: 700;
-            text-align: center;
-            max-width: 80%;
-            margin: 8px auto;
-            border: 1px dashed rgba(0, 88, 64, 0.15);
-        }
-
-        /* ===== ADMIN JOIN CARD ===== */
-        .admin-join-card {
-            background: linear-gradient(135deg, rgba(0, 88, 64, 0.06), rgba(209, 249, 67, 0.06));
-            border: 2px solid rgba(0, 88, 64, 0.12);
-            border-radius: 18px;
-            padding: 14px 20px;
-            max-width: 85%;
-            margin: 8px auto;
-            text-align: center;
-            display: flex;
+        /* ===== LOGIN OVERLAY ===== */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 9999;
+            display: none;
             align-items: center;
             justify-content: center;
-            gap: 14px;
-            animation: adminJoinAnim 0.6s ease;
-            backdrop-filter: blur(5px);
+            padding: 20px;
+            animation: overlayIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .admin-join-card .admin-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #005840, #003d2d);
+        .login-overlay.show {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #D1F843;
-            font-size: 20px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(0, 88, 64, 0.15);
         }
 
-        .admin-join-card .admin-info {
-            text-align: right;
-        }
-        .admin-join-card .admin-info .name {
-            font-weight: 900;
-            color: #005840;
-            font-size: 14px;
-        }
-        .admin-join-card .admin-info .status {
-            font-size: 11px;
-            color: rgba(0, 88, 64, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .admin-join-card .admin-info .status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes adminJoinAnim {
+        @keyframes overlayIn {
             0% {
                 opacity: 0;
-                transform: scale(0.95) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .login-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.70));
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 40px 36px 36px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.12);
+            animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(30px);
             }
             100% {
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
+        }
+
+        .login-card .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: #005840;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .login-card .logo span {
+            color: #003d2d;
+            font-weight: 300;
+        }
+        .login-card .sub-logo {
+            font-size: 13px;
+            color: rgba(0, 88, 64, 0.35);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .login-card .icon {
+            font-size: 56px;
+            color: #005840;
+            margin-bottom: 12px;
+            display: block;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .login-card h2 {
+            font-size: 22px;
+            font-weight: 900;
+            color: #005840;
+            margin-bottom: 6px;
+        }
+        .login-card p {
+            font-size: 14px;
+            color: rgba(0, 88, 64, 0.45);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .login-card .btn-login {
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
+            border: none;
+            border-radius: 99px;
+            padding: 14px 32px;
+            font-weight: 800;
+            font-size: 16px;
+            font-family: "Cairo", sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .login-card .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 88, 64, 0.20);
+        }
+        .login-card .btn-login:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== CHAT CONTAINER ===== */
+        .chat-container {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            margin: 12px auto;
+            height: calc(100vh - 24px);
+            display: flex;
+            flex-direction: column;
+            border-radius: 32px;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.50));
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.70);
+            box-shadow: 0 35px 100px rgba(0, 61, 45, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            animation: containerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes containerIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ===== HEADER ===== */
+        .chat-header {
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid rgba(0, 88, 64, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+        }
+        .header-brand .brand {
+            font-weight: 900;
+            font-size: 18px;
+            color: #005840;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+        .header-brand .brand span {
+            font-weight: 300;
+            color: #003d2d;
+        }
+        .header-brand .sub {
+            font-size: 9px;
+            color: rgba(0, 88, 64, 0.30);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 1px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(0, 88, 64, 0.40);
+        }
+        .header-status .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+            flex-shrink: 0;
+        }
+        .header-status .dot.connected {
+            background: #22c55e;
+        }
+        .header-status .dot.connecting {
+            background: #eab308;
+        }
+        .header-status .dot.disconnected {
+            background: #ef4444;
+            animation: none;
+        }
+        .header-status .dot.admin-online {
+            background: #005840;
         }
 
         @keyframes pulse {
@@ -204,51 +342,347 @@
             }
             50% {
                 opacity: 0.4;
-                transform: scale(0.8);
+                transform: scale(0.7);
             }
         }
 
-        /* ===== BADGE ===== */
-        .message-badge {
-            display: inline-block;
+        .header-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .header-actions button {
+            background: rgba(255, 255, 255, 0.30);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            color: rgba(0, 88, 64, 0.30);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-actions button:hover {
             background: rgba(0, 88, 64, 0.06);
-            border: 1px solid rgba(0, 88, 64, 0.06);
+            color: #005840;
+            transform: rotate(5deg);
+        }
+
+        /* ===== MESSAGES ===== */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px 8px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .messages-container::-webkit-scrollbar {
+            width: 3px;
+        }
+        .messages-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .messages-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 88, 64, 0.12);
             border-radius: 99px;
-            padding: 2px 12px;
-            font-size: 9px;
-            color: rgba(0, 88, 64, 0.3);
+        }
+
+        /* ===== MESSAGE WRAPPER ===== */
+        .message-wrapper {
+            display: flex;
+            margin-bottom: 8px;
+            animation: messageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .message-wrapper.justify-end {
+            justify-content: flex-end;
+        }
+        .message-wrapper.justify-start {
+            justify-content: flex-start;
+        }
+        .message-wrapper.justify-center {
+            justify-content: center;
+        }
+
+        @keyframes messageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(14px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== BUBBLES ===== */
+        .bubble-user {
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
+            border-radius: 18px 18px 4px 18px;
+            padding: 10px 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+            box-shadow: 0 4px 20px rgba(0, 88, 64, 0.12);
+            position: relative;
+        }
+
+        .bubble-admin {
+            background: rgba(255, 255, 255, 0.90);
+            color: #005840;
+            border-radius: 18px 18px 18px 4px;
+            padding: 10px 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+            border: 1px solid rgba(255, 255, 255, 0.50);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .bubble-system {
+            background: rgba(209, 249, 67, 0.10);
+            color: #005840;
+            border-radius: 99px;
+            padding: 5px 18px;
+            font-size: 11px;
             font-weight: 700;
-            margin-bottom: 4px;
+            text-align: center;
+            max-width: 85%;
+            border: 1px dashed rgba(0, 88, 64, 0.06);
+            animation: systemIn 0.5s ease;
         }
 
-        .message-time {
-            font-size: 9px;
-            opacity: 0.5;
-            margin-top: 4px;
+        @keyframes systemIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.90);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .bubble-badge {
+            display: inline-block;
+            background: rgba(0, 88, 64, 0.05);
+            border-radius: 99px;
+            padding: 1px 10px;
+            font-size: 8px;
+            color: rgba(0, 88, 64, 0.30);
+            font-weight: 800;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .bubble-time {
+            font-size: 8px;
+            opacity: 0.35;
+            margin-top: 3px;
             display: block;
+            font-weight: 600;
         }
 
-        /* ===== INPUTS ===== */
-        .input-field {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 88, 64, 0.12);
-            border-radius: 18px;
+        /* ===== ADMIN JOIN CARD ===== */
+        .admin-join-card {
+            background: linear-gradient(135deg, rgba(0, 88, 64, 0.03), rgba(209, 249, 67, 0.03));
+            border: 2px solid rgba(0, 88, 64, 0.06);
+            border-radius: 20px;
             padding: 12px 20px;
+            max-width: 85%;
+            margin: 4px auto;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: adminJoinIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes adminJoinIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.90) translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .admin-join-card .icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #005840, #003d2d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D1F843;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 88, 64, 0.10);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .admin-join-card .info .name {
+            font-weight: 900;
+            color: #005840;
+            font-size: 13px;
+        }
+        .admin-join-card .info .status {
+            font-size: 10px;
+            color: rgba(0, 88, 64, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .admin-join-card .info .status .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* ===== QUICK REPLIES ===== */
+        .quick-replies-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 6px 16px 4px;
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            max-height: 180px;
+        }
+        .quick-replies-grid.hidden {
+            max-height: 0;
+            padding: 0 16px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .quick-reply {
+            background: rgba(255, 255, 255, 0.50);
+            border: 1px solid rgba(0, 88, 64, 0.05);
+            border-radius: 99px;
+            padding: 6px 14px;
+            font-size: 10px;
+            color: #005840;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1 0 auto;
+            min-width: 44%;
+            backdrop-filter: blur(5px);
+            animation: qrIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .quick-reply:nth-child(1) {
+            animation-delay: 0.04s;
+        }
+        .quick-reply:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+        .quick-reply:nth-child(3) {
+            animation-delay: 0.12s;
+        }
+        .quick-reply:nth-child(4) {
+            animation-delay: 0.16s;
+        }
+        .quick-reply:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+        .quick-reply:nth-child(6) {
+            animation-delay: 0.24s;
+        }
+        .quick-reply:nth-child(7) {
+            animation-delay: 0.28s;
+        }
+        .quick-reply:nth-child(8) {
+            animation-delay: 0.32s;
+        }
+
+        @keyframes qrIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.90) translateY(6px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .quick-reply:hover {
+            background: rgba(0, 88, 64, 0.06);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 88, 64, 0.06);
+        }
+        .quick-reply:active {
+            transform: scale(0.95);
+        }
+        .quick-reply i {
+            font-size: 12px;
+            opacity: 0.30;
+        }
+
+        /* ===== FOOTER ===== */
+        .chat-footer {
+            padding: 10px 16px 14px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 88, 64, 0.03);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 22px;
+            padding: 3px;
+            border: 1px solid rgba(0, 88, 64, 0.04);
+            transition: all 0.3s ease;
+        }
+        .input-wrapper:focus-within {
+            background: rgba(255, 255, 255, 0.80);
+            border-color: rgba(0, 88, 64, 0.10);
+            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.03);
+        }
+
+        .input-field {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 16px;
             color: #005840;
             font-family: "Cairo", sans-serif;
+            font-size: 14px;
             outline: none;
-            transition: 0.3s;
-        }
-        .input-field:focus {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: #005840;
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07);
+            min-height: 44px;
+            line-height: 1.5;
         }
         .input-field::placeholder {
-            color: rgba(0, 88, 64, 0.35);
+            color: rgba(0, 88, 64, 0.25);
+            font-weight: 500;
         }
         .input-field:disabled {
-            opacity: 0.4;
+            opacity: 0.40;
             cursor: not-allowed;
         }
 
@@ -256,166 +690,102 @@
             background: linear-gradient(135deg, #005840, #003d2d);
             color: #D1F843;
             border: none;
-            border-radius: 18px;
-            padding: 12px 24px;
+            border-radius: 99px;
+            padding: 9px 18px;
             font-weight: 800;
             font-family: "Cairo", sans-serif;
             cursor: pointer;
-            transition: 0.3s;
-            min-width: 100px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            min-width: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            flex-shrink: 0;
+            height: 44px;
         }
-        .send-btn:hover {
+        .send-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 88, 64, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 88, 64, 0.15);
+        }
+        .send-btn:active:not(:disabled) {
+            transform: scale(0.95);
         }
         .send-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.40;
             cursor: not-allowed;
             transform: none;
         }
-
-        /* ===== STATUS ===== */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-        .status-dot.connected {
-            background: #22c55e;
-        }
-        .status-dot.connecting {
-            background: #eab308;
-        }
-        .status-dot.disconnected {
-            background: #ef4444;
-            animation: none;
-        }
-        .status-dot.admin-online {
-            background: #005840;
-        }
-
-        /* ===== CONTAINERS ===== */
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 24px;
-            scroll-behavior: smooth;
-        }
-        .messages-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .messages-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .messages-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 88, 64, 0.2);
-            border-radius: 99px;
-        }
-
-        .chat-footer {
-            padding: 16px 24px 24px;
-            gap: 12px;
-        }
-
-        .header-title {
-            font-weight: 900;
-            color: #005840;
-            letter-spacing: 0.05em;
-        }
-        .header-sub {
-            color: rgba(0, 88, 64, 0.5);
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* ===== QUICK REPLIES ===== */
-        .quick-reply {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 88, 64, 0.08);
-            border-radius: 99px;
-            padding: 8px 16px;
-            font-size: 12px;
-            color: #005840;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1 0 auto;
-            min-width: 45%;
-        }
-        .quick-reply:hover {
-            background: rgba(0, 88, 64, 0.08);
-            transform: translateY(-1px);
-        }
-        .quick-reply i {
-            font-size: 14px;
-            color: #005840;
-            opacity: 0.5;
-        }
-
-        .quick-replies-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 8px 16px 4px;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            color: rgba(0, 88, 64, 0.3);
-            margin-top: 35%;
-        }
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            display: block;
-        }
-        .empty-state h3 {
-            font-weight: 900;
-            color: rgba(0, 88, 64, 0.4);
-            font-size: 18px;
-        }
-        .empty-state p {
+        .send-btn i {
             font-size: 13px;
-            margin-top: 4px;
         }
 
         /* ===== OFFLINE FORM ===== */
         .offline-form {
             display: none;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 18px;
-            margin: 10px 16px;
+            padding: 14px 18px 16px;
+            background: rgba(255, 255, 255, 0.40);
+            border-radius: 20px;
+            margin: 4px 16px 2px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 88, 64, 0.03);
+            animation: formIn 0.4s ease;
         }
         .offline-form.show {
             display: block;
         }
+
+        @keyframes formIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .offline-form h4 {
+            font-weight: 900;
+            color: #005840;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+        .offline-form p {
+            font-size: 10px;
+            color: rgba(0, 88, 64, 0.30);
+            margin-bottom: 10px;
+        }
         .offline-form input,
         .offline-form textarea {
             width: 100%;
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 88, 64, 0.12);
-            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 88, 64, 0.06);
+            background: rgba(255, 255, 255, 0.60);
             font-family: "Cairo", sans-serif;
             outline: none;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             color: #005840;
+            font-size: 12px;
+            transition: 0.3s;
         }
         .offline-form input:focus,
         .offline-form textarea:focus {
             border-color: #005840;
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.07);
+            background: rgba(255, 255, 255, 0.80);
+            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.03);
         }
         .offline-form textarea {
-            min-height: 80px;
+            min-height: 60px;
             resize: vertical;
+        }
+        .offline-form .send-btn {
+            width: 100%;
+            height: 40px;
+            font-size: 12px;
         }
 
         /* ===== RATING MODAL ===== */
@@ -423,62 +793,230 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            z-index: 999;
+            background: rgba(0, 0, 0, 0.30);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 9999;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+            animation: modalOverlay 0.4s ease;
         }
         .rating-modal.show {
             display: flex;
         }
+
+        @keyframes modalOverlay {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
         .rating-modal .modal-content {
             background: white;
             border-radius: 32px;
-            padding: 40px;
-            max-width: 400px;
-            width: 90%;
+            padding: 32px 28px 28px;
+            max-width: 360px;
+            width: 100%;
             text-align: center;
-            animation: modalIn 0.3s ease;
+            animation: modalContent 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.10);
         }
-        @keyframes modalIn {
-            from {
+
+        @keyframes modalContent {
+            0% {
                 opacity: 0;
-                transform: scale(0.95) translateY(20px);
+                transform: scale(0.90) translateY(20px);
             }
-            to {
+            100% {
                 opacity: 1;
                 transform: scale(1) translateY(0);
             }
         }
-        .rating-modal h3 {
+
+        .rating-modal .modal-content .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 8px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.10);
+            }
+        }
+
+        .rating-modal .modal-content h3 {
             color: #005840;
             font-weight: 900;
-            font-size: 20px;
-            margin-bottom: 8px;
+            font-size: 18px;
+            margin-bottom: 4px;
         }
-        .rating-modal p {
-            color: rgba(0, 88, 64, 0.5);
-            font-size: 13px;
+        .rating-modal .modal-content p {
+            color: rgba(0, 88, 64, 0.35);
+            font-size: 12px;
             margin-bottom: 16px;
         }
 
-        /* ===== STARS RATING ===== */
         .star-rating {
             display: flex;
             gap: 8px;
             justify-content: center;
             direction: ltr;
+            margin-bottom: 14px;
         }
         .star-rating i {
-            font-size: 32px;
+            font-size: 30px;
             color: #d1d5db;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.20s ease;
         }
-        .star-rating i:hover,
+        .star-rating i:hover {
+            transform: scale(1.15);
+            color: #f59e0b;
+        }
         .star-rating i.active {
             color: #f59e0b;
+            animation: starPop 0.30s ease;
+        }
+
+        @keyframes starPop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.30);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .rating-modal .skip-btn {
+            background: transparent;
+            border: none;
+            color: rgba(0, 88, 64, 0.20);
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: "Cairo", sans-serif;
+            transition: 0.3s;
+        }
+        .rating-modal .skip-btn:hover {
+            color: #005840;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            color: rgba(0, 88, 64, 0.15);
+            margin-top: 25%;
+            animation: emptyIn 0.8s ease;
+        }
+
+        @keyframes emptyIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+            color: rgba(0, 88, 64, 0.08);
+            animation: floatIcon 4s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .empty-state h3 {
+            font-weight: 900;
+            color: rgba(0, 88, 64, 0.20);
+            font-size: 17px;
+        }
+        .empty-state p {
+            font-size: 12px;
+            margin-top: 2px;
+            color: rgba(0, 88, 64, 0.12);
+        }
+
+        /* ===== TYPING INDICATOR ===== */
+        .typing-indicator {
+            display: none;
+            padding: 2px 0 4px;
+            animation: typingIn 0.3s ease;
+        }
+        .typing-indicator.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 8px;
+        }
+
+        @keyframes typingIn {
+            0% {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-indicator .dots span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(0, 88, 64, 0.15);
+            animation: typingBounce 1.2s infinite;
+            margin: 0 1px;
+        }
+        .typing-indicator .dots span:nth-child(2) {
+            animation-delay: 0.20s;
+        }
+        .typing-indicator .dots span:nth-child(3) {
+            animation-delay: 0.40s;
+        }
+
+        @keyframes typingBounce {
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .typing-indicator .label {
+            font-size: 10px;
+            color: rgba(0, 88, 64, 0.20);
+            font-weight: 700;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -487,62 +1025,317 @@
                 margin: 0;
                 height: 100vh;
                 border-radius: 0;
+                max-width: 100%;
             }
-            .messages-container {
-                padding: 16px;
+            .chat-header {
+                padding: 12px 14px 10px;
             }
-            .chat-footer {
-                padding: 12px 16px 16px;
-            }
-            .send-btn {
-                min-width: 70px;
-                padding: 12px 16px;
-                font-size: 13px;
-            }
-            .input-field {
-                font-size: 14px;
-                padding: 10px 16px;
-            }
-            .rating-modal .modal-content {
-                padding: 24px;
-            }
-            .admin-join-card {
-                padding: 12px 16px;
-                gap: 10px;
-            }
-            .admin-join-card .admin-icon {
-                width: 36px;
-                height: 36px;
+            .header-brand .brand {
                 font-size: 16px;
             }
-            .admin-join-card .admin-info .name {
-                font-size: 13px;
+            .header-brand .sub {
+                font-size: 8px;
             }
-            .offline-form {
-                margin: 10px 12px;
-                padding: 16px;
+            .header-status {
+                font-size: 9px;
+            }
+            .messages-container {
+                padding: 12px 14px 6px;
+            }
+            .bubble-user,
+            .bubble-admin {
+                padding: 8px 14px;
+                font-size: 13px;
+                max-width: 85%;
+            }
+            .bubble-system {
+                font-size: 10px;
+                padding: 4px 14px;
+            }
+            .admin-join-card {
+                padding: 10px 14px;
+                gap: 10px;
+            }
+            .admin-join-card .icon {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            .admin-join-card .info .name {
+                font-size: 12px;
+            }
+            .admin-join-card .info .status {
+                font-size: 9px;
+            }
+            .quick-replies-grid {
+                padding: 4px 12px 2px;
+                gap: 4px;
             }
             .quick-reply {
-                font-size: 11px;
-                padding: 6px 12px;
-                min-width: 42%;
+                font-size: 9px;
+                padding: 5px 10px;
+                min-width: 44%;
             }
             .quick-reply i {
+                font-size: 10px;
+            }
+            .chat-footer {
+                padding: 8px 12px 10px;
+            }
+            .input-wrapper {
+                border-radius: 18px;
+                gap: 4px;
+            }
+            .input-field {
+                font-size: 13px;
+                padding: 8px 12px;
+                min-height: 38px;
+            }
+            .send-btn {
                 font-size: 12px;
+                padding: 7px 14px;
+                min-width: 56px;
+                height: 38px;
+            }
+            .send-btn i {
+                font-size: 12px;
+            }
+            .offline-form {
+                padding: 10px 14px 12px;
+                margin: 2px 12px 0;
+            }
+            .offline-form input,
+            .offline-form textarea {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+            .rating-modal .modal-content {
+                padding: 24px 20px 20px;
+                max-width: 320px;
+            }
+            .rating-modal .modal-content .icon {
+                font-size: 40px;
+            }
+            .rating-modal .modal-content h3 {
+                font-size: 16px;
+            }
+            .star-rating i {
+                font-size: 26px;
+            }
+            .empty-state {
+                margin-top: 20%;
+            }
+            .empty-state i {
+                font-size: 40px;
+            }
+            .empty-state h3 {
+                font-size: 15px;
+            }
+            .login-card {
+                padding: 28px 24px 24px;
+            }
+            .login-card .logo {
+                font-size: 26px;
+            }
+            .login-card .icon {
+                font-size: 44px;
+            }
+            .login-card h2 {
+                font-size: 18px;
+            }
+        }
+
+        @media(max-width: 400px) {
+            .header-brand .brand {
+                font-size: 14px;
+            }
+            .header-actions button {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            .messages-container {
+                padding: 8px 10px 4px;
+            }
+            .bubble-user,
+            .bubble-admin {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .quick-reply {
+                font-size: 8px;
+                padding: 4px 8px;
+                min-width: 100%;
+            }
+            .input-field {
+                font-size: 12px;
+                padding: 6px 10px;
+                min-height: 34px;
+            }
+            .send-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                min-width: 48px;
+                height: 34px;
+            }
+            .send-btn i {
+                font-size: 10px;
+            }
+            .chat-footer {
+                padding: 6px 8px 8px;
+            }
+            .login-card {
+                padding: 20px 16px 20px;
+            }
+            .login-card .logo {
+                font-size: 22px;
+            }
+            .login-card .icon {
+                font-size: 36px;
+            }
+            .login-card h2 {
+                font-size: 16px;
+            }
+            .login-card p {
+                font-size: 12px;
+            }
+        }
+
+        /* ===== KEYBOARD FIX ===== */
+        @media(max-height: 700px) {
+            .chat-header {
+                padding: 8px 12px 6px;
+            }
+            .header-brand .brand {
+                font-size: 15px;
+            }
+            .header-status {
+                font-size: 8px;
+            }
+            .messages-container {
+                padding: 6px 12px 4px;
+            }
+            .bubble-user,
+            .bubble-admin {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .chat-footer {
+                padding: 4px 8px 6px;
+            }
+            .input-field {
+                min-height: 32px;
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .send-btn {
+                height: 32px;
+                padding: 5px 10px;
+                font-size: 11px;
+                min-width: 44px;
+            }
+            .quick-replies-grid {
+                padding: 2px 10px 0;
+                gap: 3px;
+            }
+            .quick-reply {
+                font-size: 8px;
+                padding: 3px 8px;
+                min-width: 44%;
+            }
+            .admin-join-card {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+            .admin-join-card .icon {
+                width: 26px;
+                height: 26px;
+                font-size: 12px;
+            }
+            .admin-join-card .info .name {
+                font-size: 11px;
+            }
+            .admin-join-card .info .status {
+                font-size: 8px;
+            }
+            .empty-state {
+                margin-top: 15%;
+            }
+            .empty-state i {
+                font-size: 32px;
+            }
+            .empty-state h3 {
+                font-size: 13px;
+            }
+            .empty-state p {
+                font-size: 10px;
+            }
+        }
+
+        /* ===== SAFE AREA ===== */
+        @supports(padding: max(0px)) {
+            .chat-container {
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+            .chat-footer {
+                padding-bottom: max(8px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ===== NOLX BRANDING ===== */
+        .nolx-brand {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 10px;
+            font-weight: 900;
+            color: rgba(0, 88, 64, 0.10);
+            letter-spacing: 3px;
+            pointer-events: none;
+            animation: brandFade 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brandFade {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0.8;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- BACKGROUND -->
+    <!-- ===== BLOBS ===== -->
     <div class="blob blob-one"></div>
     <div class="blob blob-two"></div>
+    <div class="blob blob-three"></div>
+
+    <!-- ===== NOLX BRANDING ===== -->
+    <div class="nolx-brand">NOLX PAGES</div>
+
+    <!-- ===== LOGIN OVERLAY ===== -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-card">
+            <span class="icon">🔒</span>
+            <div class="logo">NOLX <span>PAGES</span></div>
+            <div class="sub-logo">الدعم الفني</div>
+            <h2>تسجيل الدخول مطلوب</h2>
+            <p>يجب عليك تسجيل الدخول أولاً <br>للتواصل مع فريق الدعم</p>
+            <button onclick="goToLogin()" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل الدخول
+            </button>
+        </div>
+    </div>
 
     <!-- ===== RATING MODAL ===== -->
     <div id="ratingModal" class="rating-modal">
         <div class="modal-content">
-            <i class="fas fa-smile" style="font-size: 48px; color: #f59e0b; margin-bottom: 12px;"></i>
+            <span class="icon">😊</span>
             <h3>كيف تقيم تجربتك؟</h3>
             <p>ساعدنا في تحسين الخدمة بتقييمك</p>
             <div class="star-rating" id="starRating">
@@ -552,32 +1345,31 @@
                 <i class="fas fa-star" data-value="4" onclick="rateChat(4)"></i>
                 <i class="fas fa-star" data-value="5" onclick="rateChat(5)"></i>
             </div>
-            <button onclick="closeRating()" class="mt-4 text-[#005840]/50 hover:text-[#005840] text-sm font-bold">تخطي</button>
+            <button onclick="closeRating()" class="skip-btn">تخطي</button>
         </div>
     </div>
 
     <!-- ===== CHAT CONTAINER ===== -->
-    <div class="chat-container glass">
+    <div class="chat-container" id="chatContainer">
 
         <!-- ===== HEADER ===== -->
-        <div class="p-4 border-b border-[#005840]/10 flex items-center justify-between">
-            <div>
-                <div class="header-title text-lg flex items-center gap-2">
-                    <i class="fas fa-headset" style="color: #005840;"></i>
-                    <span>الدعم الفني</span>
-                </div>
-                <div class="header-sub flex items-center gap-2 mt-0.5">
-                    <span class="status-dot" id="statusDot"></span>
-                    <span id="statusText">جاري الاتصال...</span>
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="header-brand">
+                    <div class="brand">NOLX <span>PAGES</span></div>
+                    <div class="sub">الدعم الفني</div>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="window.location.href='index.html'" class="text-[#005840]/40 hover:text-[#005840] transition text-sm">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-                <button onclick="resetChat()" class="text-[#005840]/30 hover:text-red-500 transition text-sm" title="بدء محادثة جديدة">
-                    <i class="fas fa-rotate-right"></i>
-                </button>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="header-status">
+                    <span class="dot" id="statusDot"></span>
+                    <span id="statusText">جاري الاتصال...</span>
+                </div>
+                <div class="header-actions">
+                    <button onclick="window.location.href='index.html'" title="الرئيسية">
+                        <i class="fas fa-home"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -592,32 +1384,32 @@
 
         <!-- ===== OFFLINE FORM ===== -->
         <div id="offlineForm" class="offline-form">
-            <h4 class="font-bold text-[#005840] mb-2">📩 سنرد عليك خلال 24 ساعة</h4>
-            <p class="text-xs text-[#005840]/50 mb-3">الدعم غير متاح حالياً. اترك رسالتك وسنرد عليك قريباً.</p>
+            <h4>📩 سنرد عليك خلال 24 ساعة</h4>
+            <p>الدعم غير متاح حالياً. اترك رسالتك وسنرد عليك قريباً.</p>
             <input id="offlineName" type="text" placeholder="الاسم (اختياري)">
             <input id="offlineEmail" type="email" placeholder="البريد الإلكتروني (للمتابعة)">
             <textarea id="offlineMessage" placeholder="رسالتك..."></textarea>
-            <button onclick="sendOfflineMessage()" class="send-btn w-full">إرسال</button>
+            <button onclick="sendOfflineMessage()" class="send-btn">إرسال</button>
         </div>
 
-        <!-- ===== QUICK REPLIES - اقتراحات المشاكل ===== -->
-        <div class="quick-replies-grid">
+        <!-- ===== QUICK REPLIES ===== -->
+        <div class="quick-replies-grid" id="quickReplies">
             <button class="quick-reply" onclick="quickReply('مرحباً، عندي مشكلة في تسجيل الدخول')">
                 <i class="fas fa-sign-in-alt"></i> مشكلة في الدخول
             </button>
             <button class="quick-reply" onclick="quickReply('لم أستلم رابط إعادة تعيين كلمة المرور')">
                 <i class="fas fa-key"></i> نسيت كلمة المرور
             </button>
-            <button class="quick-reply" onclick="quickReply('مشكلة في عملية الدفع، تم خصم المبلغ ولم تكتمل')">
+            <button class="quick-reply" onclick="quickReply('مشكلة في عملية الدفع')">
                 <i class="fas fa-credit-card"></i> مشكلة في الدفع
             </button>
-            <button class="quick-reply" onclick="quickReply('الموقع بطيء أو لا يعمل بشكل جيد')">
+            <button class="quick-reply" onclick="quickReply('الموقع بطيء أو لا يعمل')">
                 <i class="fas fa-globe"></i> مشكلة في الموقع
             </button>
-            <button class="quick-reply" onclick="quickReply('أريد معلومات عن الخدمات المتاحة')">
+            <button class="quick-reply" onclick="quickReply('أريد معلومات عن الخدمات')">
                 <i class="fas fa-info-circle"></i> استفسار عن الخدمة
             </button>
-            <button class="quick-reply" onclick="quickReply('لدي شكوى أو اقتراح للتطوير')">
+            <button class="quick-reply" onclick="quickReply('لدي شكوى أو اقتراح')">
                 <i class="fas fa-comment"></i> شكوى أو اقتراح
             </button>
             <button class="quick-reply" onclick="quickReply('أريد تعديل بياناتي الشخصية')">
@@ -628,12 +1420,19 @@
             </button>
         </div>
 
+        <!-- ===== TYPING INDICATOR ===== -->
+        <div id="typingIndicator" class="typing-indicator">
+            <span class="label">فريق الدعم يكتب</span>
+            <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+
         <!-- ===== FOOTER ===== -->
         <div class="chat-footer">
-            <div class="flex gap-2">
-                <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." class="input-field flex-1">
+            <div class="input-wrapper">
+                <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." class="input-field" autocomplete="off">
                 <button id="sendBtn" onclick="sendMessage()" class="send-btn">
-                    <i class="fas fa-paper-plane ml-1"></i> إرسال
+                    <i class="fas fa-paper-plane"></i>
+                    <span>إرسال</span>
                 </button>
             </div>
         </div>
@@ -658,14 +1457,6 @@
         const auth = firebase.auth();
 
         // =====================================================
-        // GLOBAL VARIABLES
-        // =====================================================
-        let userId = "";
-        let isSending = false;
-        let chatStatus = "pending";
-        let isAdminOnline = false;
-
-        // =====================================================
         // DOM ELEMENTS
         // =====================================================
         const messagesContainer = document.getElementById('messages-container');
@@ -675,33 +1466,74 @@
         const statusText = document.getElementById('statusText');
         const offlineForm = document.getElementById('offlineForm');
         const ratingModal = document.getElementById('ratingModal');
+        const quickReplies = document.getElementById('quickReplies');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const loginOverlay = document.getElementById('loginOverlay');
 
         // =====================================================
-        // AUTH - تسجيل دخول مجهول
+        // GLOBAL VARIABLES
         // =====================================================
-        auth.signInAnonymously()
-            .then((userCredential) => {
-                userId = userCredential.user.uid;
-                setStatus('connecting', 'جاري الاتصال...');
+        let userId = null;
+        let isSending = false;
+        let chatStatus = "pending";
+        let isAdminOnline = false;
+        let firstMessageSent = false;
+
+        // =====================================================
+        // AUTH - التحقق من حالة تسجيل الدخول
+        // =====================================================
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loginOverlay.classList.remove('show');
+                userId = user.uid;
+                setStatus('connected', 'مرحباً بك!');
                 checkAdminStatus();
                 loadMessages();
                 loadChatStatus();
-            })
-            .catch((error) => {
-                console.error("[NOLX] Auth error:", error);
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                checkIfFirstMessage();
+            } else {
+                loginOverlay.classList.add('show');
+                messageInput.disabled = true;
+                sendBtn.disabled = true;
                 setStatus('disconnected', 'غير متصل');
-            });
+            }
+        });
+
+        // =====================================================
+        // GO TO LOGIN
+        // =====================================================
+        function goToLogin() {
+            window.location.href = 'index.html?redirect=chat';
+        }
+
+        // =====================================================
+        // CHECK IF FIRST MESSAGE
+        // =====================================================
+        function checkIfFirstMessage() {
+            if (!userId) return;
+            db.collection("chats").doc(userId).collection("messages")
+                .limit(1)
+                .get()
+                .then((snapshot) => {
+                    if (!snapshot.empty) {
+                        firstMessageSent = true;
+                        quickReplies.classList.add('hidden');
+                    }
+                });
+        }
 
         // =====================================================
         // STATUS
         // =====================================================
         function setStatus(type, text) {
-            statusDot.className = `status-dot ${type}`;
+            statusDot.className = `dot ${type}`;
             statusText.textContent = text;
         }
 
         // =====================================================
-        // CHECK ADMIN STATUS - هل الأدمن متصل؟
+        // CHECK ADMIN STATUS
         // =====================================================
         function checkAdminStatus() {
             db.collection("adminStatus").doc("online")
@@ -709,12 +1541,12 @@
                     if (doc.exists) {
                         isAdminOnline = doc.data().online || false;
                         if (isAdminOnline) {
-                            setStatus('admin-online', 'أدمن متصل ✅');
+                            setStatus('admin-online', 'فريق الدعم متصل ✅');
                             offlineForm.classList.remove('show');
                             messageInput.disabled = false;
                             sendBtn.disabled = false;
                         } else {
-                            setStatus('connecting', 'في انتظار الأدمن...');
+                            setStatus('connecting', 'في انتظار فريق الدعم...');
                             offlineForm.classList.add('show');
                             messageInput.disabled = true;
                             sendBtn.disabled = true;
@@ -724,9 +1556,10 @@
         }
 
         // =====================================================
-        // LOAD CHAT STATUS - متابعة حالة المحادثة
+        // LOAD CHAT STATUS
         // =====================================================
         function loadChatStatus() {
+            if (!userId) return;
             db.collection("chats").doc(userId)
                 .onSnapshot((doc) => {
                     if (doc.exists) {
@@ -740,9 +1573,10 @@
         }
 
         // =====================================================
-        // LOAD MESSAGES - عرض الرسائل
+        // LOAD MESSAGES
         // =====================================================
         function loadMessages() {
+            if (!userId) return;
             db.collection("chats").doc(userId).collection("messages")
                 .orderBy("timestamp", "asc")
                 .onSnapshot((snapshot) => {
@@ -765,63 +1599,55 @@
                         const isSystem = msg.sender === "system";
                         const isAdmin = msg.sender === "admin";
                         const isAdminJoin = msg.type === "admin_join";
+                        const isAutoReply = msg.type === "auto_reply";
 
-                        const div = document.createElement("div");
+                        const wrapper = document.createElement("div");
 
-                        // ===== رسالة انضمام الأدمن (كارت احترافي) =====
+                        // Admin Join Card
                         if (isAdminJoin) {
-                            div.className = 'flex justify-center my-2';
-                            div.innerHTML = `
+                            wrapper.className = 'message-wrapper justify-center';
+                            wrapper.innerHTML = `
                                 <div class="admin-join-card">
-                                    <div class="admin-icon">
-                                        <i class="fas fa-user-shield"></i>
-                                    </div>
-                                    <div class="admin-info">
-                                        <div class="name">🟢 الدعم الفني</div>
-                                        <div class="status">
-                                            <span class="dot"></span>
-                                            انضم إلى المحادثة
-                                        </div>
+                                    <div class="icon"><i class="fas fa-user-shield"></i></div>
+                                    <div class="info">
+                                        <div class="name">🟢 فريق الدعم</div>
+                                        <div class="status"><span class="dot"></span> انضم إلى المحادثة</div>
                                     </div>
                                 </div>
                             `;
-                            messagesContainer.appendChild(div);
+                            messagesContainer.appendChild(wrapper);
                             return;
                         }
 
-                        // ===== رسائل النظام =====
-                        if (isSystem) {
-                            div.className = 'flex justify-center my-1';
-                            div.innerHTML = `
-                                <div class="message-bubble-system">
-                                    <i class="fas fa-info-circle ml-1"></i> ${msg.text}
+                        // System Message (including auto reply)
+                        if (isSystem || isAutoReply) {
+                            wrapper.className = 'message-wrapper justify-center';
+                            const icon = isAutoReply ? 'fas fa-reply' : 'fas fa-info-circle';
+                            wrapper.innerHTML = `
+                                <div class="bubble-system">
+                                    <i class="${icon} ml-1"></i> ${msg.text}
                                 </div>
                             `;
-                            messagesContainer.appendChild(div);
+                            messagesContainer.appendChild(wrapper);
                             return;
                         }
 
-                        // ===== رسائل المستخدم والأدمن =====
-                        div.className = `flex ${isUser ? 'justify-end' : 'justify-start'} mb-2`;
+                        // User / Admin Message
+                        wrapper.className = `message-wrapper ${isUser ? 'justify-end' : 'justify-start'}`;
                         const bubble = document.createElement("div");
-                        bubble.className = isUser ? 'message-bubble-user' : 'message-bubble-admin';
+                        bubble.className = isUser ? 'bubble-user' : 'bubble-admin';
 
-                        // إضافة badge للأدمن
-                        let badgeHtml = '';
+                        let badge = '';
                         if (isAdmin) {
-                            badgeHtml = `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> دعم فني</div>`;
+                            badge = `<div class="bubble-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
                         }
 
                         const time = msg.timestamp?.toDate?.() || new Date();
                         const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
 
-                        bubble.innerHTML = `
-                            ${badgeHtml}
-                            ${msg.text}
-                            <span class="message-time">${timeStr}</span>
-                        `;
-                        div.appendChild(bubble);
-                        messagesContainer.appendChild(div);
+                        bubble.innerHTML = `${badge}${msg.text}<span class="bubble-time">${timeStr}</span>`;
+                        wrapper.appendChild(bubble);
+                        messagesContainer.appendChild(wrapper);
                     });
 
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -829,27 +1655,68 @@
         }
 
         // =====================================================
-        // SEND MESSAGE - إرسال رسالة من المستخدم
+        // SEND MESSAGE
         // =====================================================
         async function sendMessage() {
             const text = messageInput.value.trim();
             if (!text) return;
             if (!userId || isSending) return;
 
+            // Hide quick replies after first message
+            if (!firstMessageSent) {
+                firstMessageSent = true;
+                quickReplies.classList.add('hidden');
+            }
+
             isSending = true;
             sendBtn.disabled = true;
-            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري...';
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
             try {
+                // Get user data
+                let userName = '';
+                let userPhone = '';
+                let userEmail = '';
+
+                const userDoc = await db.collection("users").doc(userId).get();
+                if (userDoc.exists) {
+                    const data = userDoc.data();
+                    userName = data.username || '';
+                    userPhone = data.phone || '';
+                    userEmail = data.email || '';
+                }
+
+                // ===== Save user message =====
                 await db.collection("chats").doc(userId).collection("messages").add({
                     text: text,
                     sender: "user",
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
+                // ===== Check if auto-reply already sent =====
+                const autoMessageCheck = await db.collection("chats").doc(userId).collection("messages")
+                    .where("type", "==", "auto_reply")
+                    .limit(1)
+                    .get();
+
+                // ===== If no auto-reply yet, send one =====
+                if (autoMessageCheck.empty) {
+                    await db.collection("chats").doc(userId).collection("messages").add({
+                        text: 'شكراً لتواصلك معنا، سيتم الرد قريباً',
+                        sender: "system",
+                        type: "auto_reply",
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                // ===== Update chat status =====
                 await db.collection("chats").doc(userId).set({
                     status: "pending",
                     lastMessage: text,
+                    userName: userName,
+                    userPhone: userPhone,
+                    userEmail: userEmail,
+                    autoReplySent: true,
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
 
@@ -862,12 +1729,12 @@
             } finally {
                 isSending = false;
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '<i class="fas fa-paper-plane ml-1"></i> إرسال';
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>إرسال</span>';
             }
         }
 
         // =====================================================
-        // QUICK REPLY - ردود سريعة (اقتراحات المشاكل)
+        // QUICK REPLY
         // =====================================================
         function quickReply(text) {
             messageInput.value = text;
@@ -876,39 +1743,7 @@
         }
 
         // =====================================================
-        // RESET CHAT - إعادة تعيين المحادثة
-        // =====================================================
-        function resetChat() {
-            if (confirm('هل تريد بدء محادثة جديدة؟ سيتم مسح الرسائل الحالية.')) {
-                db.collection("chats").doc(userId).collection("messages")
-                    .get()
-                    .then((snapshot) => {
-                        const batch = db.batch();
-                        snapshot.forEach((doc) => batch.delete(doc.ref));
-                        return batch.commit();
-                    })
-                    .then(() => {
-                        return db.collection("chats").doc(userId).set({
-                            status: "pending",
-                            lastMessage: "",
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        }, { merge: true });
-                    })
-                    .then(() => {
-                        messagesContainer.innerHTML = `
-                            <div class="empty-state">
-                                <i class="fas fa-comment-dots"></i>
-                                <h3>تم بدء محادثة جديدة</h3>
-                                <p>اكتب رسالتك وسيرد عليك الدعم قريباً.</p>
-                            </div>
-                        `;
-                    })
-                    .catch((error) => console.error("[NOLX] Reset error:", error));
-            }
-        }
-
-        // =====================================================
-        // OFFLINE MESSAGE - رسالة خارج أوقات العمل
+        // OFFLINE MESSAGE
         // =====================================================
         async function sendOfflineMessage() {
             const name = document.getElementById('offlineName').value.trim() || 'مجهول';
@@ -921,7 +1756,7 @@
                     name: name,
                     email: email,
                     message: message,
-                    userId: userId,
+                    userId: userId || 'غير مسجل',
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 alert('✅ تم استلام رسالتك! سنرد عليك خلال 24 ساعة.');
@@ -935,7 +1770,7 @@
         }
 
         // =====================================================
-        // RATING - تقييم المحادثة
+        // RATING
         // =====================================================
         function showRating() {
             ratingModal.classList.add('show');
@@ -946,6 +1781,7 @@
         }
 
         function rateChat(value) {
+            if (!userId) return;
             const stars = document.querySelectorAll('.star-rating i');
             stars.forEach((star, index) => {
                 if (index < value) star.classList.add('active');
@@ -963,7 +1799,7 @@
         }
 
         // =====================================================
-        // ENTER KEY - إرسال بالضغط على Enter
+        // ENTER KEY
         // =====================================================
         messageInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -975,7 +1811,9 @@
         // =====================================================
         // AUTO FOCUS
         // =====================================================
-        messageInput.focus();
+        if (!loginOverlay.classList.contains('show')) {
+            messageInput.focus();
+        }
 
         console.log("[NOLX] Chat page initialized.");
     </script>

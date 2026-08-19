@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOLX | لوحة تحكم الدعم</title>
 
-    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
-    <!-- TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -53,7 +49,6 @@
             overflow: hidden;
         }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             width: 320px;
             min-width: 320px;
@@ -121,6 +116,12 @@
             font-size: 13px;
             font-weight: 700;
         }
+        .chat-item .user-email {
+            font-size: 10px;
+            color: #666;
+            display: block;
+            font-weight: 400;
+        }
         .chat-item .last-msg {
             font-size: 11px;
             color: #666;
@@ -128,6 +129,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 200px;
+            margin-top: 2px;
         }
         .chat-item .time {
             font-size: 9px;
@@ -152,7 +154,6 @@
             color: #fff;
         }
 
-        /* ===== MAIN CHAT ===== */
         .main-chat {
             flex: 1;
             display: flex;
@@ -175,6 +176,9 @@
         .chat-header .sub {
             font-size: 11px;
             color: #666;
+        }
+        .chat-header .sub .user-info {
+            color: #aaa;
         }
 
         .chat-actions {
@@ -213,7 +217,6 @@
             background: #4b5563;
         }
 
-        /* ===== MESSAGES AREA ===== */
         .messages-area {
             flex: 1;
             overflow-y: auto;
@@ -261,7 +264,6 @@
             margin-top: 4px;
         }
 
-        /* ===== ADMIN JOIN CARD ===== */
         .admin-join-card {
             background: linear-gradient(135deg, rgba(0, 88, 64, 0.06), rgba(209, 249, 67, 0.06));
             border: 2px solid rgba(0, 88, 64, 0.12);
@@ -351,7 +353,6 @@
             margin-bottom: 4px;
         }
 
-        /* ===== QUICK REPLIES ===== */
         .quick-replies {
             display: flex;
             gap: 6px;
@@ -376,7 +377,6 @@
             color: #fff;
         }
 
-        /* ===== INPUT AREA ===== */
         .input-area {
             padding: 12px 16px 16px;
             border-top: 1px solid #1a1a1a;
@@ -425,7 +425,6 @@
             cursor: not-allowed;
         }
 
-        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
             color: #333;
@@ -445,7 +444,6 @@
             font-size: 13px;
         }
 
-        /* ===== STATS BAR ===== */
         .stats-bar {
             display: flex;
             gap: 20px;
@@ -462,7 +460,6 @@
             font-weight: 900;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media(max-width: 768px) {
             .sidebar {
                 width: 240px;
@@ -522,6 +519,9 @@
             .admin-join-card .admin-info .name {
                 font-size: 12px;
             }
+            .chat-item .user-email {
+                font-size: 9px;
+            }
         }
     </style>
 </head>
@@ -529,7 +529,6 @@
 
     <div class="admin-container">
 
-        <!-- ===== SIDEBAR ===== -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <span><i class="fas fa-headset ml-2"></i>فريق الدعم</span>
@@ -552,10 +551,8 @@
             <div id="closed-list" class="chat-list" style="max-height:200px;"></div>
         </div>
 
-        <!-- ===== MAIN CHAT ===== -->
         <div class="main-chat">
 
-            <!-- Chat Header -->
             <div class="chat-header">
                 <div>
                     <div class="title" id="chatTitle">اختر محادثة</div>
@@ -574,7 +571,6 @@
                 </div>
             </div>
 
-            <!-- Messages -->
             <div id="messages-area" class="messages-area">
                 <div class="empty-state">
                     <i class="fas fa-comments"></i>
@@ -583,7 +579,6 @@
                 </div>
             </div>
 
-            <!-- Quick Replies -->
             <div class="quick-replies" id="quickReplies" style="display:none;">
                 <button class="quick-reply-btn" onclick="sendQuickReply('شكراً لتواصلك معنا، سيتم الرد قريباً')">شكراً لتواصلك</button>
                 <button class="quick-reply-btn" onclick="sendQuickReply('جاري المراجعة والبحث في المشكلة')">جاري المراجعة</button>
@@ -592,7 +587,6 @@
                 <button class="quick-reply-btn" onclick="sendQuickReply('نعتذر عن التأخير')">نعتذر عن التأخير</button>
             </div>
 
-            <!-- Input Area -->
             <div class="input-area" id="chatInput" style="display:none;">
                 <input type="text" id="adminInput" placeholder="اكتب ردك للمستخدم..." onkeydown="if(event.key==='Enter') sendAdminMessage()">
                 <button class="btn-send" onclick="sendAdminMessage()">
@@ -603,9 +597,6 @@
     </div>
 
     <script>
-        // =====================================================
-        // FIREBASE CONFIG
-        // =====================================================
         const firebaseConfig = {
             apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
             authDomain: "nolxpages.firebaseapp.com",
@@ -623,17 +614,15 @@
         let currentUser = null;
         let unsubscribeMessages = null;
         let currentChatId = null;
+        let currentUserData = null;
 
-        // =====================================================
-        // SET ADMIN ONLINE
-        // =====================================================
         db.collection("adminStatus").doc("online").set({
             online: true,
             lastSeen: firebase.firestore.FieldValue.serverTimestamp()
         });
 
         // =====================================================
-        // LOAD CHATS
+        // LOAD CHATS - عرض المحادثات مع الاسم والرقم والإيميل
         // =====================================================
         db.collection("chats")
             .orderBy("updatedAt", "desc")
@@ -660,7 +649,7 @@
                     item.onclick = () => openChat(userId);
 
                     const statusBadge = status === 'pending' ? 'pending' : status === 'active' ? 'active' :
-                    'closed';
+                        'closed';
                     const statusLabel = status === 'pending' ? '⏳ انتظار' : status === 'active' ? '🟢 نشط' :
                         '📦 مغلق';
 
@@ -668,13 +657,24 @@
                     const time = data.updatedAt?.toDate?.() || new Date();
                     const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
 
-                    let displayName = `مستخدم ${userId.substring(0, 6)}...`;
-                    if (data.userName) displayName = data.userName;
+                    // ===== جلب بيانات المستخدم من المحادثة =====
+                    let displayName = data.userName || `مستخدم ${userId.substring(0, 6)}...`;
+                    let userPhone = data.userPhone || '';
+                    let userEmail = data.userEmail || '';
+
+                    // بناء نص المعلومات
+                    let infoText = '';
+                    if (userPhone) infoText += `📱 ${userPhone}`;
+                    if (userEmail) infoText += (infoText ? ' | ' : '') + `✉️ ${userEmail}`;
+                    if (!infoText) infoText = 'لا توجد معلومات';
 
                     item.innerHTML = `
                         <div class="flex justify-between items-start">
                             <div>
-                                <div class="name">${displayName}</div>
+                                <div class="name">
+                                    ${displayName}
+                                    <span class="user-email">${infoText}</span>
+                                </div>
                                 <div class="last-msg">${lastMsg}</div>
                             </div>
                             <div class="text-left">
@@ -702,36 +702,47 @@
             });
 
         // =====================================================
-        // OPEN CHAT
+        // OPEN CHAT - فتح المحادثة
         // =====================================================
         function openChat(userId) {
             currentChatId = userId;
 
-            // تحديث الـ UI
+            // ===== جلب بيانات المستخدم من Firestore =====
+            db.collection("users").doc(userId).get().then((doc) => {
+                if (doc.exists) {
+                    currentUserData = doc.data();
+                    const name = currentUserData.username || `مستخدم ${userId.substring(0, 6)}...`;
+                    const phone = currentUserData.phone || 'لا يوجد رقم';
+                    const email = currentUserData.email || 'لا يوجد بريد';
+                    document.getElementById('chatSub').innerHTML = `
+                        <span class="user-info">👤 ${name}</span> | 
+                        <span class="user-info">📱 ${phone}</span> | 
+                        <span class="user-info">✉️ ${email}</span>
+                    `;
+                } else {
+                    document.getElementById('chatSub').innerHTML = `ID: ${userId.substring(0, 12)}...`;
+                }
+            });
+
             document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
             document.querySelector(`.chat-item[data-user="${userId}"]`)?.classList.add('active');
 
             document.getElementById('chatTitle').textContent = `🟢 محادثة مع المستخدم`;
-            document.getElementById('chatSub').textContent = `ID: ${userId.substring(0, 12)}...`;
             document.getElementById('chatActions').style.display = 'flex';
             document.getElementById('quickReplies').style.display = 'flex';
             document.getElementById('chatInput').style.display = 'flex';
 
-            // ===== التحقق من حالة المحادثة =====
             db.collection("chats").doc(userId).get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
                     const status = data.status || 'pending';
 
-                    // ===== فقط لو المحادثة pending (جديدة) =====
                     if (status === 'pending') {
-                        // تحديث الحالة إلى active
                         db.collection("chats").doc(userId).set({
                             status: 'active',
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                         }, { merge: true });
 
-                        // ===== إرسال رسالة انضمام فريق الدعم =====
                         db.collection("chats").doc(userId).collection("messages").add({
                             text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
                             sender: 'system',
@@ -739,14 +750,11 @@
                             timestamp: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     }
-                    // لو active أو closed، منرسلش رسالة الانضمام
                 }
             });
 
-            // إلغاء الاستماع القديم
             if (unsubscribeMessages) unsubscribeMessages();
 
-            // تحميل الرسائل
             unsubscribeMessages = db.collection("chats").doc(userId).collection("messages")
                 .orderBy('timestamp', 'asc')
                 .onSnapshot((snapshot) => {
@@ -768,7 +776,6 @@
 
                         const div = document.createElement('div');
 
-                        // ===== رسالة انضمام الدعم (كارت) =====
                         if (isAdminJoin) {
                             div.className = 'flex justify-center my-2';
                             div.innerHTML = `
@@ -851,9 +858,6 @@
             }
         }
 
-        // =====================================================
-        // SEND QUICK REPLY
-        // =====================================================
         function sendQuickReply(text) {
             document.getElementById('adminInput').value = text;
             sendAdminMessage();
@@ -933,7 +937,10 @@
                     messages: messagesText,
                     status: 'open',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    userId: currentChatId
+                    userId: currentChatId,
+                    userName: currentUserData?.username || '',
+                    userEmail: currentUserData?.email || '',
+                    userPhone: currentUserData?.phone || ''
                 });
 
                 await db.collection("chats").doc(currentChatId).set({
@@ -954,6 +961,7 @@
         function resetChatView() {
             if (unsubscribeMessages) unsubscribeMessages();
             currentChatId = null;
+            currentUserData = null;
             document.getElementById('chatTitle').textContent = 'اختر محادثة';
             document.getElementById('chatSub').textContent = 'للبدء في الرد على المستخدم';
             document.getElementById('chatActions').style.display = 'none';
@@ -969,9 +977,6 @@
             document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
         }
 
-        // =====================================================
-        // KEYBOARD SHORTCUTS
-        // =====================================================
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.ctrlKey && document.activeElement?.id === 'adminInput') {
                 e.preventDefault();

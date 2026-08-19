@@ -417,27 +417,41 @@
         }
 
         /* ===== BUBBLES ===== */
-        .bubble-user {
-            background: linear-gradient(135deg, #005840, #003d2d);
-            color: #D1F843;
-            border-radius: 18px 18px 4px 18px;
+        /* ===== العميل والدعم - نفس اللون ===== */
+       .bubble-user {
+    background: #ffffff;
+    color: #005840;
+    border-radius: 18px 18px 4px 18px;
+    padding: 10px 16px;
+    max-width: 80%;
+    word-wrap: break-word;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.80);
+}
+
+
+        .bubble-admin {
+            background: linear-gradient(135deg, #005840, #003d2d); /* نفس لون العميل */
+            color: #D1F843; /* نفس لون نص العميل */
+            border-radius: 18px 18px 18px 4px;
             padding: 10px 16px;
             max-width: 80%;
             word-wrap: break-word;
             box-shadow: 0 4px 20px rgba(0, 88, 64, 0.12);
             position: relative;
+            border: none;
         }
 
-        .bubble-admin {
-            background: rgba(255, 255, 255, 0.90);
-            color: #005840;
-            border-radius: 18px 18px 18px 4px;
-            padding: 10px 16px;
-            max-width: 80%;
-            word-wrap: break-word;
-            border: 1px solid rgba(255, 255, 255, 0.50);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            position: relative;
+        /* ===== بادج الدعم ===== */
+        .bubble-admin .bubble-badge {
+            background: rgba(209, 248, 67, 0.15);
+            color: #D1F843;
+        }
+
+        /* ===== وقت الدعم ===== */
+        .bubble-admin .bubble-time {
+            opacity: 0.5;
         }
 
         .bubble-system {

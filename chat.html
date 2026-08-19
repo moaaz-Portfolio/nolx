@@ -238,17 +238,17 @@
             position: relative;
             z-index: 1;
             max-width: 480px;
-            margin: 12px auto;
-            height: calc(100vh - 24px);
+            margin: 0 auto;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            border-radius: 32px;
+            border-radius: 0;
             overflow: hidden;
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.50));
             backdrop-filter: blur(40px) saturate(180%);
             -webkit-backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.70);
-            box-shadow: 0 35px 100px rgba(0, 61, 45, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: none;
             animation: containerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -417,23 +417,23 @@
         }
 
         /* ===== BUBBLES ===== */
-        /* ===== العميل والدعم - نفس اللون ===== */
-       .bubble-user {
-    background: #ffffff;
-    color: #005840;
-    border-radius: 18px 18px 4px 18px;
-    padding: 10px 16px;
-    max-width: 80%;
-    word-wrap: break-word;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.80);
-}
+        /* ===== العميل (User) - فقاعة بيضاء مع ظل ===== */
+        .bubble-user {
+            background: #ffffff;
+            color: #005840;
+            border-radius: 18px 18px 4px 18px;
+            padding: 10px 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.80);
+        }
 
-
+        /* ===== الدعم (Admin) - فقاعة خضراء ===== */
         .bubble-admin {
-            background: linear-gradient(135deg, #005840, #003d2d); /* نفس لون العميل */
-            color: #D1F843; /* نفس لون نص العميل */
+            background: linear-gradient(135deg, #005840, #003d2d);
+            color: #D1F843;
             border-radius: 18px 18px 18px 4px;
             padding: 10px 16px;
             max-width: 80%;
@@ -1033,6 +1033,30 @@
             font-weight: 700;
         }
 
+        /* ===== NOLX BRANDING ===== */
+        .nolx-brand {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 10px;
+            font-weight: 900;
+            color: rgba(0, 88, 64, 0.10);
+            letter-spacing: 3px;
+            pointer-events: none;
+            animation: brandFade 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes brandFade {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0.8;
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media(max-width: 640px) {
             .chat-container {
@@ -1215,7 +1239,6 @@
             }
         }
 
-        /* ===== KEYBOARD FIX ===== */
         @media(max-height: 700px) {
             .chat-header {
                 padding: 8px 12px 6px;
@@ -1289,34 +1312,11 @@
         /* ===== SAFE AREA ===== */
         @supports(padding: max(0px)) {
             .chat-container {
+                padding-top: max(0px, env(safe-area-inset-top));
                 padding-bottom: max(0px, env(safe-area-inset-bottom));
             }
             .chat-footer {
                 padding-bottom: max(8px, env(safe-area-inset-bottom));
-            }
-        }
-
-        /* ===== NOLX BRANDING ===== */
-        .nolx-brand {
-            position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            font-size: 10px;
-            font-weight: 900;
-            color: rgba(0, 88, 64, 0.10);
-            letter-spacing: 3px;
-            pointer-events: none;
-            animation: brandFade 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes brandFade {
-            0% {
-                opacity: 0.3;
-            }
-            100% {
-                opacity: 0.8;
             }
         }
     </style>

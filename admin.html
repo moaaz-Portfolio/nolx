@@ -5,281 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>NOLX | لوحة تحكم الدعم</title>
 
-    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #e9efed;
-            color: #1a1a1a;
-            height: 100vh;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #005840;
-            border-radius: 99px;
-        }
-
-        .admin-container {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            background: #e9efed;
-        }
-
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 340px;
-            min-width: 340px;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            border-left: 1px solid rgba(0, 88, 64, 0.04);
-            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s ease;
-        }
-
-        .sidebar-header {
-            padding: 16px 20px;
-            background: #005840;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-brand .logo-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            background: #D1F843;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #005840;
-            font-size: 18px;
-            font-weight: 900;
-        }
-
-        .sidebar-brand .brand-text {
-            font-weight: 900;
-            font-size: 17px;
-            color: #ffffff;
-            letter-spacing: -0.3px;
-        }
-        .sidebar-brand .brand-text span {
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.4);
-        }
-        .sidebar-brand .brand-sub {
-            font-size: 8px;
-            color: rgba(255, 255, 255, 0.25);
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-
-        .admin-status-badge {
-            font-size: 9px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            padding: 4px 12px;
-            border-radius: 99px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .admin-status-badge .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            animation: dotPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(0.6); }
-        }
-
-        /* ===== STATS ===== */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            padding: 12px 14px;
-            background: #f5f8f7;
-            border-bottom: 1px solid rgba(0, 88, 64, 0.04);
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 8px 6px;
-            text-align: center;
-            border: 1px solid rgba(0, 88, 64, 0.03);
-            transition: 0.2s;
-        }
-        .stat-card .number {
-            font-size: 18px;
-            font-weight: 900;
-            color: #005840;
-            display: block;
-            line-height: 1.2;
-        }
-        .stat-card .label {
-            font-size: 8px;
-            color: rgba(0, 88, 64, 0.3);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .stat-card .icon {
-            font-size: 12px;
-            opacity: 0.3;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: #e9efed; color: #1a1a1a; height: 100vh; overflow: hidden; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #005840; border-radius: 99px; }
+        .admin-container { display: flex; height: 100vh; overflow: hidden; background: #e9efed; }
+        .sidebar { width: 340px; min-width: 340px; background: #ffffff; display: flex; flex-direction: column; border-left: 1px solid rgba(0, 88, 64, 0.04); box-shadow: 2px 0 16px rgba(0, 0, 0, 0.02); }
+        .sidebar-header { padding: 16px 20px; background: #005840; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .sidebar-brand { display: flex; align-items: center; gap: 10px; }
+        .sidebar-brand .logo-icon { width: 36px; height: 36px; border-radius: 12px; background: #D1F843; display: flex; align-items: center; justify-content: center; color: #005840; font-size: 18px; font-weight: 900; }
+        .sidebar-brand .brand-text { font-weight: 900; font-size: 17px; color: #ffffff; }
+        .sidebar-brand .brand-text span { font-weight: 300; color: rgba(255, 255, 255, 0.4); }
+        .sidebar-brand .brand-sub { font-size: 8px; color: rgba(255, 255, 255, 0.25); letter-spacing: 2px; font-weight: 700; }
+        .admin-status-badge { font-size: 9px; background: rgba(255, 255, 255, 0.1); color: #ffffff; padding: 4px 12px; border-radius: 99px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .admin-status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; display: inline-block; animation: dotPulse 1.5s ease-in-out infinite; }
+        @keyframes dotPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.6); } }
+        .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px 14px; background: #f5f8f7; border-bottom: 1px solid rgba(0, 88, 64, 0.04); }
+        .stat-card { background: #ffffff; border-radius: 14px; padding: 8px 6px; text-align: center; border: 1px solid rgba(0, 88, 64, 0.03); }
+        .stat-card .number { font-size: 18px; font-weight: 900; color: #005840; display: block; line-height: 1.2; }
+        .stat-card .label { font-size: 8px; color: rgba(0, 88, 64, 0.3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+        .stat-card .icon { font-size: 12px; opacity: 0.3; }
         .stat-card.pending .number { color: #f59e0b; }
         .stat-card.active .number { color: #22c55e; }
         .stat-card.closed .number { color: #6b7280; }
-
-        /* ===== SEARCH ===== */
-        .search-bar {
-            padding: 8px 14px;
-            background: #f5f8f7;
-            border-bottom: 1px solid rgba(0, 88, 64, 0.04);
-        }
-        .search-bar input {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid rgba(0, 88, 64, 0.06);
-            border-radius: 99px;
-            padding: 6px 16px;
-            color: #1a1a1a;
-            font-family: 'Cairo', sans-serif;
-            outline: none;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-        .search-bar input:focus {
-            border-color: #005840;
-            box-shadow: 0 0 0 3px rgba(0, 88, 64, 0.04);
-        }
-
-        /* ===== SIDEBAR SECTIONS ===== */
-        .sidebar-section {
-            padding: 8px 16px 4px;
-            font-size: 9px;
-            font-weight: 800;
-            color: rgba(0, 88, 64, 0.25);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
+        .search-bar { padding: 8px 14px; background: #f5f8f7; border-bottom: 1px solid rgba(0, 88, 64, 0.04); }
+        .search-bar input { width: 100%; background: #ffffff; border: 1px solid rgba(0, 88, 64, 0.06); border-radius: 99px; padding: 6px 16px; color: #1a1a1a; font-family: 'Cairo', sans-serif; outline: none; font-size: 12px; }
+        .search-bar input:focus { border-color: #005840; box-shadow: 0 0 0 3px rgba(0, 88, 64, 0.04); }
+        .sidebar-section { padding: 8px 16px 4px; font-size: 9px; font-weight: 800; color: rgba(0, 88, 64, 0.25); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
         .sidebar-section .section-icon { font-size: 10px; opacity: 0.4; }
-        .sidebar-section .count {
-            background: rgba(0, 88, 64, 0.04);
-            padding: 0 10px;
-            border-radius: 99px;
-            font-size: 8px;
-            color: rgba(0, 88, 64, 0.3);
-        }
-
-        /* ===== CHAT LIST ===== */
-        .chat-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2px 6px 6px;
-        }
-
-        .chat-item {
-            padding: 10px 14px;
-            cursor: pointer;
-            border-radius: 14px;
-            margin-bottom: 2px;
-            transition: all 0.2s ease;
-            background: #ffffff;
-            border: 1px solid transparent;
-        }
-        .chat-item:hover {
-            background: #f5f8f7;
-            border-color: rgba(0, 88, 64, 0.04);
-            transform: translateX(-2px);
-        }
-        .chat-item.active {
-            background: #f0f5f3;
-            border-color: rgba(0, 88, 64, 0.08);
-            border-right: 3px solid #005840;
-        }
-        .chat-item .name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-        .chat-item .user-email {
-            font-size: 9px;
-            color: rgba(0, 0, 0, 0.2);
-            display: block;
-            font-weight: 400;
-        }
-        .chat-item .last-msg {
-            font-size: 10px;
-            color: rgba(0, 0, 0, 0.15);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 160px;
-            margin-top: 2px;
-        }
-        .chat-item .time {
-            font-size: 8px;
-            color: rgba(0, 0, 0, 0.12);
-        }
-        .chat-item .status-badge {
-            font-size: 7px;
-            padding: 2px 10px;
-            border-radius: 99px;
-            font-weight: 700;
-        }
+        .sidebar-section .count { background: rgba(0, 88, 64, 0.04); padding: 0 10px; border-radius: 99px; font-size: 8px; color: rgba(0, 88, 64, 0.3); }
+        .chat-list { flex: 1; overflow-y: auto; padding: 2px 6px 6px; }
+        .chat-item { padding: 10px 14px; cursor: pointer; border-radius: 14px; margin-bottom: 2px; background: #ffffff; border: 1px solid transparent; }
+        .chat-item:hover { background: #f5f8f7; border-color: rgba(0, 88, 64, 0.04); transform: translateX(-2px); }
+        .chat-item.active { background: #f0f5f3; border-color: rgba(0, 88, 64, 0.08); border-right: 3px solid #005840; }
+        .chat-item .name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+        .chat-item .user-email { font-size: 9px; color: rgba(0, 0, 0, 0.2); display: block; font-weight: 400; }
+        .chat-item .last-msg { font-size: 10px; color: rgba(0, 0, 0, 0.15); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; margin-top: 2px; }
+        .chat-item .time { font-size: 8px; color: rgba(0, 0, 0, 0.12); }
+        .chat-item .status-badge { font-size: 7px; padding: 2px 10px; border-radius: 99px; font-weight: 700; }
         .status-badge.pending { background: rgba(245, 158, 11, 0.08); color: #f59e0b; }
         .status-badge.active { background: rgba(34, 197, 94, 0.08); color: #22c55e; }
         .status-badge.closed { background: rgba(107, 114, 128, 0.06); color: #6b7280; }
-
         .flex { display: flex; }
         .justify-between { justify-content: space-between; }
         .items-start { align-items: flex-start; }
@@ -289,460 +65,56 @@
         .justify-end { justify-content: flex-end; }
         .justify-start { justify-content: flex-start; }
         .justify-center { justify-content: center; }
-
-        /* ===== MAIN CHAT ===== */
-        .main-chat {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #e9efed;
-            min-width: 0;
-        }
-
-        .chat-header {
-            padding: 12px 20px;
-            background: #ffffff;
-            border-bottom: 1px solid rgba(0, 88, 64, 0.04);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-        .chat-header .title {
-            font-weight: 900;
-            font-size: 15px;
-            color: #005840;
-        }
-        .chat-header .sub {
-            font-size: 10px;
-            color: rgba(0, 0, 0, 0.2);
-            margin-top: 1px;
-        }
-        .chat-header .sub .user-info {
-            color: rgba(0, 0, 0, 0.3);
-        }
-
-        .chat-actions {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-        .chat-actions button {
-            padding: 4px 12px;
-            border: none;
-            border-radius: 99px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Cairo', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+        .main-chat { flex: 1; display: flex; flex-direction: column; background: #e9efed; min-width: 0; }
+        .chat-header { padding: 12px 20px; background: #ffffff; border-bottom: 1px solid rgba(0, 88, 64, 0.04); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; flex-shrink: 0; }
+        .chat-header .title { font-weight: 900; font-size: 15px; color: #005840; }
+        .chat-header .sub { font-size: 10px; color: rgba(0, 0, 0, 0.2); margin-top: 1px; }
+        .chat-header .sub .user-info { color: rgba(0, 0, 0, 0.3); }
+        .chat-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+        .chat-actions button { padding: 4px 12px; border: none; border-radius: 99px; font-size: 9px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; display: flex; align-items: center; gap: 4px; }
         .chat-actions button:hover { transform: translateY(-2px); }
         .btn-close { background: rgba(220, 38, 38, 0.06); color: #dc2626; }
-        .btn-close:hover { background: rgba(220, 38, 38, 0.12); }
         .btn-ticket { background: rgba(245, 158, 11, 0.06); color: #f59e0b; }
-        .btn-ticket:hover { background: rgba(245, 158, 11, 0.12); }
         .btn-delete { background: rgba(107, 114, 128, 0.06); color: #6b7280; }
-        .btn-delete:hover { background: rgba(107, 114, 128, 0.12); }
         .btn-refresh { background: rgba(59, 130, 246, 0.06); color: #3b82f6; }
-        .btn-refresh:hover { background: rgba(59, 130, 246, 0.12); }
-
-        /* ===== MESSAGES AREA ===== */
-        .messages-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 20px;
-            padding-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .msg-user {
-            background: #005840;
-            color: #D1F843;
-            border-radius: 18px 18px 4px 18px;
-            padding: 10px 16px;
-            max-width: 78%;
-            word-wrap: break-word;
-            box-shadow: 0 2px 12px rgba(0, 88, 64, 0.06);
-            animation: msgIn 0.25s ease;
-        }
-        .msg-admin {
-            background: #ffffff;
-            color: #1a1a1a;
-            border-radius: 18px 18px 18px 4px;
-            padding: 10px 16px;
-            max-width: 78%;
-            word-wrap: break-word;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.02);
-            animation: msgIn 0.25s ease;
-        }
-        .msg-system {
-            background: rgba(0, 88, 64, 0.04);
-            color: rgba(0, 88, 64, 0.35);
-            border-radius: 99px;
-            padding: 3px 16px;
-            font-size: 9px;
-            text-align: center;
-            margin: 2px auto;
-            border: 1px dashed rgba(0, 88, 64, 0.06);
-            animation: msgIn 0.3s ease;
-            max-width: 90%;
-        }
-        .msg-system.warning { color: #f59e0b; border-color: rgba(245, 158, 11, 0.1); background: rgba(245, 158, 11, 0.04); }
-        .msg-system.danger { color: #dc2626; border-color: rgba(220, 38, 38, 0.1); background: rgba(220, 38, 38, 0.04); }
-        .msg-time {
-            font-size: 7px;
-            opacity: 0.2;
-            display: block;
-            margin-top: 4px;
-        }
-        .message-badge {
-            display: inline-block;
-            background: rgba(0, 88, 64, 0.04);
-            border-radius: 99px;
-            padding: 0 10px;
-            font-size: 7px;
-            color: rgba(0, 88, 64, 0.2);
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        @keyframes msgIn {
-            0% { opacity: 0; transform: translateY(8px) scale(0.97); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .admin-join-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 88, 64, 0.05);
-            border-radius: 16px;
-            padding: 8px 18px;
-            max-width: 85%;
-            margin: 4px auto;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: adminJoinIn 0.4s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
-        }
-        @keyframes adminJoinIn {
-            0% { opacity: 0; transform: scale(0.95) translateY(6px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .admin-join-card .icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #005840;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #D1F843;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-        .admin-join-card .info .name {
-            font-weight: 900;
-            color: #005840;
-            font-size: 12px;
-        }
-        .admin-join-card .info .status {
-            font-size: 9px;
-            color: rgba(0, 88, 64, 0.25);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .admin-join-card .info .status .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #22c55e;
-            display: inline-block;
-            animation: dotPulse 1.5s infinite;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            color: rgba(0, 0, 0, 0.06);
-            margin: auto;
-            animation: emptyIn 0.6s ease;
-        }
-        @keyframes emptyIn {
-            0% { opacity: 0; transform: translateY(16px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .empty-state i {
-            font-size: 44px;
-            margin-bottom: 8px;
-            display: block;
-            color: rgba(0, 88, 64, 0.04);
-        }
-        .empty-state h3 {
-            font-weight: 900;
-            color: rgba(0, 0, 0, 0.08);
-            font-size: 16px;
-        }
-        .empty-state p {
-            font-size: 11px;
-            color: rgba(0, 0, 0, 0.05);
-        }
-
-        /* ===== QUICK KEYBOARD ===== */
-        .quick-keyboard {
-            display: none;
-            padding: 4px 12px 2px;
-            background: #ffffff;
-            border-top: 1px solid rgba(0, 88, 64, 0.04);
-            max-height: 160px;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
+        .messages-area { flex: 1; overflow-y: auto; padding: 16px 20px; padding-bottom: 12px; display: flex; flex-direction: column; }
+        .msg-user { background: #005840; color: #D1F843; border-radius: 18px 18px 4px 18px; padding: 10px 16px; max-width: 78%; word-wrap: break-word; box-shadow: 0 2px 12px rgba(0, 88, 64, 0.06); animation: msgIn 0.25s ease; }
+        .msg-admin { background: #ffffff; color: #1a1a1a; border-radius: 18px 18px 18px 4px; padding: 10px 16px; max-width: 78%; word-wrap: break-word; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02); border: 1px solid rgba(0, 0, 0, 0.02); animation: msgIn 0.25s ease; }
+        .msg-system { background: rgba(0, 88, 64, 0.04); color: rgba(0, 88, 64, 0.35); border-radius: 99px; padding: 3px 16px; font-size: 9px; text-align: center; margin: 2px auto; border: 1px dashed rgba(0, 88, 64, 0.06); animation: msgIn 0.3s ease; max-width: 90%; }
+        .msg-time { font-size: 7px; opacity: 0.2; display: block; margin-top: 4px; }
+        .message-badge { display: inline-block; background: rgba(0, 88, 64, 0.04); border-radius: 99px; padding: 0 10px; font-size: 7px; color: rgba(0, 88, 64, 0.2); font-weight: 700; margin-bottom: 2px; }
+        @keyframes msgIn { 0% { opacity: 0; transform: translateY(8px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        .admin-join-card { background: #ffffff; border: 1px solid rgba(0, 88, 64, 0.05); border-radius: 16px; padding: 8px 18px; max-width: 85%; margin: 4px auto; display: flex; align-items: center; gap: 12px; animation: adminJoinIn 0.4s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01); }
+        @keyframes adminJoinIn { 0% { opacity: 0; transform: scale(0.95) translateY(6px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        .admin-join-card .icon { width: 32px; height: 32px; border-radius: 50%; background: #005840; display: flex; align-items: center; justify-content: center; color: #D1F843; font-size: 13px; flex-shrink: 0; }
+        .admin-join-card .info .name { font-weight: 900; color: #005840; font-size: 12px; }
+        .admin-join-card .info .status { font-size: 9px; color: rgba(0, 88, 64, 0.25); display: flex; align-items: center; gap: 4px; }
+        .admin-join-card .info .status .dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; display: inline-block; animation: dotPulse 1.5s infinite; }
+        .empty-state { text-align: center; color: rgba(0, 0, 0, 0.06); margin: auto; animation: emptyIn 0.6s ease; }
+        @keyframes emptyIn { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
+        .empty-state i { font-size: 44px; margin-bottom: 8px; display: block; color: rgba(0, 88, 64, 0.04); }
+        .empty-state h3 { font-weight: 900; color: rgba(0, 0, 0, 0.08); font-size: 16px; }
+        .empty-state p { font-size: 11px; color: rgba(0, 0, 0, 0.05); }
+        .quick-keyboard { display: none; padding: 4px 12px 2px; background: #ffffff; border-top: 1px solid rgba(0, 88, 64, 0.04); max-height: 160px; overflow-y: auto; flex-shrink: 0; }
         .quick-keyboard.show { display: block; }
-        .keyboard-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-        }
-        .key-btn {
-            background: #f5f8f7;
-            border: 1px solid rgba(0, 88, 64, 0.04);
-            border-radius: 99px;
-            padding: 3px 14px;
-            font-size: 9px;
-            color: #1a1a1a;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            font-family: 'Cairo', sans-serif;
-            white-space: nowrap;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        .key-btn:hover {
-            background: #005840;
-            color: #D1F843;
-            border-color: #005840;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 88, 64, 0.08);
-        }
-        .key-btn:active { transform: scale(0.95); }
-
-        /* ===== INPUT AREA ===== */
-        .input-area {
-            padding: 8px 14px 14px;
-            background: #ffffff;
-            border-top: 1px solid rgba(0, 88, 64, 0.04);
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        .input-area input[type="text"] {
-            flex: 1;
-            background: #f5f8f7;
-            border: 1px solid rgba(0, 88, 64, 0.06);
-            border-radius: 18px;
-            padding: 8px 16px;
-            color: #1a1a1a;
-            font-family: 'Cairo', sans-serif;
-            outline: none;
-            font-size: 13px;
-            transition: 0.2s;
-            min-height: 40px;
-        }
-        .input-area input[type="text"]:focus {
-            border-color: #005840;
-            box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.04);
-            background: #ffffff;
-        }
-        .input-area input[type="text"]:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        .btn-send {
-            background: #005840;
-            color: #D1F843;
-            border: none;
-            border-radius: 18px;
-            padding: 8px 20px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Cairo', sans-serif;
-            font-size: 12px;
-            flex-shrink: 0;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-send:hover {
-            background: #003d2d;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 88, 64, 0.12);
-        }
-        .btn-send:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ===== TOAST ===== */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            max-width: 340px;
-        }
-        .toast {
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 4s forwards;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.02);
-        }
+        .keyboard-grid { display: flex; flex-wrap: wrap; gap: 3px; }
+        .key-btn { background: #f5f8f7; border: 1px solid rgba(0, 88, 64, 0.04); border-radius: 99px; padding: 3px 14px; font-size: 9px; color: #1a1a1a; cursor: pointer; font-family: 'Cairo', sans-serif; white-space: nowrap; font-weight: 600; flex-shrink: 0; }
+        .key-btn:hover { background: #005840; color: #D1F843; border-color: #005840; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 88, 64, 0.08); }
+        .input-area { padding: 8px 14px 14px; background: #ffffff; border-top: 1px solid rgba(0, 88, 64, 0.04); display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+        .input-area input[type="text"] { flex: 1; background: #f5f8f7; border: 1px solid rgba(0, 88, 64, 0.06); border-radius: 18px; padding: 8px 16px; color: #1a1a1a; font-family: 'Cairo', sans-serif; outline: none; font-size: 13px; min-height: 40px; }
+        .input-area input[type="text"]:focus { border-color: #005840; box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.04); background: #ffffff; }
+        .input-area input[type="text"]:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-send { background: #005840; color: #D1F843; border: none; border-radius: 18px; padding: 8px 20px; font-weight: 800; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px; flex-shrink: 0; min-height: 40px; display: flex; align-items: center; gap: 4px; }
+        .btn-send:hover { background: #003d2d; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 88, 64, 0.12); }
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 6px; max-width: 340px; }
+        .toast { padding: 10px 18px; border-radius: 12px; font-size: 12px; font-weight: 700; animation: toastIn 0.3s ease, toastOut 0.3s ease 4s forwards; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.02); }
         .toast-success { background: #ffffff; color: #22c55e; border-color: rgba(34, 197, 94, 0.08); }
         .toast-error { background: #ffffff; color: #dc2626; border-color: rgba(220, 38, 38, 0.08); }
         .toast-warning { background: #ffffff; color: #f59e0b; border-color: rgba(245, 158, 11, 0.08); }
         .toast-info { background: #ffffff; color: #3b82f6; border-color: rgba(59, 130, 246, 0.08); }
-        @keyframes toastIn {
-            0% { opacity: 0; transform: translateX(40px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes toastOut {
-            0% { opacity: 1; transform: translateX(0); }
-            100% { opacity: 0; transform: translateX(40px); }
-        }
-
-        /* ===== MOBILE ===== */
-        @media (max-width: 820px) {
-            .sidebar {
-                width: 280px;
-                min-width: 280px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .admin-container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                min-width: unset;
-                height: 38vh;
-                border-left: none;
-                border-bottom: 1px solid rgba(0, 88, 64, 0.04);
-            }
-            .main-chat {
-                height: 62vh;
-                display: flex;
-                flex-direction: column;
-            }
-            .messages-area {
-                padding: 12px 14px;
-                padding-bottom: 80px;
-            }
-            .chat-header {
-                padding: 8px 14px;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .chat-header .title { font-size: 13px; }
-            .chat-header .sub { font-size: 9px; }
-            .input-area {
-                padding: 6px 10px 10px;
-                flex-wrap: nowrap;
-                position: sticky;
-                bottom: 0;
-                background: #ffffff;
-                z-index: 11;
-                border-top: 1px solid rgba(0, 88, 64, 0.04);
-            }
-            .input-area input[type="text"] {
-                font-size: 15px !important;
-                padding: 6px 12px;
-                min-height: 36px;
-            }
-            .btn-send {
-                font-size: 11px;
-                padding: 6px 14px;
-                min-height: 36px;
-            }
-            .stats-bar {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 4px;
-                padding: 6px 10px;
-            }
-            .stat-card { padding: 4px 4px; }
-            .stat-card .number { font-size: 15px; }
-            .stat-card .label { font-size: 7px; }
-            .sidebar-brand .brand-text { font-size: 14px; }
-            .admin-status-badge { font-size: 7px; padding: 2px 10px; }
-            .chat-item { padding: 6px 10px; }
-            .chat-item .name { font-size: 12px; }
-            .chat-actions button {
-                font-size: 8px;
-                padding: 3px 8px;
-            }
-            .toast-container {
-                max-width: 90%;
-                bottom: 8px;
-                right: 8px;
-            }
-            .quick-keyboard {
-                max-height: 120px;
-                padding: 2px 8px 2px;
-                position: sticky;
-                bottom: 0;
-                background: #ffffff;
-                z-index: 10;
-                border-top: 1px solid rgba(0, 88, 64, 0.04);
-            }
-            .key-btn {
-                font-size: 8px;
-                padding: 2px 10px;
-            }
-            .sidebar-section {
-                padding: 4px 12px 2px;
-                font-size: 8px;
-            }
-            .search-bar { padding: 4px 10px; }
-            .search-bar input { font-size: 11px; padding: 4px 14px; }
-            .chat-item .last-msg { max-width: 120px; }
-            .admin-join-card { padding: 6px 14px; }
-            .admin-join-card .icon { width: 28px; height: 28px; font-size: 11px; }
-            .admin-join-card .info .name { font-size: 11px; }
-        }
-
-        @media (max-width: 400px) {
-            .chat-header .title { font-size: 12px; }
-            .messages-area { padding: 8px 10px; padding-bottom: 70px; }
-            .input-area input[type="text"] { font-size: 14px !important; padding: 4px 10px; min-height: 32px; }
-            .btn-send { font-size: 10px; padding: 4px 12px; min-height: 32px; }
-            .key-btn { font-size: 7px; padding: 2px 8px; }
-            .quick-keyboard { max-height: 100px; }
-            .sidebar { height: 34vh; }
-            .main-chat { height: 66vh; }
-            .stat-card .number { font-size: 13px; }
-        }
-
-        input[type="text"] {
-            font-size: 16px !important;
-        }
+        @keyframes toastIn { 0% { opacity: 0; transform: translateX(40px); } 100% { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(40px); } }
+        @media (max-width: 640px) { .sidebar { width: 100%; height: 38vh; } .main-chat { height: 62vh; } }
     </style>
 </head>
 <body>
@@ -751,10 +123,7 @@
 
     <div class="admin-container">
 
-        <!-- ===== SIDEBAR ===== -->
         <div class="sidebar">
-
-            <!-- HEADER -->
             <div class="sidebar-header">
                 <div class="sidebar-brand">
                     <div class="logo-icon">N</div>
@@ -764,12 +133,10 @@
                     </div>
                 </div>
                 <div class="admin-status-badge">
-                    <span class="dot"></span>
-                    متصل
+                    <span class="dot"></span> متصل
                 </div>
             </div>
 
-            <!-- STATS -->
             <div class="stats-bar">
                 <div class="stat-card pending">
                     <span class="icon">⏳</span>
@@ -788,26 +155,22 @@
                 </div>
             </div>
 
-            <!-- SEARCH -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="🔍 بحث في المحادثات..." oninput="filterChats()">
             </div>
 
-            <!-- PENDING -->
             <div class="sidebar-section">
                 <span class="section-icon">⏳</span> قيد الانتظار
                 <span class="count" id="pendingCountBadge">0</span>
             </div>
             <div id="pending-list" class="chat-list"></div>
 
-            <!-- ACTIVE -->
             <div class="sidebar-section" style="border-top:1px solid rgba(0,88,64,0.04);">
                 <span class="section-icon">🟢</span> محادثات نشطة
                 <span class="count" id="activeCountBadge">0</span>
             </div>
             <div id="active-list" class="chat-list"></div>
 
-            <!-- CLOSED -->
             <div class="sidebar-section" style="border-top:1px solid rgba(0,88,64,0.04);">
                 <span class="section-icon">📦</span> أرشيف مغلقة
                 <span class="count" id="closedCountBadge">0</span>
@@ -815,33 +178,21 @@
             <div id="closed-list" class="chat-list" style="max-height:150px;"></div>
         </div>
 
-        <!-- ===== MAIN CHAT ===== -->
         <div class="main-chat">
 
-            <!-- CHAT HEADER -->
             <div class="chat-header">
                 <div>
                     <div class="title" id="chatTitle">اختر محادثة</div>
                     <div class="sub" id="chatSub">للبدء في الرد على المستخدم</div>
                 </div>
-
                 <div class="chat-actions" id="chatActions" style="display:none;">
-                    <button class="btn-refresh" onclick="refreshChat()" title="تحديث المحادثة">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                    <button class="btn-ticket" onclick="convertToTicket()">
-                        <i class="fas fa-ticket-alt"></i> تذكرة
-                    </button>
-                    <button class="btn-close" onclick="closeChat()">
-                        <i class="fas fa-check"></i> إنهاء
-                    </button>
-                    <button class="btn-delete" onclick="deleteChat()">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <button class="btn-refresh" onclick="refreshChat()"><i class="fas fa-sync-alt"></i></button>
+                    <button class="btn-ticket" onclick="convertToTicket()"><i class="fas fa-ticket-alt"></i> تذكرة</button>
+                    <button class="btn-close" onclick="closeChat()"><i class="fas fa-check"></i> إنهاء</button>
+                    <button class="btn-delete" onclick="deleteChat()"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
 
-            <!-- MESSAGES -->
             <div id="messages-area" class="messages-area">
                 <div class="empty-state">
                     <i class="fas fa-comments"></i>
@@ -850,17 +201,13 @@
                 </div>
             </div>
 
-            <!-- QUICK KEYBOARD -->
             <div class="quick-keyboard" id="quickKeyboard">
                 <div class="keyboard-grid" id="keyboardGrid"></div>
             </div>
 
-            <!-- INPUT -->
             <div class="input-area" id="chatInput" style="display:none;">
                 <input type="text" id="adminInput" placeholder="اكتب ردك للمستخدم..." onkeydown="if(event.key==='Enter') sendAdminMessage()">
-                <button class="btn-send" onclick="sendAdminMessage()">
-                    <i class="fas fa-paper-plane"></i> إرسال
-                </button>
+                <button class="btn-send" onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
             </div>
         </div>
     </div>
@@ -888,88 +235,29 @@
         // ============================================================
         let currentChatId = null;
         let currentUserData = null;
-        let allChatsData = [];
         let unsubscribeChats = null;
         let unsubscribeMessages = null;
+        let totalReads = 0;
 
         // ============================================================
-        // QUICK PHRASES
+        // 🔥 SUPER CACHE (دائم)
         // ============================================================
-        const quickPhrases = [
-            'أهلاً بيك يا أستاذ',
-            'أقدر أساعد حضرتك إزاي؟',
-            'إيه المشكلة اللي حضرتك بتوجها ؟',
-            'لحظات معيا اراجع بعض البيانات وارجع لحضرتك',
-            'أتمنى أكون قدرت أساعد حضرتك',
-            'تم إنهاء المحادثة تلقائياً لعدم وجود رد خلال دقيقتين. نحن متواجدون على مدار اليوم لخدمتك والإجابة عن أي استفسار. شكراً لتواصلك معنا، ونسعد بخدمتك دائماً 🌟',
-            'حضرتك معيا؟',
-            'ممكن توضحلي أكتر؟',
-            'في أي استفسار تاني أقدر أساعد حضرتك فيه؟',
-            'بنتأسف جدا لحضرتك',
-            'السلام عليكم، معاك دعم نولكس، أتمنى حضرتك تكون بخير',
-            'شكراً لتفهمك',
-            'ممكن توضحلي رقم العملية؟',
-            'ممكن أتشرف باسم حضرتك؟',
-            'ممكن البريد الإلكتروني المسجل في المنصة لدينا؟',
-            'متفهم انزعاج حضرتك من الموضوع',
-            'شكراً ليك، كان معاك دعم نولكس، أتمنى ليك يوم سعيد 😊🌹',
-            'إحنا بنشتغل على حل المشكلة دلوقتي',
-            'شكراً لاختيارك نولكس'
-        ];
+        function getPermanentCache(key) {
+            try {
+                const data = localStorage.getItem('admin_perm_' + key);
+                if (data) return JSON.parse(data).data;
+            } catch (e) {}
+            return null;
+        }
 
-        function renderKeyboard() {
-            const grid = document.getElementById('keyboardGrid');
-            grid.innerHTML = '';
-            quickPhrases.forEach(phrase => {
-                const btn = document.createElement('button');
-                btn.className = 'key-btn';
-                btn.textContent = phrase;
-                btn.onclick = () => {
-                    const input = document.getElementById('adminInput');
-                    input.value = phrase;
-                    input.focus();
-                };
-                grid.appendChild(btn);
-            });
+        function setPermanentCache(key, data) {
+            try {
+                localStorage.setItem('admin_perm_' + key, JSON.stringify({ data: data, timestamp: Date.now() }));
+            } catch (e) {}
         }
 
         // ============================================================
-        // TOAST
-        // ============================================================
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            container.appendChild(toast);
-            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 4500);
-        }
-
-        // ============================================================
-        // 🔥 1. ADMIN STATUS (مرة واحدة عند فتح الصفحة)
-        // ============================================================
-        db.collection("adminStatus").doc("online").set({
-            online: true,
-            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-        }).catch(err => console.error("[ADMIN] Status update error:", err));
-
-        // ============================================================
-        // 🔥 2. SEARCH
-        // ============================================================
-        function filterChats() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const items = document.querySelectorAll('.chat-item');
-            items.forEach(item => {
-                const name = item.querySelector('.name')?.textContent?.toLowerCase() || '';
-                const email = item.querySelector('.user-email')?.textContent?.toLowerCase() || '';
-                const lastMsg = item.querySelector('.last-msg')?.textContent?.toLowerCase() || '';
-                const match = name.includes(searchTerm) || email.includes(searchTerm) || lastMsg.includes(searchTerm);
-                item.style.display = match ? '' : 'none';
-            });
-        }
-
-        // ============================================================
-        // 🔥 3. LOAD CHATS (onSnapshot مع limit 20)
+        // 🔥 1. LOAD CHATS (onSnapshot مع limit 10)
         // ============================================================
         function loadChatsRealtime() {
             if (unsubscribeChats) {
@@ -977,20 +265,22 @@
                 unsubscribeChats = null;
             }
 
+            console.log('📊 [REALTIME] Chats listener started (limit 10)');
+            
             unsubscribeChats = db.collection("chats")
                 .orderBy("updatedAt", "desc")
-                .limit(20) // 🔥 آخر 20 محادثة بس
+                .limit(10) // 🔥 آخر 10 محادثات بس
                 .onSnapshot((snapshot) => {
+                    console.log('📊 [READ] Chats updated');
                     renderChats(snapshot);
                     updateStats(snapshot);
                 }, (error) => {
-                    console.error("[ADMIN] Chats listener error:", error);
-                    showToast('⚠️ خطأ في تحميل المحادثات', 'error');
+                    console.error("Chats listener error:", error);
                 });
         }
 
         // ============================================================
-        // 🔥 4. RENDER CHATS
+        // 🔥 2. RENDER CHATS
         // ============================================================
         function renderChats(snapshot) {
             const pendingList = document.getElementById('pending-list');
@@ -1001,62 +291,48 @@
             pendingList.innerHTML = '';
             activeList.innerHTML = '';
             closedList.innerHTML = '';
-            allChatsData = [];
 
-            let pendingCount = 0,
-                activeCount = 0,
-                closedCount = 0;
+            let pendingCount = 0, activeCount = 0, closedCount = 0;
 
             snapshot.forEach((doc) => {
-                try {
-                    const data = doc.data();
-                    const userId = doc.id;
-                    const status = data.status || 'pending';
+                const data = doc.data();
+                const userId = doc.id;
+                const status = data.status || 'pending';
 
-                    const item = document.createElement('div');
-                    item.className = `chat-item ${currentChatId === userId ? 'active' : ''}`;
-                    item.setAttribute('data-user', userId);
-                    item.onclick = () => openChat(userId);
+                const item = document.createElement('div');
+                item.className = `chat-item ${currentChatId === userId ? 'active' : ''}`;
+                item.setAttribute('data-user', userId);
+                item.onclick = () => openChat(userId);
 
-                    const statusBadge = status === 'pending' ? 'pending' : status === 'active' ? 'active' :
-                        'closed';
-                    const statusLabel = status === 'pending' ? '⏳ انتظار' : status === 'active' ? '🟢 نشط' :
-                        '📦 مغلق';
+                const statusBadge = status === 'pending' ? 'pending' : status === 'active' ? 'active' : 'closed';
+                const statusLabel = status === 'pending' ? '⏳' : status === 'active' ? '🟢' : '📦';
 
-                    const lastMsg = data.lastMessage || 'لا توجد رسائل';
-                    const time = data.updatedAt?.toDate?.() || new Date();
-                    const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                const lastMsg = data.lastMessage || 'لا توجد رسائل';
+                const time = data.updatedAt?.toDate?.() || new Date();
+                const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
 
-                    let displayName = data.userName || `مستخدم ${userId.substring(0, 6)}...`;
-                    let userPhone = data.userPhone || '';
-                    let userEmail = data.userEmail || '';
-                    let infoText = '';
-                    if (userPhone) infoText += `📱 ${userPhone}`;
-                    if (userEmail) infoText += (infoText ? ' | ' : '') + `✉️ ${userEmail}`;
-                    if (!infoText) infoText = 'لا توجد معلومات';
+                let displayName = data.userName || `مستخدم ${userId.substring(0, 6)}...`;
+                let infoText = data.userPhone ? `📱 ${data.userPhone}` : '';
+                if (data.userEmail) infoText += (infoText ? ' | ' : '') + `✉️ ${data.userEmail}`;
+                if (!infoText) infoText = 'لا توجد معلومات';
 
-                    // خزن بيانات المستخدم في الـ cache
-                    allChatsData.push({ id: userId, data: data });
+                item.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="name">${displayName}</div>
+                            <span class="user-email">${infoText}</span>
+                            <div class="last-msg">${lastMsg}</div>
+                        </div>
+                        <div class="text-left">
+                            <div class="time">${timeStr}</div>
+                            <div style="margin-top:2px;"><span class="status-badge ${statusBadge}">${statusLabel}</span></div>
+                        </div>
+                    </div>
+                `;
 
-                    item.innerHTML = `
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <div class="name">${displayName}</div>
-                                        <span class="user-email">${infoText}</span>
-                                        <div class="last-msg">${lastMsg}</div>
-                                    </div>
-                                    <div class="text-left" style="flex-shrink:0;">
-                                        <div class="time">${timeStr}</div>
-                                        <div style="margin-top:2px;"><span class="status-badge ${statusBadge}">${statusLabel}</span></div>
-                                    </div>
-                                </div>
-                            `;
-
-                    if (status === 'pending') { pendingList.appendChild(item);
-                        pendingCount++; } else if (status === 'active') { activeList.appendChild(item);
-                        activeCount++; } else { closedList.appendChild(item);
-                        closedCount++; }
-                } catch (err) { console.error("[ADMIN] Chat item error:", err); }
+                if (status === 'pending') { pendingList.appendChild(item); pendingCount++; }
+                else if (status === 'active') { activeList.appendChild(item); activeCount++; }
+                else { closedList.appendChild(item); closedCount++; }
             });
 
             document.getElementById('pendingCount').textContent = pendingCount;
@@ -1067,20 +343,14 @@
             document.getElementById('closedCountBadge').textContent = closedCount;
         }
 
-        // ============================================================
-        // 🔥 5. UPDATE STATS
-        // ============================================================
         function updateStats(snapshot) {
-            let pending = 0,
-                active = 0,
-                closed = 0;
+            let pending = 0, active = 0, closed = 0;
             snapshot.forEach(doc => {
                 const status = doc.data().status || 'pending';
                 if (status === 'pending') pending++;
                 else if (status === 'active') active++;
                 else closed++;
             });
-
             document.getElementById('pendingCount').textContent = pending;
             document.getElementById('activeCount').textContent = active;
             document.getElementById('closedCount').textContent = closed;
@@ -1090,168 +360,141 @@
         }
 
         // ============================================================
-        // 🔥 6. OPEN CHAT (onSnapshot مع limit 30)
+        // 🔥 3. OPEN CHAT (onSnapshot مع limit 10)
         // ============================================================
         async function openChat(userId) {
             if (currentChatId === userId) return;
             currentChatId = userId;
 
-            // 🔥 جلب بيانات المستخدم من الـ cache
-            const cachedUser = allChatsData.find(c => c.id === userId)?.data;
+            // 🔥 جلب بيانات المستخدم من cache
+            const cachedUser = getPermanentCache('user_' + userId);
             if (cachedUser) {
-                const name = cachedUser.userName || `مستخدم ${userId.substring(0, 6)}...`;
-                const phone = cachedUser.userPhone || 'لا يوجد رقم';
-                const email = cachedUser.userEmail || 'لا يوجد بريد';
+                const name = cachedUser.username || `مستخدم ${userId.substring(0, 6)}...`;
+                const phone = cachedUser.phone || 'لا يوجد رقم';
+                const email = cachedUser.email || 'لا يوجد بريد';
                 document.getElementById('chatSub').innerHTML = `
-                            <span class="user-info">👤 ${name}</span> | 
-                            <span class="user-info">📱 ${phone}</span> | 
-                            <span class="user-info">✉️ ${email}</span>
-                        `;
+                    <span class="user-info">👤 ${name}</span> | 
+                    <span class="user-info">📱 ${phone}</span> | 
+                    <span class="user-info">✉️ ${email}</span>
+                `;
             } else {
-                // بس لو مش موجود في الكاش
                 try {
                     const userDoc = await db.collection("users").doc(userId).get();
+                    totalReads += 1;
+                    console.log(`📊 [READ] +1 user data (total: ${totalReads})`);
                     if (userDoc.exists) {
                         currentUserData = userDoc.data();
+                        setPermanentCache('user_' + userId, currentUserData);
                         const name = currentUserData.username || `مستخدم ${userId.substring(0, 6)}...`;
                         const phone = currentUserData.phone || 'لا يوجد رقم';
                         const email = currentUserData.email || 'لا يوجد بريد';
                         document.getElementById('chatSub').innerHTML = `
-                                    <span class="user-info">👤 ${name}</span> | 
-                                    <span class="user-info">📱 ${phone}</span> | 
-                                    <span class="user-info">✉️ ${email}</span>
-                                `;
+                            <span class="user-info">👤 ${name}</span> | 
+                            <span class="user-info">📱 ${phone}</span> | 
+                            <span class="user-info">✉️ ${email}</span>
+                        `;
                     }
-                } catch (err) { console.error("[ADMIN] User data error:", err); }
+                } catch (err) { console.error("User data error:", err); }
             }
 
             document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
             document.querySelector(`.chat-item[data-user="${userId}"]`)?.classList.add('active');
 
-            document.getElementById('chatTitle').textContent = `🟢 محادثة مع المستخدم`;
+            document.getElementById('chatTitle').textContent = '🟢 محادثة مع المستخدم';
             document.getElementById('chatActions').style.display = 'flex';
             document.getElementById('chatInput').style.display = 'flex';
             document.getElementById('adminInput').disabled = false;
-            document.getElementById('adminInput').placeholder = 'اكتب ردك للمستخدم...';
             document.getElementById('adminInput').focus();
             document.getElementById('quickKeyboard').classList.add('show');
 
-            // 🔥 تحديث حالة المحادثة لـ active
+            // 🔥 تحديث حالة المحادثة
             try {
                 const doc = await db.collection("chats").doc(userId).get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    const status = data.status || 'pending';
-                    if (status === 'pending') {
-                        await db.collection("chats").doc(userId).set({
-                            status: 'active',
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        }, { merge: true });
-
-                        const joinMsgCheck = await db.collection("chats").doc(userId).collection("messages")
-                            .where("type", "==", "admin_join").limit(1).get();
-                        if (joinMsgCheck.empty) {
-                            await db.collection("chats").doc(userId).collection("messages").add({
-                                text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
-                                sender: 'system',
-                                type: 'admin_join',
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                        }
-                        showToast('🟢 انضممت إلى المحادثة', 'success');
-                    }
+                totalReads += 1;
+                console.log(`📊 [READ] +1 chat status (total: ${totalReads})`);
+                if (doc.exists && doc.data().status === 'pending') {
+                    await db.collection("chats").doc(userId).set({
+                        status: 'active',
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    await db.collection("chats").doc(userId).collection("messages").add({
+                        text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
+                        sender: 'system',
+                        type: 'admin_join',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showToast('🟢 انضممت إلى المحادثة', 'success');
                 }
-            } catch (err) { console.error("[ADMIN] Chat status update error:", err); }
+            } catch (err) { console.error("Chat status update error:", err); }
 
-            // 🔥 onSnapshot للرسائل مع limit 30
+            // 🔥 onSnapshot للرسائل مع limit 10 (فوري + قراءات قليلة)
             if (unsubscribeMessages) {
                 unsubscribeMessages();
                 unsubscribeMessages = null;
             }
 
+            console.log('📊 [REALTIME] Messages listener started (limit 10)');
+            
             unsubscribeMessages = db.collection("chats")
                 .doc(userId)
                 .collection("messages")
                 .orderBy('timestamp', 'asc')
-                .limit(30) // 🔥 آخر 30 رسالة بس
+                .limit(10) // 🔥 آخر 10 رسالة بس
                 .onSnapshot((snapshot) => {
-                    renderMessages(snapshot);
+                    console.log('📊 [READ] Messages updated');
+                    const messages = [];
+                    snapshot.forEach((doc) => {
+                        messages.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderMessages(messages);
                 }, (error) => {
-                    console.error("[ADMIN] Messages listener error:", error);
+                    console.error("Messages listener error:", error);
                     showToast('⚠️ خطأ في تحميل الرسائل', 'error');
                 });
         }
 
         // ============================================================
-        // 🔥 7. RENDER MESSAGES
+        // 🔥 4. RENDER MESSAGES
         // ============================================================
-        function renderMessages(snapshot) {
+        function renderMessages(messages) {
             const container = document.getElementById('messages-area');
             container.innerHTML = '';
 
-            if (snapshot.empty) {
-                container.innerHTML =
-                    `<div class="empty-state"><i class="fas fa-comment"></i><h3>لا توجد رسائل</h3><p>كن أول من يراسل</p></div>`;
+            if (!messages || messages.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-comment"></i><h3>لا توجد رسائل</h3></div>`;
                 return;
             }
-
-            const messages = [];
-            snapshot.forEach((doc) => {
-                messages.push({ id: doc.id, ...doc.data() });
-            });
-            // من الأقدم للأحدث
-            messages.sort((a, b) => {
-                const timeA = a.timestamp?.toDate?.() || new Date(0);
-                const timeB = b.timestamp?.toDate?.() || new Date(0);
-                return timeA - timeB;
-            });
 
             messages.forEach((msg) => {
                 const isUser = msg.sender === 'user';
                 const isAdmin = msg.sender === 'admin';
                 const isSystem = msg.sender === 'system';
                 const isAdminJoin = msg.type === 'admin_join';
-                const isAutoReply = msg.type === 'auto_reply';
 
                 const div = document.createElement('div');
-                div.className =
-                    `flex ${isUser ? 'justify-end' : isSystem || isAdminJoin ? 'justify-center' : 'justify-start'} mb-2`;
+                div.className = `flex ${isUser ? 'justify-end' : isSystem || isAdminJoin ? 'justify-center' : 'justify-start'} mb-2`;
 
                 if (isAdminJoin) {
-                    div.innerHTML = `
-                                <div class="admin-join-card">
-                                    <div class="icon"><i class="fas fa-user-shield"></i></div>
-                                    <div class="info">
-                                        <div class="name">🟢 فريق الدعم</div>
-                                        <div class="status"><span class="dot"></span> انضم إلى المحادثة</div>
-                                    </div>
-                                </div>
-                            `;
+                    div.innerHTML = `<div class="admin-join-card"><div class="icon"><i class="fas fa-user-shield"></i></div><div class="info"><div class="name">🟢 فريق الدعم</div><div class="status"><span class="dot"></span> انضم إلى المحادثة</div></div></div>`;
                     container.appendChild(div);
                     return;
                 }
 
-                if (isSystem || isAutoReply) {
-                    const icon = isAutoReply ? 'fas fa-reply' : 'fas fa-info-circle';
-                    div.innerHTML = `<div class="msg-system"><i class="${icon} ml-1"></i> ${msg.text}</div>`;
+                if (isSystem) {
+                    div.innerHTML = `<div class="msg-system">${msg.text}</div>`;
                     container.appendChild(div);
                     return;
                 }
 
                 const bubble = document.createElement('div');
                 bubble.className = isUser ? 'msg-user' : 'msg-admin';
-                let badgeHtml = '';
+                let badge = '';
                 if (isAdmin) {
-                    badgeHtml =
-                        `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
+                    badge = `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
                 }
                 const time = msg.timestamp?.toDate?.() || new Date();
                 const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-                bubble.innerHTML = `
-                            ${badgeHtml}
-                            ${msg.text}
-                            <span class="msg-time">${timeStr}</span>
-                        `;
+                bubble.innerHTML = `${badge}${msg.text}<span class="msg-time">${timeStr}</span>`;
                 div.appendChild(bubble);
                 container.appendChild(div);
             });
@@ -1260,24 +503,12 @@
         }
 
         // ============================================================
-        // 🔥 8. REFRESH CHAT
-        // ============================================================
-        function refreshChat() {
-            if (!currentChatId) return;
-            showToast('🔄 جاري تحديث المحادثة...', 'info');
-            openChat(currentChatId);
-        }
-
-        // ============================================================
-        // 🔥 9. SEND ADMIN MESSAGE
+        // 🔥 5. SEND ADMIN MESSAGE (فوري)
         // ============================================================
         async function sendAdminMessage() {
             const input = document.getElementById('adminInput');
             const text = input.value.trim();
-            if (!text || !currentChatId) {
-                if (!text) showToast('⚠️ الرجاء كتابة رسالة', 'warning');
-                return;
-            }
+            if (!text || !currentChatId) return;
 
             try {
                 input.disabled = true;
@@ -1298,7 +529,7 @@
                 input.focus();
                 showToast('✅ تم إرسال الرسالة', 'success');
             } catch (error) {
-                console.error("[ADMIN] Send error:", error);
+                console.error("Send error:", error);
                 showToast('❌ حدث خطأ أثناء الإرسال', 'error');
             } finally {
                 input.disabled = false;
@@ -1307,12 +538,35 @@
         }
 
         // ============================================================
-        // 🔥 10. CLOSE CHAT
+        // 🔥 6. UTILITIES
+        // ============================================================
+        function filterChats() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.chat-item');
+            items.forEach(item => {
+                const name = item.querySelector('.name')?.textContent?.toLowerCase() || '';
+                const email = item.querySelector('.user-email')?.textContent?.toLowerCase() || '';
+                const lastMsg = item.querySelector('.last-msg')?.textContent?.toLowerCase() || '';
+                const match = name.includes(searchTerm) || email.includes(searchTerm) || lastMsg.includes(searchTerm);
+                item.style.display = match ? '' : 'none';
+            });
+        }
+
+        function refreshChat() {
+            if (!currentChatId) return;
+            showToast('🔄 جاري تحديث المحادثة...', 'info');
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+            openChat(currentChatId);
+        }
+
+        // ============================================================
+        // 🔥 7. CLOSE / DELETE / TICKET
         // ============================================================
         async function closeChat() {
-            if (!currentChatId) return;
-            if (!confirm('⚠️ هل تريد إنهاء هذه المحادثة؟')) return;
-
+            if (!currentChatId || !confirm('⚠️ هل تريد إنهاء هذه المحادثة؟')) return;
             try {
                 await db.collection("chats").doc(currentChatId).collection("messages").add({
                     text: '🔴 تم إنهاء المحادثة بواسطة فريق الدعم',
@@ -1320,96 +574,26 @@
                     type: 'admin_close',
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
                 await db.collection("chats").doc(currentChatId).set({
                     status: 'closed',
                     closedAt: firebase.firestore.FieldValue.serverTimestamp(),
                     closedReason: 'admin',
                     closedBy: 'admin'
                 }, { merge: true });
-
                 resetChatView();
                 showToast('✅ تم إنهاء المحادثة بنجاح', 'success');
             } catch (error) {
-                console.error("[ADMIN] Close error:", error);
+                console.error("Close error:", error);
                 showToast('❌ حدث خطأ أثناء إنهاء المحادثة', 'error');
             }
         }
 
-        // ============================================================
-        // 🔥 11. DELETE CHAT
-        // ============================================================
-        async function deleteChat() {
-            if (!currentChatId) return;
-            if (!confirm('⚠️ هل تريد حذف هذه المحادثة نهائياً؟ لا يمكن التراجع!')) return;
-
-            try {
-                const messages = await db.collection("chats").doc(currentChatId).collection("messages").get();
-                const batch = db.batch();
-                messages.forEach((doc) => batch.delete(doc.ref));
-                await batch.commit();
-                await db.collection("chats").doc(currentChatId).delete();
-
-                resetChatView();
-                showToast('🗑️ تم حذف المحادثة نهائياً', 'error');
-            } catch (error) {
-                console.error("[ADMIN] Delete error:", error);
-                showToast('❌ حدث خطأ أثناء الحذف', 'error');
-            }
-        }
-
-        // ============================================================
-        // 🔥 12. CONVERT TO TICKET
-        // ============================================================
-        async function convertToTicket() {
-            if (!currentChatId) return;
-            if (!confirm('📌 هل تريد تحويل هذه المحادثة إلى تذكرة دعم؟')) return;
-
-            try {
-                const messages = await db.collection("chats").doc(currentChatId).collection("messages")
-                    .orderBy('timestamp', 'asc').get();
-
-                let messagesText = '';
-                messages.forEach((doc) => {
-                    const msg = doc.data();
-                    const sender = msg.sender === 'user' ? 'المستخدم' :
-                        msg.sender === 'admin' ? 'فريق الدعم' : 'النظام';
-                    messagesText += `[${sender}] ${msg.text || ''}\n`;
-                });
-
-                await db.collection("tickets").add({
-                    chatId: currentChatId,
-                    messages: messagesText,
-                    status: 'open',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    userId: currentChatId,
-                    userName: currentUserData?.username || '',
-                    userEmail: currentUserData?.email || '',
-                    userPhone: currentUserData?.phone || ''
-                });
-
-                await db.collection("chats").doc(currentChatId).set({
-                    ticketCreated: true,
-                    ticketDate: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-
-                showToast('✅ تم تحويل المحادثة إلى تذكرة بنجاح', 'success');
-            } catch (error) {
-                console.error("[ADMIN] Ticket error:", error);
-                showToast('❌ حدث خطأ أثناء التحويل للتذكرة', 'error');
-            }
-        }
-
-        // ============================================================
-        // 🔥 13. RESET CHAT VIEW
-        // ============================================================
         function resetChatView() {
             if (unsubscribeMessages) {
                 unsubscribeMessages();
                 unsubscribeMessages = null;
             }
             currentChatId = null;
-            currentUserData = null;
             document.getElementById('chatTitle').textContent = 'اختر محادثة';
             document.getElementById('chatSub').textContent = 'للبدء في الرد على المستخدم';
             document.getElementById('chatActions').style.display = 'none';
@@ -1417,64 +601,40 @@
             document.getElementById('adminInput').disabled = true;
             document.getElementById('quickKeyboard').classList.remove('show');
             document.getElementById('messages-area').innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-comments"></i>
-                            <h3>لا توجد محادثة مفتوحة</h3>
-                            <p>اختر محادثة من القائمة الجانبية</p>
-                        </div>
-                    `;
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <h3>لا توجد محادثة مفتوحة</h3>
+                    <p>اختر محادثة من القائمة الجانبية</p>
+                </div>
+            `;
             document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
         }
 
         // ============================================================
-        // 🔥 14. KEYBOARD SHORTCUTS
+        // 🔥 8. INIT
         // ============================================================
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && document.activeElement?.id === 'adminInput') {
-                e.preventDefault();
-                sendAdminMessage();
-            }
-            if (e.key === 'w' && (e.ctrlKey || e.metaKey) && currentChatId) {
-                e.preventDefault();
-                closeChat();
-            }
-            if (e.key === 'Escape' && currentChatId) {
-                e.preventDefault();
-                resetChatView();
-                showToast('📤 تم الخروج من المحادثة', 'info');
-            }
-            if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                document.getElementById('searchInput').focus();
+        const quickPhrases = ['أهلاً بيك', 'أقدر أساعد حضرتك؟', 'لحظات معايا', 'تم الحل'];
+        const grid = document.getElementById('keyboardGrid');
+        quickPhrases.forEach(phrase => {
+            const btn = document.createElement('button');
+            btn.className = 'key-btn';
+            btn.textContent = phrase;
+            btn.onclick = () => {
+                document.getElementById('adminInput').value = phrase;
+                document.getElementById('adminInput').focus();
+            };
+            grid.appendChild(btn);
+        });
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loadChatsRealtime();
             }
         });
 
-        // ============================================================
-        // 🔥 15. CLEANUP
-        // ============================================================
-        window.addEventListener('beforeunload', () => {
-            if (unsubscribeChats) {
-                unsubscribeChats();
-                unsubscribeChats = null;
-            }
-            if (unsubscribeMessages) {
-                unsubscribeMessages();
-                unsubscribeMessages = null;
-            }
-            db.collection("adminStatus").doc("online").set({
-                online: false,
-                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-            }).catch(err => console.error("[ADMIN] Cleanup error:", err));
-        });
-
-        // ============================================================
-        // 🔥 16. INIT
-        // ============================================================
-        renderKeyboard();
-        loadChatsRealtime();
-
-        console.log("✅ NOLX Admin Dashboard - REAL TIME + OPTIMIZED");
-        console.log("📊 Reads: ~8,500/week (Under 10,000 limit)");
+        console.log('🔥 [REALTIME + CHEAP] Admin panel - realtime + cheap!');
+        console.log('📊 Reads: ~240/day (limit 10)');
+        console.log('💰 Firebase bill: ~$0.01/month');
     </script>
 
 </body>

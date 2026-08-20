@@ -5,425 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NOLX | الدعم الفني</title>
 
-    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- FONT AWESOME -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script> 
  
     <style> 
-        /* ===== RESET & BASE ===== */ 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        } 
-        html, 
-        body { 
-            height: 100%; 
-            overflow: hidden; 
-            font-family: "Cairo", sans-serif; 
-            background: #0a0a0f; 
-            color: #fff; 
-        } 
- 
-        /* ===== خلفية داكنة مع شبكة ===== */ 
-        .bg-dark-grid { 
-            position: fixed; 
-            inset: 0; 
-            z-index: 0; 
-            background: #0a0a0f; 
-        } 
-        .dot-grid { 
-            position: absolute; 
-            inset: 0; 
-            background-image:  
-                radial-gradient(circle at 20% 30%, rgba(209, 248, 67, 0.04) 0%, transparent 50%), 
-                radial-gradient(circle at 80% 70%, rgba(209, 248, 67, 0.02) 0%, transparent 45%); 
-        } 
-        .dot-grid canvas { 
-            position: absolute; 
-            inset: 0; 
-            width: 100%; 
-            height: 100%; 
-            opacity: 0.4; 
-        } 
-        .dot-grid .glow-orb { 
-            position: absolute; 
-            border-radius: 50%; 
-            filter: blur(80px); 
-            pointer-events: none; 
-        } 
+        * { margin: 0; padding: 0; box-sizing: border-box; } 
+        html, body { height: 100%; overflow: hidden; font-family: "Cairo", sans-serif; background: #0a0a0f; color: #fff; } 
+        .bg-dark-grid { position: fixed; inset: 0; z-index: 0; background: #0a0a0f; } 
+        .dot-grid { position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 30%, rgba(209, 248, 67, 0.04) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(209, 248, 67, 0.02) 0%, transparent 45%); } 
+        .dot-grid canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.4; } 
+        .dot-grid .glow-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; } 
         .dot-grid .glow-orb.g1 { width: 500px; height: 500px; top: -200px; right: -150px; background: rgba(209, 248, 67, 0.06); animation: floatGlow 25s ease-in-out infinite alternate; } 
         .dot-grid .glow-orb.g2 { width: 400px; height: 400px; bottom: -150px; left: -100px; background: rgba(209, 248, 67, 0.04); animation: floatGlow 20s ease-in-out infinite alternate-reverse; } 
         @keyframes floatGlow { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-50px) scale(1.3); } } 
- 
-        /* ===== LOGIN OVERLAY ===== */ 
-        .login-overlay { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0, 0, 0, 0.6); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            z-index: 9999; 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-            animation: overlayIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
+        .login-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; animation: overlayIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); } 
         .login-overlay.show { display: flex; } 
         @keyframes overlayIn { 0% { opacity: 0; } 100% { opacity: 1; } } 
- 
-        .login-card { 
-            background: rgba(255,255,255,0.03); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px); 
-            border-radius: 40px; 
-            padding: 40px 36px 36px; 
-            max-width: 420px; 
-            width: 100%; 
-            text-align: center; 
-            border: 1px solid rgba(255,255,255,0.04); 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.3); 
-            animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
+        .login-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 40px; padding: 40px 36px 36px; max-width: 420px; width: 100%; text-align: center; border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 40px 100px rgba(0,0,0,0.3); animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); } 
         @keyframes cardIn { 0% { opacity: 0; transform: scale(0.92) translateY(30px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } 
- 
-        .login-card .logo { 
-            font-size: 32px; 
-            font-weight: 900; 
-            color: #fff; 
-            letter-spacing: 0.05em; 
-            margin-bottom: 4px; 
-        } 
-        .login-card .logo span { 
-            color: #D1F843; 
-            font-weight: 300; 
-        } 
-        .login-card .sub-logo { 
-            font-size: 13px; 
-            color: rgba(255,255,255,0.2); 
-            font-weight: 700; 
-            margin-bottom: 20px; 
-        } 
-        .login-card .icon { 
-            font-size: 56px; 
-            color: #D1F843; 
-            margin-bottom: 12px; 
-            display: block; 
-            animation: iconFloat 3s ease-in-out infinite; 
-        } 
+        .login-card .logo { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 0.05em; margin-bottom: 4px; } 
+        .login-card .logo span { color: #D1F843; font-weight: 300; } 
+        .login-card .sub-logo { font-size: 13px; color: rgba(255,255,255,0.2); font-weight: 700; margin-bottom: 20px; } 
+        .login-card .icon { font-size: 56px; color: #D1F843; margin-bottom: 12px; display: block; animation: iconFloat 3s ease-in-out infinite; } 
         @keyframes iconFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } } 
-        .login-card h2 { 
-            font-size: 22px; 
-            font-weight: 900; 
-            color: #fff; 
-            margin-bottom: 6px; 
-        } 
-        .login-card p { 
-            font-size: 14px; 
-            color: rgba(255,255,255,0.3); 
-            margin-bottom: 24px; 
-            line-height: 1.7; 
-        } 
-        .login-card .btn-login { 
-            background: #D1F843; 
-            color: #0a0a0f; 
-            border: none; 
-            border-radius: 99px; 
-            padding: 14px 32px; 
-            font-weight: 800; 
-            font-size: 16px; 
-            font-family: "Cairo", sans-serif; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            width: 100%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 10px; 
-        } 
-        .login-card .btn-login:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 40px rgba(209,248,67,0.15); 
-        } 
+        .login-card h2 { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; } 
+        .login-card p { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 24px; line-height: 1.7; } 
+        .login-card .btn-login { background: #D1F843; color: #0a0a0f; border: none; border-radius: 99px; padding: 14px 32px; font-weight: 800; font-size: 16px; font-family: "Cairo", sans-serif; cursor: pointer; transition: all 0.3s ease; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; } 
+        .login-card .btn-login:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(209,248,67,0.15); } 
         .login-card .btn-login:active { transform: scale(0.97); } 
- 
-        /* ===== CHAT CONTAINER ===== */ 
-        .chat-container { 
-            position: relative; 
-            z-index: 1; 
-            max-width: 480px; 
-            margin: 0 auto; 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            border-radius: 0; 
-            overflow: hidden; 
-            background: rgba(255,255,255,0.02); 
-            backdrop-filter: blur(40px) saturate(180%); 
-            -webkit-backdrop-filter: blur(40px) saturate(180%); 
-            border: 1px solid rgba(255,255,255,0.03); 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2); 
-            animation: containerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
+        .chat-container { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; border-radius: 0; overflow: hidden; background: rgba(255,255,255,0.02); backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%); border: 1px solid rgba(255,255,255,0.03); box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: containerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1); } 
         @keyframes containerIn { 0% { opacity: 0; transform: scale(0.95) translateY(30px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } 
- 
-        /* ===== HEADER ===== */ 
-        .chat-header { 
-            padding: 16px 20px 12px; 
-            border-bottom: 1px solid rgba(255,255,255,0.04); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            flex-shrink: 0; 
-            background: rgba(255,255,255,0.02); 
-            backdrop-filter: blur(10px); 
-        } 
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-        } 
-        .header-brand .brand { 
-            font-weight: 900; 
-            font-size: 18px; 
-            color: #fff; 
-            letter-spacing: 0.05em; 
-            line-height: 1; 
-        } 
-        .header-brand .brand span { 
-            font-weight: 300; 
-            color: #D1F843; 
-        } 
-        .header-brand .sub { 
-            font-size: 9px; 
-            color: rgba(255,255,255,0.2); 
-            font-weight: 700; 
-            letter-spacing: 2px; 
-            margin-top: 1px; 
-        } 
-        .header-status { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            font-size: 10px; 
-            font-weight: 700; 
-            color: rgba(255,255,255,0.25); 
-        } 
-        .header-status .dot { 
-            width: 7px; 
-            height: 7px; 
-            border-radius: 50%; 
-            display: inline-block; 
-            animation: pulse 1.5s infinite; 
-            flex-shrink: 0; 
-        } 
+        .chat-header { padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; background: rgba(255,255,255,0.02); backdrop-filter: blur(10px); } 
+        .header-left { display: flex; align-items: center; gap: 12px; } 
+        .header-brand .brand { font-weight: 900; font-size: 18px; color: #fff; letter-spacing: 0.05em; line-height: 1; } 
+        .header-brand .brand span { font-weight: 300; color: #D1F843; } 
+        .header-brand .sub { font-size: 9px; color: rgba(255,255,255,0.2); font-weight: 700; letter-spacing: 2px; margin-top: 1px; } 
+        .header-status { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25); } 
+        .header-status .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; flex-shrink: 0; } 
         .header-status .dot.connected { background: #22c55e; } 
         .header-status .dot.connecting { background: #eab308; } 
         .header-status .dot.disconnected { background: #ef4444; animation: none; } 
-        .header-status .dot.admin-online { background: #D1F843; } 
         @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } } 
- 
         .header-actions { display: flex; gap: 6px; } 
-        .header-actions button { 
-            background: rgba(255,255,255,0.03); 
-            border: none; 
-            width: 34px; 
-            height: 34px; 
-            border-radius: 50%; 
-            color: rgba(255,255,255,0.2); 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            font-size: 14px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        } 
-        .header-actions button:hover { 
-            background: rgba(255,255,255,0.06); 
-            color: #D1F843; 
-            transform: rotate(5deg); 
-        } 
- 
-        /* ===== MESSAGES ===== */ 
-        .messages-container { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 16px 20px 8px; 
-            scroll-behavior: smooth; 
-            -webkit-overflow-scrolling: touch; 
-        } 
+        .header-actions button { background: rgba(255,255,255,0.03); border: none; width: 34px; height: 34px; border-radius: 50%; color: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s ease; font-size: 14px; display: flex; align-items: center; justify-content: center; } 
+        .header-actions button:hover { background: rgba(255,255,255,0.06); color: #D1F843; transform: rotate(5deg); } 
+        .messages-container { flex: 1; overflow-y: auto; padding: 16px 20px 8px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; } 
         .messages-container::-webkit-scrollbar { width: 3px; } 
         .messages-container::-webkit-scrollbar-track { background: transparent; } 
         .messages-container::-webkit-scrollbar-thumb { background: rgba(209,248,67,0.08); border-radius: 99px; } 
- 
-        /* ===== MESSAGE WRAPPER ===== */ 
-        .message-wrapper { 
-            display: flex; 
-            margin-bottom: 8px; 
-            animation: messageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
+        .message-wrapper { display: flex; margin-bottom: 8px; animation: messageIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); } 
         .message-wrapper.justify-end { justify-content: flex-end; } 
         .message-wrapper.justify-start { justify-content: flex-start; } 
         .message-wrapper.justify-center { justify-content: center; } 
         @keyframes messageIn { 0% { opacity: 0; transform: translateY(14px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } } 
- 
-        /* ===== BUBBLES ===== */ 
-        .bubble-user { 
-            background: rgba(255,255,255,0.06); 
-            color: #fff; 
-            border-radius: 18px 18px 4px 18px; 
-            padding: 10px 16px; 
-            max-width: 80%; 
-            word-wrap: break-word; 
-            border: 1px solid rgba(255,255,255,0.04); 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-            position: relative; 
-        } 
-        .bubble-admin { 
-            background: #D1F843; 
-            color: #0a0a0f; 
-            border-radius: 18px 18px 18px 4px; 
-            padding: 10px 16px; 
-            max-width: 80%; 
-            word-wrap: break-word; 
-            box-shadow: 0 4px 20px rgba(209,248,67,0.08); 
-            position: relative; 
-            border: none; 
-        } 
-        .bubble-admin .bubble-badge { 
-            background: rgba(10,10,15,0.08); 
-            color: #0a0a0f; 
-        } 
+        .bubble-user { background: rgba(255,255,255,0.06); color: #fff; border-radius: 18px 18px 4px 18px; padding: 10px 16px; max-width: 80%; word-wrap: break-word; border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative; } 
+        .bubble-admin { background: #D1F843; color: #0a0a0f; border-radius: 18px 18px 18px 4px; padding: 10px 16px; max-width: 80%; word-wrap: break-word; box-shadow: 0 4px 20px rgba(209,248,67,0.08); position: relative; border: none; } 
+        .bubble-admin .bubble-badge { background: rgba(10,10,15,0.08); color: #0a0a0f; } 
         .bubble-admin .bubble-time { opacity: 0.5; color: rgba(10,10,15,0.4); } 
- 
-        .bubble-system { 
-            background: rgba(209,248,67,0.04); 
-            color: rgba(255,255,255,0.3); 
-            border-radius: 99px; 
-            padding: 5px 18px; 
-            font-size: 11px; 
-            font-weight: 700; 
-            text-align: center; 
-            max-width: 85%; 
-            border: 1px solid rgba(255,255,255,0.03); 
-            animation: systemIn 0.5s ease; 
-        } 
+        .bubble-system { background: rgba(209,248,67,0.04); color: rgba(255,255,255,0.3); border-radius: 99px; padding: 5px 18px; font-size: 11px; font-weight: 700; text-align: center; max-width: 85%; border: 1px solid rgba(255,255,255,0.03); animation: systemIn 0.5s ease; } 
         @keyframes systemIn { 0% { opacity: 0; transform: scale(0.90); } 100% { opacity: 1; transform: scale(1); } } 
- 
-        .bubble-badge { 
-            display: inline-block; 
-            background: rgba(255,255,255,0.04); 
-            border-radius: 99px; 
-            padding: 1px 10px; 
-            font-size: 8px; 
-            color: rgba(255,255,255,0.2); 
-            font-weight: 800; 
-            margin-bottom: 2px; 
-            letter-spacing: 0.5px; 
-        } 
-        .bubble-time { 
-            font-size: 8px; 
-            opacity: 0.25; 
-            margin-top: 3px; 
-            display: block; 
-            font-weight: 600; 
-        } 
- 
-        /* ===== ADMIN JOIN CARD ===== */ 
-        .admin-join-card { 
-            background: rgba(255,255,255,0.02); 
-            border: 2px solid rgba(255,255,255,0.04); 
-            border-radius: 20px; 
-            padding: 12px 20px; 
-            max-width: 85%; 
-            margin: 4px auto; 
-            display: flex; 
-            align-items: center; 
-            gap: 14px; 
-            animation: adminJoinIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
-        } 
+        .bubble-badge { display: inline-block; background: rgba(255,255,255,0.04); border-radius: 99px; padding: 1px 10px; font-size: 8px; color: rgba(255,255,255,0.2); font-weight: 800; margin-bottom: 2px; letter-spacing: 0.5px; } 
+        .bubble-time { font-size: 8px; opacity: 0.25; margin-top: 3px; display: block; font-weight: 600; } 
+        .admin-join-card { background: rgba(255,255,255,0.02); border: 2px solid rgba(255,255,255,0.04); border-radius: 20px; padding: 12px 20px; max-width: 85%; margin: 4px auto; display: flex; align-items: center; gap: 14px; animation: adminJoinIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); } 
         @keyframes adminJoinIn { 0% { opacity: 0; transform: scale(0.90) translateY(12px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } 
-        .admin-join-card .icon { 
-            width: 38px; 
-            height: 38px; 
-            border-radius: 50%; 
-            background: #D1F843; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: #0a0a0f; 
-            font-size: 16px; 
-            flex-shrink: 0; 
-            box-shadow: 0 4px 15px rgba(209,248,67,0.08); 
-            animation: iconPulse 3s ease-in-out infinite; 
-        } 
+        .admin-join-card .icon { width: 38px; height: 38px; border-radius: 50%; background: #D1F843; display: flex; align-items: center; justify-content: center; color: #0a0a0f; font-size: 16px; flex-shrink: 0; box-shadow: 0 4px 15px rgba(209,248,67,0.08); animation: iconPulse 3s ease-in-out infinite; } 
         @keyframes iconPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } } 
-        .admin-join-card .info .name { 
-            font-weight: 900; 
-            color: #fff; 
-            font-size: 13px; 
-        } 
-        .admin-join-card .info .status { 
-            font-size: 10px; 
-            color: rgba(255,255,255,0.2); 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-        } 
-        .admin-join-card .info .status .dot { 
-            width: 5px; 
-            height: 5px; 
-            border-radius: 50%; 
-            background: #22c55e; 
-            display: inline-block; 
-            animation: pulse 1.5s infinite; 
-        } 
- 
-        /* ===== QUICK REPLIES ===== */ 
-        .quick-replies-grid { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 5px; 
-            padding: 6px 16px 4px; 
-            flex-shrink: 0; 
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            overflow: hidden; 
-            max-height: 180px; 
-        } 
-        .quick-replies-grid.hidden { 
-            max-height: 0; 
-            padding: 0 16px; 
-            opacity: 0; 
-            pointer-events: none; 
-        } 
-        .quick-reply { 
-            background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(255,255,255,0.04); 
-            border-radius: 99px; 
-            padding: 6px 14px; 
-            font-size: 10px; 
-            color: rgba(255,255,255,0.4); 
-            cursor: pointer; 
-            transition: all 0.25s ease; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            flex: 1 0 auto; 
-            min-width: 44%; 
-            backdrop-filter: blur(5px); 
-            animation: qrIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; 
-        } 
+        .admin-join-card .info .name { font-weight: 900; color: #fff; font-size: 13px; } 
+        .admin-join-card .info .status { font-size: 10px; color: rgba(255,255,255,0.2); display: flex; align-items: center; gap: 6px; } 
+        .admin-join-card .info .status .dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; display: inline-block; animation: pulse 1.5s infinite; } 
+        .quick-replies-grid { display: flex; flex-wrap: wrap; gap: 5px; padding: 6px 16px 4px; flex-shrink: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden; max-height: 180px; } 
+        .quick-replies-grid.hidden { max-height: 0; padding: 0 16px; opacity: 0; pointer-events: none; } 
+        .quick-reply { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04); border-radius: 99px; padding: 6px 14px; font-size: 10px; color: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.25s ease; font-weight: 700; display: flex; align-items: center; gap: 5px; flex: 1 0 auto; min-width: 44%; backdrop-filter: blur(5px); animation: qrIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; } 
         .quick-reply:nth-child(1) { animation-delay: 0.04s; } 
         .quick-reply:nth-child(2) { animation-delay: 0.08s; } 
         .quick-reply:nth-child(3) { animation-delay: 0.12s; } 
@@ -433,680 +90,91 @@
         .quick-reply:nth-child(7) { animation-delay: 0.28s; } 
         .quick-reply:nth-child(8) { animation-delay: 0.32s; } 
         @keyframes qrIn { 0% { opacity: 0; transform: scale(0.90) translateY(6px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } 
-        .quick-reply:hover { 
-            background: rgba(255,255,255,0.06); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
-            color: #D1F843; 
-            border-color: rgba(209,248,67,0.08); 
-        } 
+        .quick-reply:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); color: #D1F843; border-color: rgba(209,248,67,0.08); } 
         .quick-reply:active { transform: scale(0.95); } 
         .quick-reply i { font-size: 12px; opacity: 0.3; } 
- 
-        /* ===== FOOTER ===== */ 
-        .chat-footer { 
-            padding: 10px 16px 14px; 
-            flex-shrink: 0; 
-            background: rgba(255,255,255,0.02); 
-            backdrop-filter: blur(10px); 
-            border-top: 1px solid rgba(255,255,255,0.03); 
-        } 
-        .input-wrapper { 
-            display: flex; 
-            gap: 8px; 
-            align-items: center; 
-            background: rgba(255,255,255,0.03); 
-            border-radius: 22px; 
-            padding: 3px; 
-            border: 1px solid rgba(255,255,255,0.04); 
-            transition: all 0.3s ease; 
-        } 
-        .input-wrapper:focus-within { 
-            background: rgba(255,255,255,0.06); 
-            border-color: rgba(209,248,67,0.06); 
-            box-shadow: 0 0 0 4px rgba(209,248,67,0.02); 
-        } 
-        .input-field { 
-            flex: 1; 
-            background: transparent; 
-            border: none; 
-            padding: 10px 16px; 
-            color: #fff; 
-            font-family: "Cairo", sans-serif; 
-            font-size: 14px; 
-            outline: none; 
-            min-height: 44px; 
-            line-height: 1.5; 
-        } 
+        .chat-footer { padding: 10px 16px 14px; flex-shrink: 0; background: rgba(255,255,255,0.02); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.03); } 
+        .input-wrapper { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.03); border-radius: 22px; padding: 3px; border: 1px solid rgba(255,255,255,0.04); transition: all 0.3s ease; } 
+        .input-wrapper:focus-within { background: rgba(255,255,255,0.06); border-color: rgba(209,248,67,0.06); box-shadow: 0 0 0 4px rgba(209,248,67,0.02); } 
+        .input-field { flex: 1; background: transparent; border: none; padding: 10px 16px; color: #fff; font-family: "Cairo", sans-serif; font-size: 14px; outline: none; min-height: 44px; line-height: 1.5; } 
         .input-field::placeholder { color: rgba(255,255,255,0.15); font-weight: 500; } 
         .input-field:disabled { opacity: 0.3; cursor: not-allowed; } 
- 
-        .send-btn { 
-            background: #D1F843; 
-            color: #0a0a0f; 
-            border: none; 
-            border-radius: 99px; 
-            padding: 9px 18px; 
-            font-weight: 800; 
-            font-family: "Cairo", sans-serif; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            font-size: 13px; 
-            min-width: 72px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 5px; 
-            flex-shrink: 0; 
-            height: 44px; 
-        } 
-        .send-btn:hover:not(:disabled) { 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 30px rgba(209,248,67,0.12); 
-        } 
+        .send-btn { background: #D1F843; color: #0a0a0f; border: none; border-radius: 99px; padding: 9px 18px; font-weight: 800; font-family: "Cairo", sans-serif; cursor: pointer; transition: all 0.3s ease; font-size: 13px; min-width: 72px; display: flex; align-items: center; justify-content: center; gap: 5px; flex-shrink: 0; height: 44px; } 
+        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(209,248,67,0.12); } 
         .send-btn:active:not(:disabled) { transform: scale(0.95); } 
         .send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; } 
         .send-btn i { font-size: 13px; } 
- 
-        /* ===== OFFLINE FORM ===== */ 
-        .offline-form { 
-            display: none; 
-            padding: 14px 18px 16px; 
-            background: rgba(255,255,255,0.02); 
-            border-radius: 20px; 
-            margin: 4px 16px 2px; 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255,255,255,0.03); 
-            animation: formIn 0.4s ease; 
-        } 
+        .offline-form { display: none; padding: 14px 18px 16px; background: rgba(255,255,255,0.02); border-radius: 20px; margin: 4px 16px 2px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.03); animation: formIn 0.4s ease; } 
         .offline-form.show { display: block; } 
         @keyframes formIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } } 
-        .offline-form h4 { 
-            font-weight: 900; 
-            color: #fff; 
-            font-size: 13px; 
-            margin-bottom: 2px; 
-        } 
-        .offline-form p { 
-            font-size: 10px; 
-            color: rgba(255,255,255,0.15); 
-            margin-bottom: 10px; 
-        } 
-        .offline-form input, 
-        .offline-form textarea { 
-            width: 100%; 
-            padding: 8px 14px; 
-            border-radius: 14px; 
-            border: 1px solid rgba(255,255,255,0.04); 
-            background: rgba(255,255,255,0.03); 
-            font-family: "Cairo", sans-serif; 
-            outline: none; 
-            margin-bottom: 6px; 
-            color: #fff; 
-            font-size: 12px; 
-            transition: 0.3s; 
-        } 
-        .offline-form input:focus, 
-        .offline-form textarea:focus { 
-            border-color: rgba(209,248,67,0.08); 
-            background: rgba(255,255,255,0.06); 
-            box-shadow: 0 0 0 4px rgba(209,248,67,0.02); 
-        } 
-        .offline-form input::placeholder, 
-        .offline-form textarea::placeholder { color: rgba(255,255,255,0.12); } 
-        .offline-form textarea { 
-            min-height: 60px; 
-            resize: vertical; 
-        } 
+        .offline-form h4 { font-weight: 900; color: #fff; font-size: 13px; margin-bottom: 2px; } 
+        .offline-form p { font-size: 10px; color: rgba(255,255,255,0.15); margin-bottom: 10px; } 
+        .offline-form input, .offline-form textarea { width: 100%; padding: 8px 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.03); font-family: "Cairo", sans-serif; outline: none; margin-bottom: 6px; color: #fff; font-size: 12px; transition: 0.3s; } 
+        .offline-form input:focus, .offline-form textarea:focus { border-color: rgba(209,248,67,0.08); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(209,248,67,0.02); } 
+        .offline-form input::placeholder, .offline-form textarea::placeholder { color: rgba(255,255,255,0.12); } 
+        .offline-form textarea { min-height: 60px; resize: vertical; } 
         .offline-form .send-btn { width: 100%; height: 40px; font-size: 12px; } 
- 
-        /* ===== RATING MODAL ===== */ 
-        .rating-modal { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.4); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            z-index: 9999; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px; 
-            animation: modalOverlay 0.4s ease; 
-        } 
+        .rating-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; animation: modalOverlay 0.4s ease; } 
         .rating-modal.show { display: flex; } 
         @keyframes modalOverlay { 0% { opacity: 0; } 100% { opacity: 1; } } 
-        .rating-modal .modal-content { 
-            background: rgba(255,255,255,0.03); 
-            backdrop-filter: blur(30px); 
-            -webkit-backdrop-filter: blur(30px); 
-            border-radius: 32px; 
-            padding: 32px 28px 28px; 
-            max-width: 360px; 
-            width: 100%; 
-            text-align: center; 
-            animation: modalContent 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
-            border: 1px solid rgba(255,255,255,0.04); 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.2); 
-        } 
+        .rating-modal .modal-content { background: rgba(255,255,255,0.03); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-radius: 32px; padding: 32px 28px 28px; max-width: 360px; width: 100%; text-align: center; animation: modalContent 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 40px 100px rgba(0,0,0,0.2); } 
         @keyframes modalContent { 0% { opacity: 0; transform: scale(0.90) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } 
-        .rating-modal .modal-content .icon { 
-            font-size: 48px; 
-            display: block; 
-            margin-bottom: 8px; 
-            animation: bounce 2s ease-in-out infinite; 
-        } 
+        .rating-modal .modal-content .icon { font-size: 48px; display: block; margin-bottom: 8px; animation: bounce 2s ease-in-out infinite; } 
         @keyframes bounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.10); } } 
-        .rating-modal .modal-content h3 { 
-            color: #fff; 
-            font-weight: 900; 
-            font-size: 18px; 
-            margin-bottom: 4px; 
-        } 
-        .rating-modal .modal-content p { 
-            color: rgba(255,255,255,0.2); 
-            font-size: 12px; 
-            margin-bottom: 16px; 
-        } 
-        .star-rating { 
-            display: flex; 
-            gap: 8px; 
-            justify-content: center; 
-            direction: ltr; 
-            margin-bottom: 14px; 
-        } 
-        .star-rating i { 
-            font-size: 30px; 
-            color: rgba(255,255,255,0.08); 
-            cursor: pointer; 
-            transition: all 0.20s ease; 
-        } 
+        .rating-modal .modal-content h3 { color: #fff; font-weight: 900; font-size: 18px; margin-bottom: 4px; } 
+        .rating-modal .modal-content p { color: rgba(255,255,255,0.2); font-size: 12px; margin-bottom: 16px; } 
+        .star-rating { display: flex; gap: 8px; justify-content: center; direction: ltr; margin-bottom: 14px; } 
+        .star-rating i { font-size: 30px; color: rgba(255,255,255,0.08); cursor: pointer; transition: all 0.20s ease; } 
         .star-rating i:hover { transform: scale(1.15); color: #f59e0b; } 
         .star-rating i.active { color: #f59e0b; animation: starPop 0.30s ease; } 
         @keyframes starPop { 0% { transform: scale(1); } 50% { transform: scale(1.30); } 100% { transform: scale(1); } } 
-        .rating-modal .skip-btn { 
-            background: transparent; 
-            border: none; 
-            color: rgba(255,255,255,0.12); 
-            font-weight: 700; 
-            font-size: 11px; 
-            cursor: pointer; 
-            font-family: "Cairo", sans-serif; 
-            transition: 0.3s; 
-        } 
+        .rating-modal .skip-btn { background: transparent; border: none; color: rgba(255,255,255,0.12); font-weight: 700; font-size: 11px; cursor: pointer; font-family: "Cairo", sans-serif; transition: 0.3s; } 
         .rating-modal .skip-btn:hover { color: rgba(255,255,255,0.3); } 
- 
-        /* ===== EMPTY STATE ===== */ 
-        .empty-state { 
-            text-align: center; 
-            color: rgba(255,255,255,0.08); 
-            margin-top: 25%; 
-            animation: emptyIn 0.8s ease; 
-        } 
+        .empty-state { text-align: center; color: rgba(255,255,255,0.08); margin-top: 25%; animation: emptyIn 0.8s ease; } 
         @keyframes emptyIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } } 
-        .empty-state i { 
-            font-size: 48px; 
-            margin-bottom: 12px; 
-            display: block; 
-            color: rgba(255,255,255,0.04); 
-            animation: floatIcon 4s ease-in-out infinite; 
-        } 
+        .empty-state i { font-size: 48px; margin-bottom: 12px; display: block; color: rgba(255,255,255,0.04); animation: floatIcon 4s ease-in-out infinite; } 
         @keyframes floatIcon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } } 
-        .empty-state h3 { 
-            font-weight: 900; 
-            color: rgba(255,255,255,0.1); 
-            font-size: 17px; 
-        } 
-        .empty-state p { 
-            font-size: 12px; 
-            margin-top: 2px; 
-            color: rgba(255,255,255,0.05); 
-        } 
- 
-        /* ===== TYPING INDICATOR ===== */ 
-        .typing-indicator { 
-            display: none; 
-            padding: 2px 0 4px; 
-            animation: typingIn 0.3s ease; 
-        } 
-        .typing-indicator.show { 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            padding-right: 8px; 
-        } 
+        .empty-state h3 { font-weight: 900; color: rgba(255,255,255,0.1); font-size: 17px; } 
+        .empty-state p { font-size: 12px; margin-top: 2px; color: rgba(255,255,255,0.05); } 
+        .typing-indicator { display: none; padding: 2px 0 4px; animation: typingIn 0.3s ease; } 
+        .typing-indicator.show { display: flex; align-items: center; gap: 8px; padding-right: 8px; } 
         @keyframes typingIn { 0% { opacity: 0; transform: translateY(4px); } 100% { opacity: 1; transform: translateY(0); } } 
-        .typing-indicator .dots span { 
-            display: inline-block; 
-            width: 5px; 
-            height: 5px; 
-            border-radius: 50%; 
-            background: rgba(255,255,255,0.08); 
-            animation: typingBounce 1.2s infinite; 
-            margin: 0 1px; 
-        } 
+        .typing-indicator .dots span { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.08); animation: typingBounce 1.2s infinite; margin: 0 1px; } 
         .typing-indicator .dots span:nth-child(2) { animation-delay: 0.20s; } 
         .typing-indicator .dots span:nth-child(3) { animation-delay: 0.40s; } 
         @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } } 
-        .typing-indicator .label { 
-            font-size: 10px; 
-            color: rgba(255,255,255,0.1); 
-            font-weight: 700; 
-        } 
- 
-        /* ===== NOLX BRANDING ===== */ 
-        .nolx-brand { 
-            position: fixed; 
-            bottom: 12px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            z-index: 2; 
-            font-size: 10px; 
-            font-weight: 900; 
-            color: rgba(255,255,255,0.04); 
-            letter-spacing: 3px; 
-            pointer-events: none; 
-            animation: brandFade 3s ease-in-out infinite alternate; 
-        } 
+        .typing-indicator .label { font-size: 10px; color: rgba(255,255,255,0.1); font-weight: 700; } 
+        .nolx-brand { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 2; font-size: 10px; font-weight: 900; color: rgba(255,255,255,0.04); letter-spacing: 3px; pointer-events: none; animation: brandFade 3s ease-in-out infinite alternate; } 
         @keyframes brandFade { 0% { opacity: 0.3; } 100% { opacity: 0.8; } } 
- 
-        /* ===== RESPONSIVE ===== */ 
-        @media(max-width: 640px) { 
-            .chat-container { 
-                margin: 0; 
-                height: 100vh; 
-                border-radius: 0; 
-                max-width: 100%; 
-                border: none; 
-            } 
-            .chat-header { 
-                padding: 12px 14px 10px; 
-            } 
-            .header-brand .brand { font-size: 16px; } 
-            .header-brand .sub { font-size: 8px; } 
-            .header-status { font-size: 9px; } 
-            .messages-container { padding: 12px 14px 6px; } 
-            .bubble-user, 
-            .bubble-admin { 
-                padding: 8px 14px; 
-                font-size: 13px; 
-                max-width: 85%; 
-            } 
-            .bubble-system { font-size: 10px; padding: 4px 14px; } 
-            .admin-join-card { 
-                padding: 10px 14px; 
-                gap: 10px; 
-            } 
-            .admin-join-card .icon { 
-                width: 32px; 
-                height: 32px; 
-                font-size: 14px; 
-            } 
-            .admin-join-card .info .name { font-size: 12px; } 
-            .admin-join-card .info .status { font-size: 9px; } 
-            .quick-replies-grid { 
-                padding: 4px 12px 2px; 
-                gap: 4px; 
-            } 
-            .quick-reply { 
-                font-size: 9px; 
-                padding: 5px 10px; 
-                min-width: 44%; 
-            } 
-            .quick-reply i { font-size: 10px; } 
-            .chat-footer { 
-                padding: 8px 12px 10px; 
-            } 
-            .input-wrapper { 
-                border-radius: 18px; 
-                gap: 4px; 
-            } 
-            .input-field { 
-                font-size: 13px; 
-                padding: 8px 12px; 
-                min-height: 38px; 
-            } 
-            .send-btn { 
-                font-size: 12px; 
-                padding: 7px 14px; 
-                min-width: 56px; 
-                height: 38px; 
-            } 
-            .send-btn i { font-size: 12px; } 
-            .offline-form { 
-                padding: 10px 14px 12px; 
-                margin: 2px 12px 0; 
-            } 
-            .offline-form input, 
-            .offline-form textarea { 
-                font-size: 11px; 
-                padding: 6px 12px; 
-            } 
-            .rating-modal .modal-content { 
-                padding: 24px 20px 20px; 
-                max-width: 320px; 
-            } 
-            .rating-modal .modal-content .icon { font-size: 40px; } 
-            .rating-modal .modal-content h3 { font-size: 16px; } 
-            .star-rating i { font-size: 26px; } 
-            .empty-state { margin-top: 20%; } 
-            .empty-state i { font-size: 40px; } 
-            .empty-state h3 { font-size: 15px; } 
-            .login-card { 
-                padding: 28px 24px 24px; 
-            } 
-            .login-card .logo { font-size: 26px; } 
-            .login-card .icon { font-size: 44px; } 
-            .login-card h2 { font-size: 18px; } 
-        } 
- 
-        @media(max-width: 400px) { 
-            .header-brand .brand { font-size: 14px; } 
-            .header-actions button { 
-                width: 28px; 
-                height: 28px; 
-                font-size: 12px; 
-            } 
-            .messages-container { padding: 8px 10px 4px; } 
-            .bubble-user, 
-            .bubble-admin { 
-                font-size: 12px; 
-                padding: 6px 10px; 
-            } 
-            .quick-reply { 
-                font-size: 8px; 
-                padding: 4px 8px; 
-                min-width: 100%; 
-            } 
-            .input-field { 
-                font-size: 12px; 
-                padding: 6px 10px; 
-                min-height: 34px; 
-            } 
-            .send-btn { 
-                font-size: 11px; 
-                padding: 6px 10px; 
-                min-width: 48px; 
-                height: 34px; 
-            } 
-            .send-btn i { font-size: 10px; } 
-            .chat-footer { padding: 6px 8px 8px; } 
-            .login-card { 
-                padding: 20px 16px 20px; 
-            } 
-            .login-card .logo { font-size: 22px; } 
-            .login-card .icon { font-size: 36px; } 
-            .login-card h2 { font-size: 16px; } 
-            .login-card p { font-size: 12px; } 
-        } 
- 
-        @media(max-height: 700px) { 
-            .chat-header { 
-                padding: 8px 12px 6px; 
-            } 
-            .header-brand .brand { font-size: 15px; } 
-            .header-status { font-size: 8px; } 
-            .messages-container { padding: 6px 12px 4px; } 
-            .bubble-user, 
-            .bubble-admin { 
-                padding: 6px 12px; 
-                font-size: 12px; 
-            } 
-            .chat-footer { padding: 4px 8px 6px; } 
-            .input-field { 
-                min-height: 32px; 
-                padding: 6px 10px; 
-                font-size: 12px; 
-            } 
-            .send-btn { 
-                height: 32px; 
-                padding: 5px 10px; 
-                font-size: 11px; 
-                min-width: 44px; 
-            } 
-            .quick-replies-grid { 
-                padding: 2px 10px 0; 
-                gap: 3px; 
-            } 
-            .quick-reply { 
-                font-size: 8px; 
-                padding: 3px 8px; 
-                min-width: 44%; 
-            } 
-            .admin-join-card { 
-                padding: 6px 12px; 
-                gap: 8px; 
-            } 
-            .admin-join-card .icon { 
-                width: 26px; 
-                height: 26px; 
-                font-size: 12px; 
-            } 
-            .admin-join-card .info .name { font-size: 11px; } 
-            .admin-join-card .info .status { font-size: 8px; } 
-            .empty-state { margin-top: 15%; } 
-            .empty-state i { font-size: 32px; } 
-            .empty-state h3 { font-size: 13px; } 
-            .empty-state p { font-size: 10px; } 
-        } 
- 
-        /* ===== SAFE AREA ===== */ 
-        @supports(padding: max(0px)) { 
-            .chat-container { 
-                padding-top: max(0px, env(safe-area-inset-top)); 
-                padding-bottom: max(0px, env(safe-area-inset-bottom)); 
-            } 
-            .chat-footer { 
-                padding-bottom: max(8px, env(safe-area-inset-bottom)); 
-            } 
-        } 
-        /* ========================================================= 
-   📱 UNIVERSAL RESPONSIVE FIX 
-   ========================================================= */ 
- 
-html,body { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-    margin: 0; 
-    padding: 0; 
-    overflow-x: hidden !important; 
-} 
-*,*::before,*::after { 
-    box-sizing: border-box; 
-    max-width: 100%; 
-} 
-img,video,iframe,svg,canvas { 
-    max-width: 100%; 
-    height: auto; 
-} 
-.chat-container { 
-    width: 100%; 
-    max-width: 480px; 
-    min-width: 0; 
-    height: 100dvh; 
-    min-height: 100dvh; 
-    margin-left: auto; 
-    margin-right: auto; 
-    overflow: hidden; 
-} 
-.messages-container { 
-    width: 100%; 
-    min-width: 0; 
-    max-width: 100%; 
-    overflow-x: hidden; 
-    overflow-y: auto; 
-} 
-.message-wrapper { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-} 
-.bubble-user,.bubble-admin,.bubble-system { 
-    max-width: min(85%, 100%); 
-    min-width: 0; 
-    overflow-wrap: anywhere; 
-    word-break: break-word; 
-} 
-.chat-header { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-} 
-.quick-replies-grid { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-} 
-.quick-reply,.send-btn { 
-    max-width: 100%; 
-    min-width: 0; 
-} 
-.chat-footer { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-    flex-shrink: 0; 
-} 
-.input-wrapper { 
-    width: 100%; 
-    max-width: 100%; 
-    min-width: 0; 
-    display: flex; 
-} 
-.input-field { 
-    width: 100%; 
-    min-width: 0; 
-    max-width: 100%; 
-} 
-@media screen and (max-width: 640px) { 
-    html,body { 
-        width: 100%; 
-        height: 100%; 
-        min-height: 100%; 
-        overflow: hidden !important; 
-    } 
-    .chat-container { 
-        width: 100vw; 
-        max-width: 100vw; 
-        min-width: 0; 
-        height: 100dvh; 
-        min-height: 100dvh; 
-        max-height: 100dvh; 
-        margin: 0; 
-        border-radius: 0; 
-    } 
-    .chat-header { 
-        width: 100%; 
-        padding-left: 12px; 
-        padding-right: 12px; 
-    } 
-    .messages-container { 
-        width: 100%; 
-        padding-left: 10px; 
-        padding-right: 10px; 
-        overflow-x: hidden; 
-    } 
-    .bubble-user,.bubble-admin { 
-        max-width: 88%; 
-        overflow-wrap: anywhere; 
-        word-break: break-word; 
-    } 
-    .quick-replies-grid { 
-        width: 100%; 
-        padding-left: 8px; 
-        padding-right: 8px; 
-    } 
-    .chat-footer { 
-        width: 100%; 
-        padding-left: 8px; 
-        padding-right: 8px; 
-        padding-bottom: max(8px, env(safe-area-inset-bottom)); 
-    } 
-    .input-wrapper { 
-        width: 100%; 
-    } 
-    .input-field { 
-        min-width: 0; 
-        flex: 1 1 auto; 
-    } 
-    .send-btn { 
-        flex: 0 0 auto; 
-    } 
-} 
-@media screen and (max-width: 380px) { 
-    .chat-header { 
-        padding-left: 8px; 
-        padding-right: 8px; 
-    } 
-    .messages-container { 
-        padding-left: 7px; 
-        padding-right: 7px; 
-    } 
-    .bubble-user,.bubble-admin { 
-        max-width: 92%; 
-        padding-left: 10px; 
-        padding-right: 10px; 
-    } 
-    .chat-footer { 
-        padding-left: 6px; 
-        padding-right: 6px; 
-    } 
-    .input-field { 
-        font-size: 12px; 
-    } 
-    .send-btn { 
-        min-width: 40px; 
-        padding-left: 8px; 
-        padding-right: 8px; 
-    } 
-} 
-@media screen and (min-width: 641px) and (max-width: 1024px) { 
-    .chat-container { 
-        width: min(100%, 600px); 
-        max-width: 600px; 
-        height: 100dvh; 
-        min-height: 100dvh; 
-    } 
-} 
-@media screen and (min-width: 1025px) { 
-    .chat-container { 
-        width: min(100%, 480px); 
-        height: min(900px, 100dvh); 
-        min-height: 600px; 
-        border-radius: 28px; 
-        margin-top: 20px; 
-        margin-bottom: 20px; 
-        border: 1px solid rgba(255,255,255,0.04); 
-    } 
-} 
-h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea { 
-    overflow-wrap: anywhere; 
-} 
-.login-overlay,.rating-modal { 
-    width: 100%; 
-    max-width: 100vw; 
-    height: 100%; 
-    max-height: 100dvh; 
-    overflow-y: auto; 
-    overflow-x: hidden; 
-} 
-.login-card,.rating-modal .modal-content { 
-    width: calc(100% - 24px); 
-    max-width: 420px; 
-    min-width: 0; 
-} 
-@supports (height: 100dvh) { 
-    .chat-container { 
-        height: 100dvh; 
-        min-height: 100dvh; 
-    } 
-} 
+        @media(max-width: 640px) { .chat-container { margin: 0; height: 100vh; border-radius: 0; max-width: 100%; border: none; } .chat-header { padding: 12px 14px 10px; } .header-brand .brand { font-size: 16px; } .header-brand .sub { font-size: 8px; } .header-status { font-size: 9px; } .messages-container { padding: 12px 14px 6px; } .bubble-user, .bubble-admin { padding: 8px 14px; font-size: 13px; max-width: 85%; } .bubble-system { font-size: 10px; padding: 4px 14px; } .admin-join-card { padding: 10px 14px; gap: 10px; } .admin-join-card .icon { width: 32px; height: 32px; font-size: 14px; } .admin-join-card .info .name { font-size: 12px; } .admin-join-card .info .status { font-size: 9px; } .quick-replies-grid { padding: 4px 12px 2px; gap: 4px; } .quick-reply { font-size: 9px; padding: 5px 10px; min-width: 44%; } .quick-reply i { font-size: 10px; } .chat-footer { padding: 8px 12px 10px; } .input-wrapper { border-radius: 18px; gap: 4px; } .input-field { font-size: 13px; padding: 8px 12px; min-height: 38px; } .send-btn { font-size: 12px; padding: 7px 14px; min-width: 56px; height: 38px; } .send-btn i { font-size: 12px; } .offline-form { padding: 10px 14px 12px; margin: 2px 12px 0; } .offline-form input, .offline-form textarea { font-size: 11px; padding: 6px 12px; } .rating-modal .modal-content { padding: 24px 20px 20px; max-width: 320px; } .rating-modal .modal-content .icon { font-size: 40px; } .rating-modal .modal-content h3 { font-size: 16px; } .star-rating i { font-size: 26px; } .empty-state { margin-top: 20%; } .empty-state i { font-size: 40px; } .empty-state h3 { font-size: 15px; } .login-card { padding: 28px 24px 24px; } .login-card .logo { font-size: 26px; } .login-card .icon { font-size: 44px; } .login-card h2 { font-size: 18px; } } 
+        @media(max-width: 400px) { .header-brand .brand { font-size: 14px; } .header-actions button { width: 28px; height: 28px; font-size: 12px; } .messages-container { padding: 8px 10px 4px; } .bubble-user, .bubble-admin { font-size: 12px; padding: 6px 10px; } .quick-reply { font-size: 8px; padding: 4px 8px; min-width: 100%; } .input-field { font-size: 12px; padding: 6px 10px; min-height: 34px; } .send-btn { font-size: 11px; padding: 6px 10px; min-width: 48px; height: 34px; } .send-btn i { font-size: 10px; } .chat-footer { padding: 6px 8px 8px; } .login-card { padding: 20px 16px 20px; } .login-card .logo { font-size: 22px; } .login-card .icon { font-size: 36px; } .login-card h2 { font-size: 16px; } .login-card p { font-size: 12px; } } 
+        @media(max-height: 700px) { .chat-header { padding: 8px 12px 6px; } .header-brand .brand { font-size: 15px; } .header-status { font-size: 8px; } .messages-container { padding: 6px 12px 4px; } .bubble-user, .bubble-admin { padding: 6px 12px; font-size: 12px; } .chat-footer { padding: 4px 8px 6px; } .input-field { min-height: 32px; padding: 6px 10px; font-size: 12px; } .send-btn { height: 32px; padding: 5px 10px; font-size: 11px; min-width: 44px; } .quick-replies-grid { padding: 2px 10px 0; gap: 3px; } .quick-reply { font-size: 8px; padding: 3px 8px; min-width: 44%; } .admin-join-card { padding: 6px 12px; gap: 8px; } .admin-join-card .icon { width: 26px; height: 26px; font-size: 12px; } .admin-join-card .info .name { font-size: 11px; } .admin-join-card .info .status { font-size: 8px; } .empty-state { margin-top: 15%; } .empty-state i { font-size: 32px; } .empty-state h3 { font-size: 13px; } .empty-state p { font-size: 10px; } } 
+        @supports(padding: max(0px)) { .chat-container { padding-top: max(0px, env(safe-area-inset-top)); padding-bottom: max(0px, env(safe-area-inset-bottom)); } .chat-footer { padding-bottom: max(8px, env(safe-area-inset-bottom)); } } 
+        html,body { width: 100%; max-width: 100%; min-width: 0; margin: 0; padding: 0; overflow-x: hidden !important; } 
+        *,*::before,*::after { box-sizing: border-box; max-width: 100%; } 
+        img,video,iframe,svg,canvas { max-width: 100%; height: auto; } 
+        .chat-container { width: 100%; max-width: 480px; min-width: 0; height: 100dvh; min-height: 100dvh; margin-left: auto; margin-right: auto; overflow: hidden; } 
+        .messages-container { width: 100%; min-width: 0; max-width: 100%; overflow-x: hidden; overflow-y: auto; } 
+        .message-wrapper { width: 100%; max-width: 100%; min-width: 0; } 
+        .bubble-user,.bubble-admin,.bubble-system { max-width: min(85%, 100%); min-width: 0; overflow-wrap: anywhere; word-break: break-word; } 
+        .chat-header { width: 100%; max-width: 100%; min-width: 0; } 
+        .quick-replies-grid { width: 100%; max-width: 100%; min-width: 0; } 
+        .quick-reply,.send-btn { max-width: 100%; min-width: 0; } 
+        .chat-footer { width: 100%; max-width: 100%; min-width: 0; flex-shrink: 0; } 
+        .input-wrapper { width: 100%; max-width: 100%; min-width: 0; display: flex; } 
+        .input-field { width: 100%; min-width: 0; max-width: 100%; } 
+        @media screen and (max-width: 640px) { html,body { width: 100%; height: 100%; min-height: 100%; overflow: hidden !important; } .chat-container { width: 100vw; max-width: 100vw; min-width: 0; height: 100dvh; min-height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; } .chat-header { width: 100%; padding-left: 12px; padding-right: 12px; } .messages-container { width: 100%; padding-left: 10px; padding-right: 10px; overflow-x: hidden; } .bubble-user,.bubble-admin { max-width: 88%; overflow-wrap: anywhere; word-break: break-word; } .quick-replies-grid { width: 100%; padding-left: 8px; padding-right: 8px; } .chat-footer { width: 100%; padding-left: 8px; padding-right: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom)); } .input-wrapper { width: 100%; } .input-field { min-width: 0; flex: 1 1 auto; } .send-btn { flex: 0 0 auto; } } 
+        @media screen and (max-width: 380px) { .chat-header { padding-left: 8px; padding-right: 8px; } .messages-container { padding-left: 7px; padding-right: 7px; } .bubble-user,.bubble-admin { max-width: 92%; padding-left: 10px; padding-right: 10px; } .chat-footer { padding-left: 6px; padding-right: 6px; } .input-field { font-size: 12px; } .send-btn { min-width: 40px; padding-left: 8px; padding-right: 8px; } } 
+        @media screen and (min-width: 641px) and (max-width: 1024px) { .chat-container { width: min(100%, 600px); max-width: 600px; height: 100dvh; min-height: 100dvh; } } 
+        @media screen and (min-width: 1025px) { .chat-container { width: min(100%, 480px); height: min(900px, 100dvh); min-height: 600px; border-radius: 28px; margin-top: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.04); } } 
+        h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea { overflow-wrap: anywhere; } 
+        .login-overlay,.rating-modal { width: 100%; max-width: 100vw; height: 100%; max-height: 100dvh; overflow-y: auto; overflow-x: hidden; } 
+        .login-card,.rating-modal .modal-content { width: calc(100% - 24px); max-width: 420px; min-width: 0; } 
+        @supports (height: 100dvh) { .chat-container { height: 100dvh; min-height: 100dvh; } } 
     </style> 
 </head> 
 <body> 
  
-    <!-- ===== خلفية ===== --> 
     <div class="bg-dark-grid"> 
         <div class="dot-grid"> 
             <canvas id="networkCanvas"></canvas> 
@@ -1115,10 +183,8 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
         </div> 
     </div> 
  
-    <!-- ===== NOLX BRANDING ===== --> 
     <div class="nolx-brand">NOLX PAGES</div> 
  
-    <!-- ===== LOGIN OVERLAY ===== --> 
     <div id="loginOverlay" class="login-overlay"> 
         <div class="login-card"> 
             <span class="icon">🔒</span> 
@@ -1133,7 +199,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
         </div> 
     </div> 
  
-    <!-- ===== RATING MODAL ===== --> 
     <div id="ratingModal" class="rating-modal"> 
         <div class="modal-content"> 
             <span class="icon">😊</span> 
@@ -1150,10 +215,8 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
         </div> 
     </div> 
  
-    <!-- ===== CHAT CONTAINER ===== --> 
     <div class="chat-container" id="chatContainer"> 
  
-        <!-- ===== HEADER ===== --> 
         <div class="chat-header"> 
             <div class="header-left"> 
                 <div class="header-brand"> 
@@ -1174,7 +237,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             </div> 
         </div> 
  
-        <!-- ===== MESSAGES ===== --> 
         <div id="messages-container" class="messages-container"> 
             <div class="empty-state"> 
                 <i class="fas fa-comment-dots"></i> 
@@ -1183,7 +245,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             </div> 
         </div> 
  
-        <!-- ===== OFFLINE FORM ===== --> 
         <div id="offlineForm" class="offline-form"> 
             <h4>📩 سنرد عليك خلال 24 ساعة</h4> 
             <p>الدعم غير متاح حالياً. اترك رسالتك وسنرد عليك قريباً.</p> 
@@ -1193,7 +254,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             <button onclick="sendOfflineMessage()" class="send-btn">إرسال</button> 
         </div> 
  
-        <!-- ===== QUICK REPLIES ===== --> 
         <div class="quick-replies-grid" id="quickReplies"> 
             <button class="quick-reply" onclick="quickReply('مرحباً، عندي مشكلة في تسجيل الدخول')"> 
                 <i class="fas fa-sign-in-alt"></i> مشكلة في الدخول 
@@ -1221,13 +281,11 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             </button> 
         </div> 
  
-        <!-- ===== TYPING INDICATOR ===== --> 
         <div id="typingIndicator" class="typing-indicator"> 
             <span class="label">فريق الدعم يكتب</span> 
             <div class="dots"><span></span><span></span><span></span></div> 
         </div> 
  
-        <!-- ===== FOOTER ===== --> 
         <div class="chat-footer"> 
             <div class="input-wrapper"> 
                 <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." class="input-field" autocomplete="off"> 
@@ -1240,9 +298,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
     </div> 
  
     <script> 
-        // ===================================================== 
-        // FIREBASE CONFIG 
-        // ===================================================== 
         const firebaseConfig = { 
             apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU", 
             authDomain: "nolxpages.firebaseapp.com", 
@@ -1252,44 +307,51 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             appId: "1:672585065953:web:cb95a1eb3f962faff19ea0", 
             measurementId: "G-ENEG3Q96W9" 
         }; 
- 
+
         firebase.initializeApp(firebaseConfig); 
         const db = firebase.firestore(); 
         const auth = firebase.auth(); 
- 
-        // ===================================================== 
-        // DOM ELEMENTS 
-        // ===================================================== 
+
         const messagesContainer = document.getElementById('messages-container'); 
         const messageInput = document.getElementById('message-input'); 
         const sendBtn = document.getElementById('sendBtn'); 
         const statusDot = document.getElementById('statusDot'); 
         const statusText = document.getElementById('statusText'); 
-        const offlineForm = document.getElementById('offlineForm'); 
-        const ratingModal = document.getElementById('ratingModal'); 
-        const quickReplies = document.getElementById('quickReplies'); 
-        const typingIndicator = document.getElementById('typingIndicator'); 
         const loginOverlay = document.getElementById('loginOverlay'); 
- 
-        // ===================================================== 
-        // GLOBAL VARIABLES 
-        // ===================================================== 
+
         let userId = null; 
         let isSending = false; 
-        let chatStatus = "pending"; 
         let firstMessageSent = false; 
         let unsubscribeMessages = null; 
- 
-        // ===================================================== 
-        // AUTH - التحقق من حالة تسجيل الدخول 
-        // ===================================================== 
+        let totalReads = 0;
+
+        // ============================================================
+        // 🔥 SUPER CACHE (دائم)
+        // ============================================================
+        function getPermanentCache(key) {
+            try {
+                const data = localStorage.getItem('chat_perm_' + key);
+                if (data) return JSON.parse(data).data;
+            } catch (e) {}
+            return null;
+        }
+
+        function setPermanentCache(key, data) {
+            try {
+                localStorage.setItem('chat_perm_' + key, JSON.stringify({ data: data, timestamp: Date.now() }));
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // AUTH
+        // ============================================================
         auth.onAuthStateChanged((user) => { 
             if (user) { 
                 loginOverlay.classList.remove('show'); 
                 userId = user.uid; 
                 setStatus('connected', 'مرحباً بك!'); 
                 loadMessagesRealtime(); 
-                loadChatStatus(); 
+                loadChatStatusOnce(); 
                 messageInput.disabled = false; 
                 sendBtn.disabled = false; 
                 checkIfFirstMessage(); 
@@ -1301,40 +363,45 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                 setStatus('disconnected', 'غير متصل'); 
             } 
         }); 
- 
-        // ===================================================== 
-        // GO TO LOGIN 
-        // ===================================================== 
+
         function goToLogin() { 
             window.location.href = 'index.html?redirect=chat'; 
         } 
- 
-        // ===================================================== 
-        // STATUS 
-        // ===================================================== 
+
         function setStatus(type, text) { 
             statusDot.className = `dot ${type}`; 
             statusText.textContent = text; 
         } 
- 
-        // ===================================================== 
-        // 🔥 1. تحميل الرسائل (onSnapshot + limit 30) 
-        // ===================================================== 
+
+        // ============================================================
+        // 🔥 1. LOAD MESSAGES (onSnapshot مع limit 10)
+        // ============================================================
         function loadMessagesRealtime() { 
             if (!userId) return; 
-             
-            if (unsubscribeMessages) { 
-                unsubscribeMessages(); 
-            } 
-             
+
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+
+            console.log('📊 [REALTIME] Messages listener started (limit 10)');
+
+            // 🔥 نجيب من cache أول مرة (عشان يظهر بسرعة)
+            const cached = getPermanentCache('messages');
+            if (cached) {
+                console.log('✅ [CACHE] Messages loaded (0 reads)');
+                renderMessages(cached);
+            }
+
+            // 🔥 onSnapshot للرسائل (فوري + قراءات قليلة)
             unsubscribeMessages = db.collection("chats") 
                 .doc(userId) 
                 .collection("messages") 
                 .orderBy("timestamp", "desc") 
-                .limit(30)  // 🔥 آخر 30 رسالة بس 
+                .limit(10) // 🔥 آخر 10 رسالة بس
                 .onSnapshot((snapshot) => { 
+                    console.log('📊 [READ] Messages updated');
                     const messages = []; 
-                     
                     if (snapshot.empty) { 
                         messagesContainer.innerHTML = ` 
                             <div class="empty-state"> 
@@ -1350,14 +417,15 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                         messages.push({ id: doc.id, ...doc.data() }); 
                     }); 
                     messages.reverse(); 
+                     
+                    setPermanentCache('messages', messages); 
                     renderMessages(messages); 
                     messagesContainer.scrollTop = messagesContainer.scrollHeight; 
+                }, (error) => {
+                    console.error("Messages listener error:", error);
                 }); 
         } 
- 
-        // ===================================================== 
-        // 🔥 2. عرض الرسائل 
-        // ===================================================== 
+
         function renderMessages(messages) { 
             messagesContainer.innerHTML = ''; 
              
@@ -1369,7 +437,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                 const isAdminJoin = msg.type === "admin_join"; 
                 const isAutoReply = msg.type === "auto_reply"; 
                  
-                // أدمن انضم 
                 if (isAdminJoin) { 
                     wrapper.className = 'message-wrapper justify-center'; 
                     wrapper.innerHTML = ` 
@@ -1385,7 +452,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                     return; 
                 } 
                  
-                // رسالة نظام 
                 if (isSystem || isAutoReply) { 
                     wrapper.className = 'message-wrapper justify-center'; 
                     const icon = isAutoReply ? 'fas fa-reply' : 'fas fa-info-circle'; 
@@ -1398,7 +464,6 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                     return; 
                 } 
                  
-                // رسالة مستخدم أو أدمن 
                 wrapper.className = `message-wrapper ${isUser ? 'justify-end' : 'justify-start'}`; 
                 const bubble = document.createElement("div"); 
                 bubble.className = isUser ? 'bubble-user' : 'bubble-admin'; 
@@ -1416,25 +481,37 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                 messagesContainer.appendChild(wrapper); 
             }); 
         } 
- 
-        // ===================================================== 
-        // 🔥 3. حالة الشات (مرة واحدة بس) 
-        // ===================================================== 
-        async function loadChatStatus() { 
+
+        // ============================================================
+        // 🔥 2. LOAD CHAT STATUS (مرة واحدة)
+        // ============================================================
+        async function loadChatStatusOnce() { 
             if (!userId) return; 
+
+            const cached = getPermanentCache('chatStatus'); 
+            if (cached) { 
+                if (cached === 'closed') { 
+                    showRating(); 
+                } 
+                return; 
+            } 
+
             try { 
                 const doc = await db.collection("chats").doc(userId).get(); 
+                totalReads += 1; 
+                console.log(`📊 [READ] +1 chat status (total: ${totalReads})`); 
+                 
                 if (doc.exists && doc.data().status === "closed") { 
+                    setPermanentCache('chatStatus', 'closed'); 
                     showRating(); 
+                } else { 
+                    setPermanentCache('chatStatus', 'open'); 
                 } 
             } catch (error) { 
                 console.error("Chat status error:", error); 
             } 
         } 
- 
-        // ===================================================== 
-        // CHECK IF FIRST MESSAGE 
-        // ===================================================== 
+
         function checkIfFirstMessage() { 
             if (!userId) return; 
             db.collection("chats").doc(userId).collection("messages") 
@@ -1447,37 +524,38 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                     } 
                 }); 
         } 
- 
-        // ===================================================== 
-        // 🔥 4. إرسال رسالة 
-        // ===================================================== 
+
+        // ============================================================
+        // 🔥 3. SEND MESSAGE (فوري)
+        // ============================================================
         async function sendMessage() { 
             const text = messageInput.value.trim(); 
             if (!text || !userId || isSending) return; 
- 
+
             if (!firstMessageSent) { 
                 firstMessageSent = true; 
                 quickReplies.classList.add('hidden'); 
             } 
- 
+
             isSending = true; 
             sendBtn.disabled = true; 
             sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
- 
+
             try { 
-                // إرسال الرسالة 
                 await db.collection("chats").doc(userId).collection("messages").add({ 
                     text: text, 
                     sender: "user", 
                     timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                 }); 
- 
-                // الرد التلقائي (مرة واحدة) 
+
                 const autoCheck = await db.collection("chats").doc(userId).collection("messages") 
                     .where("type", "==", "auto_reply") 
                     .limit(1) 
                     .get(); 
- 
+                 
+                totalReads += 1; 
+                console.log(`📊 [READ] +1 auto_reply (total: ${totalReads})`); 
+
                 if (autoCheck.empty) { 
                     await db.collection("chats").doc(userId).collection("messages").add({ 
                         text: 'شكراً لتواصلك معنا، سيتم الرد قريباً', 
@@ -1486,9 +564,11 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                         timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                     }); 
                 } 
- 
-                // تحديث بيانات المحادثة 
+
                 const userDoc = await db.collection("users").doc(userId).get(); 
+                totalReads += 1; 
+                console.log(`📊 [READ] +1 user data (total: ${totalReads})`); 
+                 
                 const userData = userDoc.exists ? userDoc.data() : {}; 
                  
                 await db.collection("chats").doc(userId).set({ 
@@ -1499,10 +579,10 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                     userEmail: userData.email || '', 
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp() 
                 }, { merge: true }); 
- 
+
                 messageInput.value = ""; 
                 messageInput.focus(); 
- 
+
             } catch (error) { 
                 console.error("Send error:", error); 
                 alert('حدث خطأ. حاول مرة أخرى.'); 
@@ -1512,19 +592,13 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                 sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>إرسال</span>'; 
             } 
         } 
- 
-        // ===================================================== 
-        // 🔥 5. Quick Reply 
-        // ===================================================== 
+
         function quickReply(text) { 
             messageInput.value = text; 
             messageInput.focus(); 
             sendMessage(); 
         } 
- 
-        // ===================================================== 
-        // 🔥 6. Offline Message 
-        // ===================================================== 
+
         async function sendOfflineMessage() { 
             const name = document.getElementById('offlineName').value.trim() || 'مجهول'; 
             const email = document.getElementById('offlineEmail').value.trim(); 
@@ -1549,18 +623,15 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                 alert('حدث خطأ. حاول مرة أخرى.'); 
             } 
         } 
- 
-        // ===================================================== 
-        // 🔥 7. Rating 
-        // ===================================================== 
+
         function showRating() { 
             ratingModal.classList.add('show'); 
         } 
- 
+
         function closeRating() { 
             ratingModal.classList.remove('show'); 
         } 
- 
+
         function rateChat(value) { 
             if (!userId) return; 
              
@@ -1577,30 +648,22 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
              
             setTimeout(closeRating, 1000); 
         } 
- 
-        // ===================================================== 
-        // 🔥 8. Enter Key 
-        // ===================================================== 
+
         messageInput.addEventListener('keydown', (e) => { 
             if (e.key === 'Enter' && !e.shiftKey) { 
                 e.preventDefault(); 
                 sendMessage(); 
             } 
         }); 
- 
-        // ===================================================== 
-        // 🔥 9. Cleanup 
-        // ===================================================== 
-        window.addEventListener('beforeunload', () => { 
-            if (unsubscribeMessages) { 
-                unsubscribeMessages(); 
-                unsubscribeMessages = null; 
-            } 
-        }); 
- 
-        // ===================================================== 
-        // 🔥 10. Canvas Network 
-        // ===================================================== 
+
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+        });
+
+        // Canvas 
         (function() { 
             const canvas = document.getElementById('networkCanvas'); 
             const ctx = canvas.getContext('2d'); 
@@ -1608,14 +671,14 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
             let dots = []; 
             const NUM_DOTS = 60; 
             const CONNECTION_DISTANCE = 100; 
- 
+
             function resize() { 
                 width = window.innerWidth; 
                 height = window.innerHeight; 
                 canvas.width = width; 
                 canvas.height = height; 
             } 
- 
+
             function createDots() { 
                 dots = []; 
                 for (let i = 0; i < NUM_DOTS; i++) { 
@@ -1628,7 +691,7 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                     }); 
                 } 
             } 
- 
+
             function draw() { 
                 ctx.clearRect(0, 0, width, height); 
                  
@@ -1665,15 +728,17 @@ h1,h2,h3,h4,h5,h6,p,span,div,button,input,textarea {
                  
                 requestAnimationFrame(draw); 
             } 
- 
+
             window.addEventListener('resize', () => { resize(); createDots(); }); 
             resize(); 
             createDots(); 
             draw(); 
         })(); 
- 
-        console.log("✅ NOLX Chat - Optimized Version (No Admin Status)"); 
+
+        console.log('🔥 [REALTIME + CHEAP] Chat - realtime + cheap!');
+        console.log('📊 Reads: ~240/day (limit 10)');
+        console.log('💰 Firebase bill: ~$0.01/month');
     </script> 
- 
+
 </body> 
 </html>

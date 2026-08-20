@@ -142,18 +142,6 @@
             overflow-x: hidden;
         }
 
-        .user-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 16px;
-            padding: 16px 20px;
-            transition: all 0.3s ease;
-        }
-        .user-card:hover {
-            border-color: rgba(209,248,67,0.06);
-            background: rgba(255,255,255,0.04);
-        }
-
         .btn-action {
             padding: 6px 14px;
             border-radius: 10px;
@@ -255,14 +243,6 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(209,248,67,0.08); border-radius: 99px; }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(255,255,255,0.1);
-        }
-        .empty-state i { font-size: 3rem; margin-bottom: 12px; display: block; }
-        .empty-state p { font-size: 0.9rem; }
-
         .search-input {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.04);
@@ -289,8 +269,6 @@
             .logout-btn { padding: 12px 10px !important; justify-content: center; }
             .logout-btn span { display: none; }
             .logout-btn i { margin: 0; }
-            .user-card { padding: 12px 14px; }
-            .user-card .flex-wrap { flex-direction: column; gap: 8px; }
             .btn-action { font-size: 0.7rem; padding: 5px 10px; }
             .search-input { max-width: 100%; }
         }
@@ -302,10 +280,107 @@
             .nav-item i { font-size: 0.9rem; }
             .logout-btn { padding: 10px 6px !important; border-radius: 10px; }
         }
+        
+        /* ===== RESULT CARD ===== */
+        .result-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .result-card:hover {
+            border-color: rgba(209,248,67,0.06);
+            background: rgba(255,255,255,0.04);
+        }
+        .result-card .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .result-card .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .result-card .user-info .details .name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .result-card .user-info .details .email {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.2);
+        }
+        .result-card .stats {
+            display: flex;
+            gap: 24px;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 16px;
+        }
+        .result-card .stats .stat-item {
+            text-align: center;
+        }
+        .result-card .stats .stat-item .label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-card .stats .stat-item .value {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #D1F843;
+        }
+        .result-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .not-found {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255,255,255,0.08);
+        }
+        .not-found i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .not-found p {
+            font-size: 0.9rem;
+        }
+        
+        /* ===== PASS MODAL ===== */
+        #passModal { 
+            position: fixed; 
+            inset: 0; 
+            background: #0a0a0f; 
+            z-index: 99999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
     </style>
 </head>
 <body>
 
+    <!-- ===== PASSWORD MODAL ===== -->
+    <div id="passModal">
+        <div class="modal-box" style="max-width:300px;text-align:center;">
+            <h3 style="margin-bottom:20px;">🔐 دخول الإدارة</h3>
+            <input id="passInput" type="password" class="input-dark" placeholder="كلمة السر...">
+            <button onclick="checkPass()" class="btn-confirm" style="margin-top:15px;">دخول</button>
+        </div>
+    </div>
+
+    <!-- ===== BACKGROUND ===== -->
     <div class="bg-dark-grid">
         <div class="dot-grid">
             <canvas id="networkCanvas"></canvas>
@@ -314,6 +389,7 @@
         </div>
     </div>
 
+    <!-- ===== LOADING ===== -->
     <div id="loadingScreen" style="position:fixed;inset:0;background:#0a0a0f;display:flex;align-items:center;justify-content:center;z-index:9999;">
         <div class="text-center">
             <div style="width:45px;height:45px;border:3px solid rgba(209,248,67,0.08);border-top-color:#D1F843;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
@@ -341,7 +417,7 @@
             <h3>➖ خصم رصيد</h3>
             <p id="deductUserInfo">خصم رصيد من المستخدم</p>
             <div class="space-y-4">
-                <input id="deductAmount" type="number" class="input-dark" placeholder="المبلغ (EGP)" min="1" step="1">
+                <input id="eductAmount" type="number" class="input-dark" placeholder="المبلغ (EGP)" min="1" step="1">
                 <input id="deductNote" type="text" class="input-dark" placeholder="ملاحظة (اختياري)">
                 <button onclick="confirmDeduct()" class="btn-confirm" style="background:#ef4444;color:#fff;">خصم الرصيد</button>
                 <button onclick="closeModal('deductModal')" class="btn-cancel-modal">إلغاء</button>
@@ -370,7 +446,7 @@
             <div class="nav-item active" onclick="window.location.href='control-panel.html'">
                 <i class="fas fa-users-cog"></i>
                 <span class="sidebar-text">إدارة المستخدمين</span>
-                <span class="nav-badge" id="userCount">0</span>
+                <span class="nav-badge" id="userCount">🔍</span>
             </div>
             <div class="nav-item" onclick="window.location.href='dashboard.html'">
                 <i class="fas fa-chart-pie"></i>
@@ -393,31 +469,32 @@
             </div>
             <div class="flex items-center gap-3">
                 <span id="adminBadge" class="text-xs bg-[#D1F843]/10 text-[#D1F843] px-4 py-1.5 rounded-full font-bold">أدمين</span>
-                <img id="headerAvatar" src="" class="w-10 h-10 rounded-full object-cover border border-white/10 shadow-lg" alt="Admin">
+                <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Admin&background=D1F843&color=0a0a0f" class="w-10 h-10 rounded-full object-cover border border-white/10 shadow-lg" alt="Admin">
             </div>
         </header>
 
         <div class="fade-in">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
-                <div class="relative flex-1 max-w-sm">
+                <div class="relative flex-1 max-w-md">
                     <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-white/10"></i>
-                    <input id="searchInput" type="text" class="search-input pr-12" placeholder="🔍 بحث عن مستخدم..." oninput="filterUsers()">
+                    <input id="searchInput" type="text" class="search-input pr-12" placeholder="🔍 بحث عن مستخدم (UID أو البريد الإلكتروني)" onkeydown="if(event.key === 'Enter') searchUser()">
                 </div>
-                <button onclick="refreshUsers()" class="btn-action" style="background:rgba(209,248,67,0.06);color:#D1F843;border:1px solid rgba(209,248,67,0.06);padding:10px 18px;">
-                    <i class="fas fa-sync-alt"></i> تحديث
+                <button onclick="clearSearch()" class="btn-action" style="background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.04);padding:10px 18px;">
+                    <i class="fas fa-times"></i> مسح
                 </button>
             </div>
 
-            <div id="usersContainer" class="space-y-3">
+            <div id="resultContainer">
                 <div class="text-center text-white/15 py-12">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-3 block"></i>
-                    <p>جاري تحميل المستخدمين...</p>
+                    <i class="fas fa-search text-3xl mb-4 block"></i>
+                    <p>ابحث عن مستخدم باستخدام البريد الإلكتروني أو UID</p>
+                    <p class="text-xs mt-1 text-white/5">مثال: user@email.com أو abc123...</p>
                 </div>
             </div>
         </div>
 
         <footer class="text-center py-6 text-[10px] text-white/8">
-            NOLX Pages — Control Panel v1.0
+            NOLX Pages — Control Panel v2.0 (Search Only - Zero Reads on Load)
         </footer>
 
     </main>
@@ -425,8 +502,7 @@
     <!-- ===== FIREBASE ===== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, setDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, setDoc, query, where, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
@@ -439,13 +515,9 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // ===== ADMIN UID =====
-        const ADMIN_UID = "KPtlYJEJ8GeANNzGI6gKw2vkve62";
-
-        // ===== NETWORK =====
+        // ===== NETWORK CANVAS =====
         (function() {
             const canvas = document.getElementById('networkCanvas');
             const ctx = canvas.getContext('2d');
@@ -512,136 +584,163 @@
         })();
 
         // ===== GLOBALS =====
-        let allUsers = [];
-        let currentAdmin = null;
+        let currentUserData = null;
 
         // ===== DOM REFS =====
-        const usersContainer = document.getElementById('usersContainer');
+        const resultContainer = document.getElementById('resultContainer');
         const searchInput = document.getElementById('searchInput');
-        const userCount = document.getElementById('userCount');
 
-        // ===== CHECK ADMIN =====
-        async function checkAdmin(user) {
-            if (!user) return false;
-            if (user.uid === ADMIN_UID) return true;
-            try {
-                const adminRef = doc(db, "admins", user.uid);
-                const adminSnap = await getDoc(adminRef);
-                return adminSnap.exists() && adminSnap.data()?.isAdmin === true;
-            } catch {
-                return false;
+        // ===== PASSWORD CHECK =====
+        window.checkPass = function() {
+            const pass = document.getElementById('passInput').value;
+            if(pass === "123456") { // 🔑 غير الباسورد هنا
+                document.getElementById('passModal').style.display = 'none';
+                document.getElementById('loadingScreen').style.display = 'none';
+                console.log('[NOLX] Panel Initialized - Zero Reads Mode');
+            } else {
+                alert("❌ كلمة السر غلط!");
             }
-        }
-
-        // ===== LOAD USERS =====
-        async function loadUsers() {
-            try {
-                const usersRef = collection(db, "users");
-                const snapshot = await getDocs(usersRef);
-                allUsers = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    allUsers.push({
-                        uid: doc.id,
-                        credits: data.credits || 0,
-                        username: data.username || data.email?.split('@')[0] || 'مستخدم',
-                        email: data.email || 'بدون بريد',
-                        templates: data.templates || [],
-                        transactions: data.transactions || []
-                    });
-                });
-                
-                allUsers.sort((a, b) => b.credits - a.credits);
-                userCount.textContent = allUsers.length;
-                renderUsers(allUsers);
-            } catch (error) {
-                console.error("[NOLX] Error loading users:", error);
-                usersContainer.innerHTML = `
-                    <div class="text-center text-red-400/50 py-12">
-                        <i class="fas fa-exclamation-circle text-2xl mb-3 block"></i>
-                        <p>حدث خطأ أثناء تحميل المستخدمين</p>
-                        <button onclick="refreshUsers()" class="mt-4 text-[#D1F843] underline">حاول مرة أخرى</button>
-                    </div>
-                `;
-            }
-        }
-
-        // ===== RENDER USERS =====
-        function renderUsers(users) {
-            if (!users || users.length === 0) {
-                usersContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <p>لا يوجد مستخدمين حالياً</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            users.forEach((user, index) => {
-                const initials = user.username.charAt(0).toUpperCase();
-                const colors = ['#D1F843', '#34d399', '#60a5fa', '#f472b6', '#fbbf24'];
-                const color = colors[index % colors.length];
-                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=${color.replace('#', '')}&color=0a0a0f&size=32`;
-
-                html += `
-                    <div class="user-card fade-in" style="animation-delay: ${index * 0.05}s" data-uid="${user.uid}">
-                        <div class="flex flex-wrap items-center justify-between gap-3">
-                            <div class="flex items-center gap-3 min-w-0">
-                                <img src="${avatarUrl}" class="w-10 h-10 rounded-full object-cover border border-white/10" alt="${user.username}">
-                                <div class="min-w-0">
-                                    <p class="font-bold text-sm truncate">${user.username}</p>
-                                    <p class="text-xs text-white/20 truncate">${user.email}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 flex-wrap">
-                                <div class="text-center">
-                                    <p class="text-xs text-white/15">الرصيد</p>
-                                    <p class="font-black text-[#D1F843]">${user.credits} EGP</p>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-xs text-white/15">القوالب</p>
-                                    <p class="font-bold text-sm">${user.templates?.length || 0}</p>
-                                </div>
-                                <div class="flex gap-2 flex-wrap">
-                                    <button onclick="openAddModal('${user.uid}', '${user.username}', ${user.credits})" class="btn-action btn-add">
-                                        <i class="fas fa-plus"></i> إضافة
-                                    </button>
-                                    <button onclick="openDeductModal('${user.uid}', '${user.username}', ${user.credits})" class="btn-action btn-deduct">
-                                        <i class="fas fa-minus"></i> خصم
-                                    </button>
-                                    <button onclick="openHistoryModal('${user.uid}', '${user.username}')" class="btn-action btn-history">
-                                        <i class="fas fa-list"></i> سجل
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            usersContainer.innerHTML = html;
-        }
-
-        // ===== FILTER USERS =====
-        window.filterUsers = function() {
-            const query = searchInput.value.toLowerCase().trim();
-            if (!query) {
-                renderUsers(allUsers);
-                return;
-            }
-            const filtered = allUsers.filter(u => 
-                u.username.toLowerCase().includes(query) || 
-                u.email.toLowerCase().includes(query) ||
-                u.uid.toLowerCase().includes(query)
-            );
-            renderUsers(filtered);
         };
 
-        // ===== REFRESH =====
-        window.refreshUsers = function() {
-            loadUsers();
+        // ===== SEARCH USER (Optimized) =====
+        window.searchUser = async function() {
+            const queryText = searchInput.value.trim();
+            if (!queryText) {
+                clearSearch();
+                return;
+            }
+
+            resultContainer.innerHTML = `
+                <div class="text-center text-white/15 py-12">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-3 block"></i>
+                    <p>جاري البحث...</p>
+                </div>
+            `;
+
+            try {
+                let userData = null;
+
+                // 1. البحث بالـ UID مباشرة (قراءة واحدة)
+                try {
+                    const userRef = doc(db, "users", queryText);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        userData = { uid: queryText, ...userSnap.data() };
+                    }
+                } catch (e) {}
+
+                // 2. البحث بالإيميل (قراءة واحدة مع where)
+                if (!userData) {
+                    try {
+                        const usersRef = collection(db, "users");
+                        const q = query(usersRef, where("email", "==", queryText), limit(1));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            const docSnap = querySnapshot.docs[0];
+                            userData = { uid: docSnap.id, ...docSnap.data() };
+                        }
+                    } catch (e) {
+                        console.error("Email search error:", e);
+                    }
+                }
+
+                // 3. البحث بالـ username (قراءة واحدة مع where)
+                if (!userData) {
+                    try {
+                        const usersRef = collection(db, "users");
+                        const q = query(usersRef, where("username", "==", queryText), limit(1));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            const docSnap = querySnapshot.docs[0];
+                            userData = { uid: docSnap.id, ...docSnap.data() };
+                        }
+                    } catch (e) {
+                        console.error("Username search error:", e);
+                    }
+                }
+
+                if (userData) {
+                    currentUserData = { uid: userData.uid, ...userData };
+                    renderUserCard(userData);
+                } else {
+                    resultContainer.innerHTML = `
+                        <div class="not-found">
+                            <i class="fas fa-user-slash"></i>
+                            <p>لم يتم العثور على مستخدم بـ "${queryText}"</p>
+                            <p class="text-xs mt-2 text-white/5">تأكد من البريد الإلكتروني أو UID الصحيح</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("[NOLX] Search error:", error);
+                resultContainer.innerHTML = `
+                    <div class="text-center text-red-400/50 py-12">
+                        <i class="fas fa-exclamation-circle text-2xl mb-3 block"></i>
+                        <p>حدث خطأ أثناء البحث</p>
+                    </div>
+                `;
+            }
+        };
+
+        // ===== RENDER USER CARD =====
+        function renderUserCard(user) {
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username || user.email || 'User')}&background=D1F843&color=0a0a0f&size=64`;
+            
+            const templatesCount = user.templates?.length || 0;
+            const transactionsCount = user.transactions?.length || 0;
+
+            resultContainer.innerHTML = `
+                <div class="result-card fade-in">
+                    <div class="user-info">
+                        <img src="${avatarUrl}" class="avatar" alt="${user.username || 'User'}">
+                        <div class="details">
+                            <div class="name">${user.username || 'مستخدم'}</div>
+                            <div class="email">${user.email || 'بدون بريد'}</div>
+                            <div class="text-xs text-white/10 mt-1 font-mono">UID: ${user.uid}</div>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="label">الرصيد</div>
+                            <div class="value">${user.credits || 0} EGP</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">القوالب</div>
+                            <div class="value">${templatesCount}</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="label">المعاملات</div>
+                            <div class="value">${transactionsCount}</div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button onclick="openAddModal('${user.uid}', '${user.username || 'User'}', ${user.credits || 0})" class="btn-action btn-add">
+                            <i class="fas fa-plus"></i> إضافة رصيد
+                        </button>
+                        <button onclick="openDeductModal('${user.uid}', '${user.username || 'User'}', ${user.credits || 0})" class="btn-action btn-deduct">
+                            <i class="fas fa-minus"></i> خصم رصيد
+                        </button>
+                        <button onclick="openHistoryModal('${user.uid}', '${user.username || 'User'}')" class="btn-action btn-history">
+                            <i class="fas fa-list"></i> سجل المعاملات
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== CLEAR SEARCH =====
+        window.clearSearch = function() {
+            searchInput.value = '';
+            currentUserData = null;
+            resultContainer.innerHTML = `
+                <div class="text-center text-white/15 py-12">
+                    <i class="fas fa-search text-3xl mb-4 block"></i>
+                    <p>ابحث عن مستخدم باستخدام البريد الإلكتروني أو UID</p>
+                    <p class="text-xs mt-1 text-white/5">مثال: user@email.com أو abc123...</p>
+                </div>
+            `;
         };
 
         // ===== MODALS =====
@@ -662,10 +761,10 @@
             selectedUid = uid;
             selectedUsername = username;
             document.getElementById('deductUserInfo').textContent = `${username} — الرصيد الحالي: ${currentCredits} EGP`;
-            document.getElementById('deductAmount').value = '';
+            document.getElementById('eductAmount').value = '';
             document.getElementById('deductNote').value = '';
             document.getElementById('deductModal').classList.add('show');
-            setTimeout(() => document.getElementById('deductAmount').focus(), 100);
+            setTimeout(() => document.getElementById('eductAmount').focus(), 100);
         };
 
         window.closeModal = function(id) {
@@ -691,7 +790,7 @@
                         credits: 0,
                         transactions: [],
                         templates: [],
-                        createdAt: serverTimestamp()
+                        createdAt: new Date().toISOString()
                     });
                 }
 
@@ -704,14 +803,21 @@
                         type: "add",
                         amount: amount,
                         note: note,
-                        adminId: currentAdmin?.uid || 'unknown',
+                        adminId: 'admin',
                         timestamp: new Date().toISOString()
                     }]
                 });
 
                 alert(`✅ تم إضافة ${amount} EGP إلى رصيد ${selectedUsername}`);
                 closeModal('addModal');
-                loadUsers();
+                
+                if (currentUserData && currentUserData.uid === selectedUid) {
+                    const updatedSnap = await getDoc(userRef);
+                    if (updatedSnap.exists()) {
+                        currentUserData = { uid: selectedUid, ...updatedSnap.data() };
+                        renderUserCard(currentUserData);
+                    }
+                }
             } catch (error) {
                 console.error("[NOLX] Add error:", error);
                 alert('❌ حدث خطأ أثناء إضافة الرصيد: ' + error.message);
@@ -720,7 +826,7 @@
 
         // ===== CONFIRM DEDUCT =====
         window.confirmDeduct = async function() {
-            const amount = parseInt(document.getElementById('deductAmount').value);
+            const amount = parseInt(document.getElementById('eductAmount').value);
             const note = document.getElementById('deductNote').value.trim() || 'خصم رصيد يدوي';
 
             if (!amount || amount <= 0) {
@@ -751,14 +857,21 @@
                         type: "deduct",
                         amount: amount,
                         note: note,
-                        adminId: currentAdmin?.uid || 'unknown',
+                        adminId: 'admin',
                         timestamp: new Date().toISOString()
                     }]
                 });
 
                 alert(`✅ تم خصم ${amount} EGP من رصيد ${selectedUsername}`);
                 closeModal('deductModal');
-                loadUsers();
+                
+                if (currentUserData && currentUserData.uid === selectedUid) {
+                    const updatedSnap = await getDoc(userRef);
+                    if (updatedSnap.exists()) {
+                        currentUserData = { uid: selectedUid, ...updatedSnap.data() };
+                        renderUserCard(currentUserData);
+                    }
+                }
             } catch (error) {
                 console.error("[NOLX] Deduct error:", error);
                 alert('❌ حدث خطأ أثناء خصم الرصيد: ' + error.message);
@@ -838,45 +951,11 @@
         };
 
         // ===== LOGOUT =====
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.location.replace('index.html');
-            } catch (error) {
-                console.error("[NOLX] Logout:", error);
-                alert('حدث خطأ أثناء تسجيل الخروج');
-            }
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.location.replace('index.html');
         });
 
-        // ===== AUTH =====
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace('login.html');
-                return;
-            }
-
-            const isAdmin = await checkAdmin(user);
-            if (!isAdmin) {
-                alert('⛔ غير مصرح لك بالدخول إلى لوحة التحكم');
-                window.location.replace('dashboard.html');
-                return;
-            }
-
-            currentAdmin = user;
-
-            const avatar = document.getElementById('headerAvatar');
-            const name = user.displayName || 'Admin';
-            if (user.photoURL) {
-                avatar.src = user.photoURL;
-            } else {
-                avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=D1F843&color=0a0a0f`;
-            }
-
-            await loadUsers();
-            document.getElementById('loadingScreen').style.display = 'none';
-        });
-
-        console.log('[NOLX] Control Panel v1.0 - Ready');
+        console.log('[NOLX] Control Panel v2.0 - Search Only (Zero Reads on Load)');
     </script>
 
 </body>

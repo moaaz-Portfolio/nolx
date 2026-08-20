@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>NOLX Pages | Dashboard</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
 
+    <title>NOLX PAGES | Dashboard</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
+    <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
         tailwind.config = {
@@ -32,80 +40,629 @@
 
     <style>
 
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+            background: #0a0a0f;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: #ECF0EF;
-            color: #005840;
+            width: 100%;
             min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
         }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* =========================================================
+           BACKGROUND
+        ========================================================= */
+
+        .bg-dark-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: #0a0a0f;
+            pointer-events: none;
+        }
+
+        .dot-grid {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .dot-grid canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.35;
+        }
+
+        .dot-grid .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .dot-grid .glow-orb.g1 {
+            width: 500px;
+            height: 500px;
+            top: -200px;
+            right: -150px;
+            background: rgba(209, 248, 67, 0.05);
+            animation: floatGlow 25s ease-in-out infinite alternate;
+        }
+
+        .dot-grid .glow-orb.g2 {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            left: -100px;
+            background: rgba(209, 248, 67, 0.03);
+            animation: floatGlow 20s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(40px, -50px) scale(1.3);
+            }
+        }
+
+        /* =========================================================
+           GLASS
+        ========================================================= */
 
         .glass {
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: 0 25px 60px rgba(0,88,64,0.08);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
         }
+
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* =========================================================
+           LANGUAGE SWITCHER
+        ========================================================= */
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .language-btn {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 6px 10px;
+            min-width: 42px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .language-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .language-btn.active {
+            background: rgba(209, 248, 67, 0.1);
+            color: #D1F843;
+            border: 1px solid rgba(209, 248, 67, 0.08);
+        }
+
+        /* =========================================================
+           DESKTOP SIDEBAR
+        ========================================================= */
 
         .sidebar {
-            background: #005840;
-            color: white;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            width: 260px;
+
+            padding: 24px 16px;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            border-left: 1px solid rgba(255, 255, 255, 0.04);
+
+            color: #fff;
+
+            transition: all 0.3s ease;
+
+            z-index: 100;
         }
 
+        html[dir="ltr"] .sidebar {
+            right: auto;
+            left: 0;
+            border-left: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(209, 248, 67, 0.08);
+            border-radius: 99px;
+        }
+
+        .logo-text {
+            flex-shrink: 0;
+        }
+
+        .sidebar .logo-text .brand {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        .sidebar .logo-text .brand span {
+            color: #D1F843;
+            font-weight: 300;
+        }
+
+        .sidebar .logo-text .sub {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.3em;
+            margin-top: 2px;
+        }
+
+        /* =========================================================
+           NAV
+        ========================================================= */
+
         .nav-item {
-            transition: all .25s ease;
+            transition: all 0.25s ease;
+
+            color: rgba(255, 255, 255, 0.35);
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 12px 16px;
+
+            border-radius: 14px;
+
+            font-size: 0.85rem;
+            font-weight: 600;
+
+            min-height: 48px;
+
+            user-select: none;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,.10);
-            transform: translateX(3px);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            transform: translateX(-4px);
+        }
+
+        html[dir="ltr"] .nav-item:hover {
+            transform: translateX(4px);
         }
 
         .nav-item.active {
-            background: #D1F843;
-            color: #005840;
+            background: rgba(209, 248, 67, 0.06);
+            color: #D1F843;
+            border: 1px solid rgba(209, 248, 67, 0.06);
         }
 
-        .dashboard-card {
-            transition: all .3s ease;
+        .nav-item i {
+            width: 22px;
+            min-width: 22px;
+            text-align: center;
+            font-size: 1.05rem;
         }
 
-        .dashboard-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 25px 50px rgba(0,88,64,.12);
+        .nav-item .nav-badge {
+            margin-right: auto;
+
+            font-size: 9px;
+
+            background: rgba(209, 248, 67, 0.08);
+
+            color: #D1F843;
+
+            padding: 2px 10px;
+
+            border-radius: 99px;
+
+            white-space: nowrap;
         }
+
+        html[dir="ltr"] .nav-item .nav-badge {
+            margin-right: 0;
+            margin-left: auto;
+        }
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
 
         .logout-btn {
-            transition: all .25s ease;
+            transition: all 0.25s ease;
+
+            margin-top: auto;
+
+            padding: 12px 16px;
+
+            border-radius: 14px;
+
+            border: 1px solid rgba(239, 68, 68, 0.12);
+
+            color: rgba(239, 68, 68, 0.5);
+
+            font-weight: 700;
+            font-size: 0.85rem;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            width: 100%;
+
+            min-height: 48px;
         }
 
         .logout-btn:hover {
             transform: translateY(-2px);
-            background: #b91c1c;
+
+            background: rgba(239, 68, 68, 0.06);
+
+            border-color: rgba(239, 68, 68, 0.2);
+
+            color: #ef4444;
         }
 
-        #loadingScreen {
-            position: fixed;
-            inset: 0;
-            background: #ECF0EF;
+        .logout-btn i {
+            font-size: 1.05rem;
+            width: 22px;
+            min-width: 22px;
+            text-align: center;
+        }
+
+        /* =========================================================
+           MAIN CONTENT
+        ========================================================= */
+
+        .main-content {
+            margin-right: 260px;
+            width: calc(100% - 260px);
+            min-height: 100vh;
+
+            padding: 28px;
+
+            position: relative;
+            z-index: 10;
+
+            overflow-x: hidden;
+        }
+
+        html[dir="ltr"] .main-content {
+            margin-right: 0;
+            margin-left: 260px;
+        }
+
+        /* =========================================================
+           CARDS
+        ========================================================= */
+
+        .dashboard-card {
+            transition: all 0.3s ease;
+
+            background: rgba(255, 255, 255, 0.03);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid rgba(255, 255, 255, 0.04);
+
+            cursor: default;
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            min-width: 0;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+
+            border-color: rgba(209, 248, 67, 0.08);
+
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        /* =========================================================
+           CREDIT CARD
+        ========================================================= */
+
+        .credit-card {
+            background: linear-gradient(
+                135deg,
+                rgba(209, 248, 67, 0.06),
+                rgba(0, 88, 64, 0.06)
+            );
+
+            border: 1px solid rgba(209, 248, 67, 0.06);
+
+            border-radius: 20px;
+
+            padding: 24px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-width: 0;
+        }
+
+        .credit-card::before {
+            content: '';
+
+            position: absolute;
+
+            top: -50%;
+            right: -30%;
+
+            width: 200px;
+            height: 200px;
+
+            background: radial-gradient(
+                circle,
+                rgba(209, 248, 67, 0.04),
+                transparent 70%
+            );
+
+            border-radius: 50%;
+
+            pointer-events: none;
+        }
+
+        .credit-card .label {
+            font-size: 10px;
+
+            color: rgba(255, 255, 255, 0.2);
+
+            letter-spacing: 0.1em;
+
+            font-weight: 700;
+        }
+
+        .credit-card .amount {
+            font-size: 2.2rem;
+
+            font-weight: 900;
+
+            color: #D1F843;
+
+            line-height: 1.2;
+
+            overflow-wrap: anywhere;
+        }
+
+        .credit-card .currency {
+            font-size: 0.9rem;
+
+            color: rgba(255, 255, 255, 0.2);
+
+            margin-right: 4px;
+        }
+
+        html[dir="ltr"] .credit-card .currency {
+            margin-right: 0;
+            margin-left: 4px;
+        }
+
+        /* =========================================================
+           QUICK ACTION
+        ========================================================= */
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.02);
+
+            border: 1px solid rgba(255, 255, 255, 0.04);
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+            min-width: 0;
+
+            user-select: none;
+        }
+
+        .quick-action:hover {
+            background: rgba(255, 255, 255, 0.04);
+
+            border-color: rgba(209, 248, 67, 0.06);
+
+            transform: translateY(-3px);
+        }
+
+        .quick-action:active {
+            transform: scale(0.97);
+        }
+
+        .quick-action .icon {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 12px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
+            margin: 0 auto 10px;
+
+            font-size: 1.2rem;
+        }
+
+        .quick-action .label {
+            font-size: 11px;
+
+            font-weight: 700;
+
+            color: rgba(255, 255, 255, 0.3);
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        /* =========================================================
+           INFO ITEMS
+        ========================================================= */
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.02);
+
+            border: 1px solid rgba(255, 255, 255, 0.03);
+
+            border-radius: 12px;
+
+            padding: 14px 16px;
+
+            min-width: 0;
+        }
+
+        .info-item .label {
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.05em;
+
+            color: rgba(255, 255, 255, 0.12);
+
+            font-weight: 700;
+        }
+
+        .info-item .value {
+            font-weight: 700;
+
+            font-size: 0.9rem;
+
+            margin-top: 2px;
+
+            color: #fff;
+
+            word-break: break-word;
+
+            overflow-wrap: anywhere;
+        }
+
+        /* =========================================================
+           LOADING
+        ========================================================= */
+
+        #loadingScreen {
+            position: fixed;
+
+            inset: 0;
+
+            background: #0a0a0f;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
             z-index: 9999;
         }
 
         .spinner {
             width: 45px;
             height: 45px;
-            border: 4px solid rgba(0,88,64,.15);
-            border-top-color: #005840;
+
+            border: 3px solid rgba(209, 248, 67, 0.08);
+
+            border-top-color: #D1F843;
+
             border-radius: 50%;
+
             animation: spin 1s linear infinite;
         }
 
@@ -115,168 +672,1308 @@
             }
         }
 
-        @media (max-width: 768px) {
+        /* =========================================================
+           LOGOUT MODAL
+        ========================================================= */
 
-            .sidebar {
-                width: 80px;
+        .logout-modal {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.6);
+
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+
+            z-index: 9999;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .logout-modal.show {
+            display: flex;
+        }
+
+        .logout-modal .modal-box {
+            background: rgba(255, 255, 255, 0.04);
+
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+
+            border-radius: 28px;
+
+            padding: 32px 28px;
+
+            max-width: 400px;
+
+            width: 100%;
+
+            text-align: center;
+
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
             }
 
-            .sidebar-text {
-                display: none;
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .logout-modal .modal-box .icon {
+            font-size: 3rem;
+
+            color: #ef4444;
+
+            margin-bottom: 12px;
+        }
+
+        .logout-modal .modal-box h3 {
+            font-size: 1.3rem;
+
+            font-weight: 900;
+
+            color: #fff;
+
+            margin-bottom: 6px;
+        }
+
+        .logout-modal .modal-box p {
+            font-size: 0.85rem;
+
+            color: rgba(255, 255, 255, 0.25);
+
+            margin-bottom: 24px;
+
+            line-height: 1.7;
+        }
+
+        .logout-modal .modal-box .btn-group {
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .logout-modal .modal-box .btn-group button {
+            flex: 1;
+
+            padding: 12px;
+
+            border-radius: 14px;
+
+            font-weight: 700;
+
+            font-size: 0.85rem;
+
+            cursor: pointer;
+
+            border: none;
+
+            transition: all 0.3s ease;
+
+            font-family: 'Cairo', sans-serif;
+
+            min-height: 48px;
+        }
+
+        .logout-modal .modal-box .btn-group .btn-cancel {
+            background: rgba(255, 255, 255, 0.04);
+
+            color: rgba(255, 255, 255, 0.4);
+
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logout-modal .modal-box .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.06);
+
+            color: #fff;
+        }
+
+        .logout-modal .modal-box .btn-group .btn-confirm {
+            background: #ef4444;
+
+            color: #fff;
+        }
+
+        .logout-modal .modal-box .btn-confirm:hover {
+            background: #dc2626;
+
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+           ANIMATIONS
+        ========================================================= */
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================================================
+           SCROLLBAR
+        ========================================================= */
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(209, 248, 67, 0.08);
+            border-radius: 99px;
+        }
+
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 1024px) {
+
+            .sidebar {
+                width: 220px;
             }
 
             .main-content {
-                margin-left: 80px;
+                margin-right: 220px;
+                width: calc(100% - 220px);
+                padding: 20px;
+            }
+
+            html[dir="ltr"] .main-content {
+                margin-right: 0;
+                margin-left: 220px;
+                width: calc(100% - 220px);
+            }
+
+            html[dir="ltr"] .sidebar {
+                left: 0;
+                right: auto;
+            }
+
+            .sidebar .logo-text .brand {
+                font-size: 1.2rem;
+            }
+
+            .nav-item {
+                padding: 11px 13px;
+                gap: 11px;
+            }
+
+            .credit-card {
+                padding: 20px;
+            }
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            html,
+            body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            body {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            /* =============================================
+               BOTTOM NAVIGATION
+            ============================================= */
+
+            .sidebar {
+                position: fixed;
+
+                top: auto;
+                right: 0;
+                left: 0;
+                bottom: 0;
+
+                width: 100%;
+                height: calc(70px + env(safe-area-inset-bottom));
+
+                padding: 6px 8px env(safe-area-inset-bottom) 8px !important;
+
+                display: flex;
+                flex-direction: row;
+
+                align-items: stretch;
+
+                overflow: hidden;
+
+                background: rgba(12, 12, 18, 0.92);
+
+                backdrop-filter: blur(28px);
+                -webkit-backdrop-filter: blur(28px);
+
+                border-left: none;
+                border-right: none;
+
+                border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+                box-shadow:
+                    0 -10px 35px rgba(0, 0, 0, 0.25);
+
+                z-index: 1000;
+            }
+
+            html[dir="ltr"] .sidebar {
+                right: 0;
+                left: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .sidebar .logo-text {
+                display: none;
+            }
+
+            .sidebar nav {
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns: repeat(6, 1fr);
+
+                gap: 3px;
+
+                align-items: stretch;
+            }
+
+            .nav-item {
+                min-width: 0;
+
+                min-height: 58px;
+
+                padding: 7px 2px !important;
+
+                margin: 0 !important;
+
+                border-radius: 12px;
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                gap: 3px;
+
+                font-size: 8px;
+
+                line-height: 1.1;
+
+                text-align: center;
+
+                transform: none !important;
+
+                border: 1px solid transparent;
+            }
+
+            .nav-item:hover {
+                transform: none !important;
+            }
+
+            .nav-item:active {
+                transform: scale(0.94) !important;
+            }
+
+            .nav-item i {
+                width: auto;
+
+                min-width: 0;
+
+                font-size: 16px;
+
+                line-height: 1;
+            }
+
+            .nav-item .sidebar-text {
+                display: block !important;
+
+                width: 100%;
+
+                overflow: hidden;
+
+                text-overflow: ellipsis;
+
+                white-space: nowrap;
+
+                color: inherit;
+
+                font-size: 8px;
+            }
+
+            .nav-item .nav-badge {
+                display: none;
+            }
+
+            .logout-btn {
+                width: 55px;
+
+                min-width: 55px;
+
+                height: 58px;
+
+                min-height: 58px;
+
+                margin: 0;
+
+                padding: 7px 2px !important;
+
+                border-radius: 12px;
+
+                display: flex;
+
+                flex-direction: column;
+
+                align-items: center;
+
+                justify-content: center;
+
+                gap: 3px;
+
+                border: 1px solid rgba(239, 68, 68, 0.12);
+            }
+
+            .logout-btn:hover {
+                transform: none;
+            }
+
+            .logout-btn i {
+                width: auto;
+
+                min-width: 0;
+
+                font-size: 16px;
+
+                margin: 0;
+            }
+
+            .logout-btn .sidebar-text {
+                display: block !important;
+
+                font-size: 8px;
+
+                white-space: nowrap;
+            }
+
+            /* =============================================
+               MAIN
+            ============================================= */
+
+            .main-content {
+                margin-right: 0 !important;
+                margin-left: 0 !important;
+
+                width: 100% !important;
+
+                min-height: 100vh;
+
+                padding: 12px 10px 92px 10px !important;
+
+                overflow-x: hidden;
+            }
+
+            /* =============================================
+               HEADER
+            ============================================= */
+
+            .main-content > header {
+                width: 100%;
+
+                min-height: 64px;
+
+                padding: 10px 12px !important;
+
+                margin-bottom: 14px;
+
+                border-radius: 17px;
+            }
+
+            .main-content > header h1 {
+                font-size: 18px !important;
+
+                line-height: 1.4;
+            }
+
+            .main-content > header p {
+                max-width: 150px;
+
+                overflow: hidden;
+
+                text-overflow: ellipsis;
+
+                white-space: nowrap;
+            }
+
+            #headerAvatar {
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            .language-switcher {
+                padding: 3px;
+            }
+
+            .language-btn {
+                min-width: 34px;
+                padding: 5px 7px;
+                font-size: 8px;
+            }
+
+            /* =============================================
+               WELCOME
+            ============================================= */
+
+            .main-content section {
+                max-width: 100%;
+            }
+
+            .main-content section > .glass {
+                padding: 18px !important;
+
+                border-radius: 17px;
+            }
+
+            .main-content section > .glass h2 {
+                font-size: 20px !important;
+
+                line-height: 1.5;
+            }
+
+            /* =============================================
+               CREDIT CARDS
+            ============================================= */
+
+            .credit-card {
+                padding: 17px;
+
+                border-radius: 17px;
+            }
+
+            .credit-card .amount {
+                font-size: 1.55rem;
+            }
+
+            .credit-card .label {
+                font-size: 9px;
+            }
+
+            .credit-card .currency {
+                font-size: 0.7rem;
+            }
+
+            /* =============================================
+               STATS
+            ============================================= */
+
+            .dashboard-card {
+                padding: 13px;
+
+                border-radius: 14px;
+            }
+
+            .dashboard-card h3 {
+                font-size: 1.25rem !important;
+            }
+
+            .dashboard-card .w-10 {
+                width: 34px;
+                height: 34px;
+            }
+
+            .dashboard-card .w-10 i {
+                font-size: 13px;
+            }
+
+            /* =============================================
+               QUICK ACTIONS
+            ============================================= */
+
+            .quick-action {
+                padding: 12px 7px;
+
+                border-radius: 13px;
+            }
+
+            .quick-action .icon {
+                width: 36px;
+                height: 36px;
+
+                border-radius: 10px;
+
+                font-size: 15px;
+
+                margin-bottom: 7px;
+            }
+
+            .quick-action .label {
+                font-size: 9px;
+            }
+
+            /* =============================================
+               ACCOUNT
+            ============================================= */
+
+            .info-item {
+                padding: 12px;
+
+                border-radius: 11px;
+            }
+
+            .info-item .label {
+                font-size: 8px;
+            }
+
+            .info-item .value {
+                font-size: 12px;
+            }
+
+            /* =============================================
+               FOOTER
+            ============================================= */
+
+            .main-content footer {
+                padding-bottom: 15px;
+            }
+
+            /* =============================================
+               MODAL
+            ============================================= */
+
+            .logout-modal {
+                padding: 15px;
+            }
+
+            .logout-modal .modal-box {
+                padding: 24px 18px;
+
+                border-radius: 22px;
+
+                max-width: 360px;
+            }
+
+            .logout-modal .modal-box .icon {
+                font-size: 2.5rem;
+            }
+
+            .logout-modal .modal-box h3 {
+                font-size: 1.1rem;
+            }
+
+            .logout-modal .modal-box p {
+                font-size: 0.78rem;
+            }
+
+            .logout-modal .modal-box .btn-group {
+                flex-direction: row;
+
+                gap: 8px;
+            }
+
+            .logout-modal .modal-box .btn-group button {
+                font-size: 0.8rem;
+
+                min-height: 45px;
+            }
+        }
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 500px) {
+
+            .main-content {
+                padding-left: 7px !important;
+                padding-right: 7px !important;
+                padding-bottom: 90px !important;
+            }
+
+            .sidebar {
+                height: calc(66px + env(safe-area-inset-bottom));
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+            }
+
+            .sidebar nav {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 2px;
+            }
+
+            .nav-item {
+                min-height: 54px;
+                padding: 6px 1px !important;
+                border-radius: 10px;
+            }
+
+            .nav-item i {
+                font-size: 14px;
+            }
+
+            .nav-item .sidebar-text {
+                font-size: 7px;
+            }
+
+            .logout-btn {
+                width: 48px;
+                min-width: 48px;
+                height: 54px;
+                min-height: 54px;
+                border-radius: 10px;
+            }
+
+            .logout-btn i {
+                font-size: 14px;
+            }
+
+            .logout-btn .sidebar-text {
+                font-size: 7px;
+            }
+
+            .main-content > header {
+                padding: 9px 10px !important;
+                border-radius: 14px;
+            }
+
+            .main-content > header h1 {
+                font-size: 16px !important;
+            }
+
+            .main-content > header .text-\[10px\] {
+                font-size: 8px;
+            }
+
+            #headerAvatar {
+                width: 34px !important;
+                height: 34px !important;
+            }
+
+            .language-btn {
+                min-width: 30px;
+                padding: 4px 5px;
+                font-size: 7px;
+            }
+
+            .language-switcher {
+                gap: 2px;
+            }
+
+            .main-content section > .glass {
+                padding: 15px !important;
+                border-radius: 14px;
+            }
+
+            .main-content section > .glass h2 {
+                font-size: 18px !important;
+            }
+
+            .main-content section > .glass p {
+                font-size: 10px;
+            }
+
+            .credit-card {
+                padding: 14px;
+                border-radius: 15px;
+            }
+
+            .credit-card .amount {
+                font-size: 1.3rem;
+            }
+
+            .credit-card .currency {
+                font-size: 0.65rem;
+            }
+
+            .credit-card .w-10 {
+                width: 32px;
+                height: 32px;
+            }
+
+            .credit-card .w-10 i {
+                font-size: 13px;
+            }
+
+            .dashboard-card {
+                padding: 11px;
+                border-radius: 12px;
+            }
+
+            .dashboard-card h3 {
+                font-size: 1.1rem !important;
+            }
+
+            .dashboard-card p {
+                font-size: 8px;
+            }
+
+            .dashboard-card .w-10 {
+                width: 30px;
+                height: 30px;
+            }
+
+            .quick-action {
+                padding: 10px 4px;
+                border-radius: 11px;
+            }
+
+            .quick-action .icon {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+            }
+
+            .quick-action .label {
+                font-size: 8px;
+            }
+
+            .info-item {
+                padding: 10px;
+            }
+
+            .info-item .value {
+                font-size: 11px;
+            }
+        }
+
+        /* =========================================================
+           VERY SMALL DEVICES
+        ========================================================= */
+
+        @media (max-width: 380px) {
+
+            .main-content {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+
+            .sidebar {
+                height: calc(62px + env(safe-area-inset-bottom));
+            }
+
+            .nav-item {
+                min-height: 50px;
+                border-radius: 9px;
+            }
+
+            .nav-item i {
+                font-size: 13px;
+            }
+
+            .nav-item .sidebar-text {
+                font-size: 6.5px;
+            }
+
+            .logout-btn {
+                width: 44px;
+                min-width: 44px;
+                height: 50px;
+                min-height: 50px;
+            }
+
+            .logout-btn i {
+                font-size: 13px;
+            }
+
+            .logout-btn .sidebar-text {
+                font-size: 6.5px;
+            }
+
+            .credit-card {
+                padding: 11px;
+            }
+
+            .credit-card .amount {
+                font-size: 1.15rem;
+            }
+
+            .dashboard-card {
+                padding: 9px;
+            }
+
+            .quick-action {
+                padding: 8px 3px;
+            }
+
+            .quick-action .icon {
+                width: 29px;
+                height: 29px;
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+
+            .quick-action .label {
+                font-size: 7px;
+            }
+        }
+
+        /* =========================================================
+           LANDSCAPE MOBILE
+        ========================================================= */
+
+        @media (max-width: 768px) and (orientation: landscape) {
+
+            .sidebar {
+                height: calc(58px + env(safe-area-inset-bottom));
+            }
+
+            .nav-item {
+                min-height: 48px;
+                flex-direction: row;
+                gap: 6px;
+            }
+
+            .nav-item i {
+                font-size: 14px;
+            }
+
+            .nav-item .sidebar-text {
+                font-size: 8px;
+            }
+
+            .logout-btn {
+                height: 48px;
+                min-height: 48px;
+                flex-direction: row;
+                gap: 5px;
+            }
+
+            .logout-btn .sidebar-text {
+                font-size: 8px;
+            }
+
+            .main-content {
+                padding-bottom: 75px !important;
             }
         }
 
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- Loading -->
+    <!-- =========================================================
+         BACKGROUND
+    ========================================================= -->
 
-    <div id="loadingScreen">
-        <div class="text-center">
-            <div class="spinner mx-auto mb-4"></div>
-            <p class="font-semibold">
-                Loading dashboard...
-            </p>
+    <div class="bg-dark-grid">
+
+        <div class="dot-grid">
+
+            <canvas id="networkCanvas"></canvas>
+
+            <div class="glow-orb g1"></div>
+
+            <div class="glow-orb g2"></div>
+
         </div>
+
     </div>
 
 
-    <!-- Layout -->
+    <!-- =========================================================
+         LOADING
+    ========================================================= -->
 
-    <div class="min-h-screen flex">
+    <div id="loadingScreen">
 
-        <!-- Sidebar -->
+        <div class="text-center">
 
-        <aside class="sidebar fixed left-0 top-0 bottom-0 w-64 p-5 flex flex-col z-50">
+            <div class="spinner mx-auto mb-4"></div>
 
-            <!-- Logo -->
+            <p
+                id="loadingText"
+                class="font-semibold text-white/20 text-sm">
 
-            <div class="mb-10 px-3">
+                جاري تحميل لوحة التحكم...
 
-                <div class="text-2xl font-black tracking-widest">
-                    NOLX
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         LOGOUT MODAL
+    ========================================================= -->
+
+    <div id="logoutModal" class="logout-modal">
+
+        <div class="modal-box">
+
+            <div class="icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+
+            <h3 data-i18n="logoutTitle">
+                تأكيد تسجيل الخروج
+            </h3>
+
+            <p data-i18n="logoutDescription">
+                هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟
+            </p>
+
+            <div class="btn-group">
+
+                <button
+                    class="btn-cancel"
+                    onclick="closeLogoutModal()"
+                    data-i18n="cancel">
+
+                    إلغاء
+
+                </button>
+
+                <button
+                    class="btn-confirm"
+                    id="confirmLogoutBtn"
+                    data-i18n="logout">
+
+                    تسجيل الخروج
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         APP
+    ========================================================= -->
+
+    <div class="min-h-screen flex relative z-10">
+
+
+        <!-- =====================================================
+             SIDEBAR
+        ===================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- LOGO -->
+
+            <div class="logo-text mb-6">
+
+                <div class="brand">
+                    NOLX<span>PAGES</span>
                 </div>
 
-                <div class="text-xs text-white/60 tracking-[.3em]">
-                    PAGES
+                <div class="sub">
+                    DASHBOARD
                 </div>
 
             </div>
 
 
-            <!-- Navigation -->
+            <!-- NAV -->
 
-            <nav class="space-y-2 flex-1">
+            <nav class="space-y-1 flex-1">
 
-                <a href="#"
-                   class="nav-item active flex items-center gap-4 px-4 py-3 rounded-2xl">
 
-                    <i class="fas fa-chart-pie w-5 text-center"></i>
+                <!-- Dashboard -->
 
-                    <span class="sidebar-text font-semibold">
-                        Dashboard
+                <div
+                    class="nav-item active"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-chart-pie"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="dashboard">
+
+                        لوحة التحكم
+
                     </span>
 
-                </a>
-
-
-                <a href="#"
-                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
-
-                    <i class="fas fa-layer-group w-5 text-center"></i>
-
-                    <span class="sidebar-text font-semibold">
-                        Projects
+                    <span class="nav-badge">
+                        v2
                     </span>
 
-                </a>
+                </div>
 
 
-                <a href="#"
-                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
+                <!-- Balance -->
 
-                    <i class="fas fa-file-code w-5 text-center"></i>
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
 
-                    <span class="sidebar-text font-semibold">
-                        Templates
+                    <i class="fas fa-wallet"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="balance">
+
+                        رصيدي
+
                     </span>
 
-                </a>
+                    <span
+                        class="nav-badge"
+                        id="balanceBadge">
 
+                        0 EGP
 
-                <a href="#"
-                   class="nav-item flex items-center gap-4 px-4 py-3 rounded-2xl">
-
-                    <i class="fas fa-gear w-5 text-center"></i>
-
-                    <span class="sidebar-text font-semibold">
-                        Settings
                     </span>
 
-                </a>
+                </div>
+
+
+                <!-- Templates -->
+
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-layer-group"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="myTemplates">
+
+                        قوالبي
+
+                    </span>
+
+                    <span
+                        class="nav-badge"
+                        id="templateBadge">
+
+                        0
+
+                    </span>
+
+                </div>
+
+
+                <!-- Explore -->
+
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-store"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="explore">
+
+                        استكشف القوالب
+
+                    </span>
+
+                </div>
+
+
+                <!-- Recharge -->
+
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-plus-circle"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="recharge">
+
+                        شحن الرصيد
+
+                    </span>
+
+                </div>
+
+
+                <!-- History -->
+
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-history"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="history">
+
+                        سجل المعاملات
+
+                    </span>
+
+                </div>
+
+
+                <!-- Settings -->
+
+                <div
+                    class="nav-item"
+                    onclick="window.location.href='#'">
+
+                    <i class="fas fa-gear"></i>
+
+                    <span
+                        class="sidebar-text"
+                        data-i18n="settings">
+
+                        الإعدادات
+
+                    </span>
+
+                </div>
+
 
             </nav>
 
 
-            <!-- Logout -->
+            <!-- LOGOUT -->
 
             <button
                 id="logoutBtn"
-                class="logout-btn w-full bg-red-600 text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-3">
+                class="logout-btn">
 
                 <i class="fas fa-right-from-bracket"></i>
 
-                <span class="sidebar-text">
-                    Logout
+                <span
+                    class="sidebar-text"
+                    data-i18n="logout">
+
+                    تسجيل الخروج
+
                 </span>
 
             </button>
 
+
         </aside>
 
 
+        <!-- =====================================================
+             MAIN
+        ===================================================== -->
 
-        <!-- Main -->
+        <main class="main-content">
 
-        <main class="main-content ml-64 w-full min-h-screen p-5 sm:p-8">
 
-            <!-- Header -->
+            <!-- =================================================
+                 HEADER
+            ================================================= -->
 
-            <header class="glass rounded-3xl px-5 sm:px-7 py-5 mb-8 flex items-center justify-between">
+            <header
+                class="glass rounded-2xl px-5 sm:px-7 py-4 mb-6 flex items-center justify-between fade-in">
+
 
                 <div>
 
-                    <p class="text-xs font-bold uppercase tracking-widest opacity-50">
+                    <p
+                        class="text-[10px] font-bold uppercase tracking-widest text-white/15">
+
                         NOLX PAGES
+
                     </p>
 
-                    <h1 class="text-2xl sm:text-3xl font-black mt-1">
-                        Dashboard
+                    <h1
+                        class="text-xl sm:text-2xl font-black mt-0.5"
+                        data-i18n="dashboard">
+
+                        لوحة التحكم
+
                     </h1>
 
                 </div>
 
 
-                <!-- User -->
+                <div class="flex items-center gap-2 sm:gap-3">
 
-                <div class="flex items-center gap-3">
 
-                    <div class="text-right hidden sm:block">
+                    <!-- LANGUAGE -->
 
-                        <p id="headerUserName"
-                           class="font-bold text-sm">
-                            User
+                    <div class="language-switcher">
+
+                        <button
+                            id="arBtn"
+                            class="language-btn active"
+                            type="button"
+                            onclick="setLanguage('ar')">
+
+                            AR
+
+                        </button>
+
+                        <button
+                            id="enBtn"
+                            class="language-btn"
+                            type="button"
+                            onclick="setLanguage('en')">
+
+                            EN
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="text-left hidden sm:block">
+
+                        <p
+                            id="headerUserName"
+                            class="font-bold text-sm text-white">
+
+                            مستخدم
+
                         </p>
 
-                        <p id="headerUserEmail"
-                           class="text-xs opacity-50">
-                            Loading...
+                        <p
+                            id="headerUserEmail"
+                            class="text-xs text-white/15">
+
+                            جاري التحميل...
+
                         </p>
 
                     </div>
@@ -285,451 +1982,1896 @@
                     <img
                         id="headerAvatar"
                         src=""
-                        class="w-11 h-11 rounded-full object-cover border-2 border-white shadow"
+                        class="w-10 h-10 rounded-full object-cover border border-white/10 shadow-lg"
                         alt="User">
 
                 </div>
 
+
             </header>
 
 
+            <!-- =================================================
+                 WELCOME
+            ================================================= -->
 
-            <!-- Welcome -->
+            <section
+                class="grid grid-cols-1 gap-5 mb-6 fade-in">
 
-            <section class="glass rounded-[2rem] p-7 sm:p-10 mb-8">
 
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                <div
+                    class="glass rounded-2xl p-6">
+
 
                     <div>
 
-                        <p class="text-sm font-semibold opacity-60 mb-2">
-                            Welcome back
+                        <p
+                            class="text-xs font-semibold text-white/15 mb-1"
+                            data-i18n="welcomeBack">
+
+                            مرحباً بعودتك
+
                         </p>
 
-                        <h2 class="text-3xl sm:text-4xl font-black">
-                            Hello,
-                            <span id="welcomeName">
-                                User
+                        <h2
+                            class="text-2xl sm:text-3xl font-black">
+
+                            <span data-i18n="hello">
+                                أهلاً
                             </span>
+
+                            <span>
+                                ,
+                            </span>
+
+                            <span id="welcomeName">
+                                مستخدم
+                            </span>
+
                         </h2>
 
-                        <p class="mt-3 opacity-60">
-                            Your NOLX Pages workspace is ready.
+                        <p
+                            class="mt-1 text-sm text-white/15"
+                            data-i18n="workspaceReady">
+
+                            مساحة عمل NOLX الخاصة بك جاهزة.
+
                         </p>
 
                     </div>
 
 
-                    <div class="w-20 h-20 rounded-3xl bg-[#005840] text-[#D1F843] flex items-center justify-center text-3xl">
-
-                        <i class="fas fa-sparkles"></i>
-
-                    </div>
-
                 </div>
+
 
             </section>
 
 
+            <!-- =================================================
+                 BALANCE + TEMPLATES
+            ================================================= -->
 
-            <!-- Statistics -->
+            <section
+                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 fade-in">
 
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+
+                <!-- BALANCE -->
+
+                <div class="credit-card">
+
+                    <div
+                        class="flex justify-between items-start mb-4">
 
 
-                <!-- Projects -->
+                        <div>
 
-                <div class="dashboard-card glass rounded-3xl p-6">
+                            <p
+                                class="label"
+                                data-i18n="balance">
 
-                    <div class="flex items-center justify-between mb-5">
+                                الرصيد
 
-                        <div class="w-12 h-12 rounded-2xl bg-[#005840]/10 flex items-center justify-center">
+                            </p>
 
-                            <i class="fas fa-layer-group text-xl"></i>
+                            <p class="amount">
+
+                                <span class="currency">
+                                    EGP
+                                </span>
+
+                                <span id="userBalance">
+                                    0
+                                </span>
+
+                            </p>
 
                         </div>
 
-                        <span class="text-xs font-bold opacity-40">
-                            PROJECTS
+
+                        <div
+                            class="w-10 h-10 rounded-full bg-[#D1F843]/10 border border-[#D1F843]/10 flex items-center justify-center">
+
+                            <i
+                                class="fas fa-wallet text-[#D1F843]">
+                            </i>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        class="flex justify-between text-xs">
+
+                        <span class="text-white/15">
+                            NOLX PAGES
+                        </span>
+
+                        <span class="text-white/15">
+                            ● ● ● ● 2026
                         </span>
 
                     </div>
 
-                    <h3 class="text-3xl font-black">
+
+                </div>
+
+
+                <!-- TEMPLATES -->
+
+                <div
+                    class="credit-card"
+                    style="background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.04);">
+
+
+                    <div
+                        class="flex justify-between items-start mb-4">
+
+
+                        <div>
+
+                            <p
+                                class="label"
+                                data-i18n="purchasedTemplates">
+
+                                القوالب المشتراة
+
+                            </p>
+
+                            <p
+                                class="amount"
+                                style="font-size: 1.8rem;"
+                                id="statTemplates">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/10 flex items-center justify-center">
+
+                            <i
+                                class="fas fa-layer-group text-emerald-400">
+                            </i>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div
+                        class="flex justify-between text-xs">
+
+                        <span
+                            class="text-white/15"
+                            data-i18n="total">
+
+                            الإجمالي
+
+                        </span>
+
+                        <span class="text-white/15">
+                            ● ● ● ● 2026
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================= -->
+
+            <section
+                class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 fade-in">
+
+
+                <!-- CREDITS -->
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="flex items-center justify-between mb-2">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-[#D1F843]/10 flex items-center justify-center text-[#D1F843]">
+
+                            <i class="fas fa-coins"></i>
+
+                        </div>
+
+                        <span
+                            class="text-[8px] font-bold text-white/10"
+                            data-i18n="balance">
+
+                            الرصيد
+
+                        </span>
+
+                    </div>
+
+
+                    <h3
+                        class="text-2xl font-black"
+                        id="statCredits">
+
                         0
+
                     </h3>
 
-                    <p class="text-sm opacity-50 mt-1">
-                        Active projects
+
+                    <p
+                        class="text-[10px] text-white/15 mt-0.5"
+                        data-i18n="availableBalance">
+
+                        رصيد متاح
+
                     </p>
 
                 </div>
 
+
+                <!-- DOWNLOADS -->
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="flex items-center justify-between mb-2">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+
+                            <i class="fas fa-download"></i>
+
+                        </div>
+
+                        <span
+                            class="text-[8px] font-bold text-white/10"
+                            data-i18n="downloads">
+
+                            التحميلات
+
+                        </span>
+
+                    </div>
+
+
+                    <h3
+                        class="text-2xl font-black"
+                        id="statDownloads">
+
+                        0
+
+                    </h3>
+
+
+                    <p
+                        class="text-[10px] text-white/15 mt-0.5"
+                        data-i18n="totalDownloads">
+
+                        إجمالي التحميلات
+
+                    </p>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="dashboard-card">
+
+                    <div
+                        class="flex items-center justify-between mb-2">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+
+                            <i class="fas fa-user-check"></i>
+
+                        </div>
+
+                        <span
+                            class="text-[8px] font-bold text-white/10"
+                            data-i18n="status">
+
+                            الحالة
+
+                        </span>
+
+                    </div>
+
+
+                    <h3
+                        class="text-2xl font-black text-emerald-400"
+                        data-i18n="active">
+
+                        نشط
+
+                    </h3>
+
+
+                    <p
+                        class="text-[10px] text-white/15 mt-0.5"
+                        data-i18n="accountActive">
+
+                        الحساب مفعل
+
+                    </p>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+            ================================================= -->
+
+            <section
+                class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-in">
+
+
+                <!-- Explore -->
+
+                <div
+                    onclick="window.location.href='#'"
+                    class="quick-action">
+
+                    <div
+                        class="icon bg-[#D1F843]/10 text-[#D1F843]">
+
+                        <i class="fas fa-store"></i>
+
+                    </div>
+
+                    <p
+                        class="label"
+                        data-i18n="explore">
+
+                        استكشف القوالب
+
+                    </p>
+
+                </div>
 
 
                 <!-- Templates -->
 
-                <div class="dashboard-card glass rounded-3xl p-6">
+                <div
+                    onclick="window.location.href='#'"
+                    class="quick-action">
 
-                    <div class="flex items-center justify-between mb-5">
+                    <div
+                        class="icon bg-emerald-500/10 text-emerald-400">
 
-                        <div class="w-12 h-12 rounded-2xl bg-[#D1F843] flex items-center justify-center">
-
-                            <i class="fas fa-file-code text-xl"></i>
-
-                        </div>
-
-                        <span class="text-xs font-bold opacity-40">
-                            TEMPLATES
-                        </span>
+                        <i class="fas fa-layer-group"></i>
 
                     </div>
 
-                    <h3 class="text-3xl font-black">
-                        0
-                    </h3>
+                    <p
+                        class="label"
+                        data-i18n="myTemplates">
 
-                    <p class="text-sm opacity-50 mt-1">
-                        Saved templates
+                        قوالبي
+
                     </p>
 
                 </div>
 
 
+                <!-- Recharge -->
 
-                <!-- Account -->
+                <div
+                    onclick="window.location.href='#'"
+                    class="quick-action">
 
-                <div class="dashboard-card glass rounded-3xl p-6">
+                    <div
+                        class="icon bg-amber-500/10 text-amber-400">
 
-                    <div class="flex items-center justify-between mb-5">
-
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center">
-
-                            <i class="fas fa-user-check text-xl"></i>
-
-                        </div>
-
-                        <span class="text-xs font-bold opacity-40">
-                            ACCOUNT
-                        </span>
+                        <i class="fas fa-plus-circle"></i>
 
                     </div>
 
-                    <h3 class="text-3xl font-black">
-                        Active
-                    </h3>
+                    <p
+                        class="label"
+                        data-i18n="recharge">
 
-                    <p class="text-sm opacity-50 mt-1">
-                        Firebase authenticated
+                        شحن الرصيد
+
                     </p>
 
                 </div>
+
+
+                <!-- Support -->
+
+                <div
+                    onclick="window.location.href='chat.html'"
+                    class="quick-action">
+
+                    <div
+                        class="icon bg-purple-500/10 text-purple-400">
+
+                        <i class="fas fa-headset"></i>
+
+                    </div>
+
+                    <p
+                        class="label"
+                        data-i18n="support">
+
+                        الدعم الفني
+
+                    </p>
+
+                </div>
+
 
             </section>
 
 
+            <!-- =================================================
+                 ACCOUNT INFORMATION
+            ================================================= -->
 
-            <!-- Account Information -->
+            <section
+                class="glass rounded-2xl p-5 sm:p-6 fade-in">
 
-            <section class="glass rounded-3xl p-6 sm:p-8">
 
-                <div class="flex items-center gap-3 mb-7">
+                <div
+                    class="flex items-center gap-3 mb-5">
 
-                    <div class="w-11 h-11 rounded-2xl bg-[#005840] text-[#D1F843] flex items-center justify-center">
+
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#D1F843]/10 text-[#D1F843] flex items-center justify-center">
 
                         <i class="fas fa-user"></i>
 
                     </div>
 
+
                     <div>
 
-                        <h2 class="font-black text-xl">
-                            Account Information
+                        <h2
+                            class="font-black text-lg"
+                            data-i18n="accountInformation">
+
+                            معلومات الحساب
+
                         </h2>
 
-                        <p class="text-xs opacity-50">
-                            Your authenticated Firebase account
+                        <p
+                            class="text-xs text-white/15"
+                            data-i18n="verifiedDetails">
+
+                            تفاصيل حسابك الموثق
+
                         </p>
 
                     </div>
+
 
                 </div>
 
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
 
-                    <div class="bg-white/60 rounded-2xl p-5">
+                    <!-- NAME -->
 
-                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
-                            Display Name
+                    <div class="info-item">
+
+                        <p
+                            class="label"
+                            data-i18n="username">
+
+                            اسم المستخدم
+
                         </p>
 
-                        <p id="accountName"
-                           class="font-bold">
+                        <p
+                            id="accountName"
+                            class="value">
+
                             -
+
                         </p>
 
                     </div>
 
 
-                    <div class="bg-white/60 rounded-2xl p-5">
+                    <!-- EMAIL -->
 
-                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
-                            Email
+                    <div class="info-item">
+
+                        <p
+                            class="label"
+                            data-i18n="email">
+
+                            البريد الإلكتروني
+
                         </p>
 
-                        <p id="accountEmail"
-                           class="font-bold break-all">
+                        <p
+                            id="accountEmail"
+                            class="value">
+
                             -
+
                         </p>
 
                     </div>
 
 
-                    <div class="bg-white/60 rounded-2xl p-5">
+                    <!-- PROVIDER -->
 
-                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
-                            Login Provider
+                    <div class="info-item">
+
+                        <p
+                            class="label"
+                            data-i18n="loginProvider">
+
+                            مزود تسجيل الدخول
+
                         </p>
 
-                        <p id="accountProvider"
-                           class="font-bold">
+                        <p
+                            id="accountProvider"
+                            class="value">
+
                             -
+
                         </p>
 
                     </div>
 
 
-                    <div class="bg-white/60 rounded-2xl p-5">
+                    <!-- VERIFICATION -->
 
-                        <p class="text-xs uppercase tracking-wider font-bold opacity-40 mb-2">
-                            Email Verification
+                    <div class="info-item">
+
+                        <p
+                            class="label"
+                            data-i18n="emailVerification">
+
+                            التحقق من البريد
+
                         </p>
 
-                        <p id="accountVerification"
-                           class="font-bold">
+                        <p
+                            id="accountVerification"
+                            class="value">
+
                             -
+
                         </p>
 
                     </div>
+
+
+                    <!-- UID -->
+
+                    <div class="info-item sm:col-span-2">
+
+                        <p
+                            class="label"
+                            data-i18n="accountUid">
+
+                            معرف الحساب (UID)
+
+                        </p>
+
+                        <p
+                            id="accountUid"
+                            class="value font-mono text-xs text-white/40">
+
+                            -
+
+                        </p>
+
+                    </div>
+
 
                 </div>
+
 
             </section>
 
 
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
 
-            <!-- Footer -->
+            <footer
+                class="text-center py-6 text-[10px] text-white/8">
 
-            <footer class="text-center py-8 text-xs opacity-40">
-
-                NOLX Pages — Dashboard
+                <span data-i18n="footer">
+                    NOLX Pages — لوحة تحكم متميزة v2.0
+                </span>
 
             </footer>
 
+
         </main>
+
 
     </div>
 
 
-
-    <!-- Firebase -->
+    <!-- =========================================================
+         FIREBASE
+    ========================================================= -->
 
     <script type="module">
 
         import {
             initializeApp
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        }
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
 
         import {
             getAuth,
             onAuthStateChanged,
             signOut
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        }
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp
+        }
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+        /* =====================================================
+           FIREBASE CONFIG
+        ===================================================== */
 
         const firebaseConfig = {
 
-            apiKey: "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
+            apiKey:
+                "AIzaSyBbpP6uttRj_7LozBvtPRw7QtHzBfr72CU",
 
-            authDomain: "nolxpages.firebaseapp.com",
+            authDomain:
+                "nolxpages.firebaseapp.com",
 
-            projectId: "nolxpages",
+            projectId:
+                "nolxpages",
 
-            storageBucket: "nolxpages.firebasestorage.app",
+            storageBucket:
+                "nolxpages.firebasestorage.app",
 
-            messagingSenderId: "672585065953",
+            messagingSenderId:
+                "672585065953",
 
-            appId: "1:672585065953:web:cb95a1eb3f962faff19ea0",
+            appId:
+                "1:672585065953:web:cb95a1eb3f962faff19ea0",
 
-            measurementId: "G-ENEG3Q96W9"
+            measurementId:
+                "G-ENEG3Q96W9"
 
         };
 
 
-        const app = initializeApp(firebaseConfig);
+        /* =====================================================
+           INITIALIZE
+        ===================================================== */
 
-        const auth = getAuth(app);
+        const app =
+            initializeApp(firebaseConfig);
 
 
+        const auth =
+            getAuth(app);
 
-        /*
-         * Firebase Auth session check
-         */
 
-        onAuthStateChanged(auth, (user) => {
+        const db =
+            getFirestore(app);
 
-            if (!user) {
 
-                window.location.replace("login.html");
+        /* =====================================================
+           LANGUAGE SYSTEM
+        ===================================================== */
+
+        const translations = {
+
+            ar: {
+
+                dashboard:
+                    "لوحة التحكم",
+
+                balance:
+                    "رصيدي",
+
+                myTemplates:
+                    "قوالبي",
+
+                explore:
+                    "استكشف القوالب",
+
+                recharge:
+                    "شحن الرصيد",
+
+                history:
+                    "سجل المعاملات",
+
+                settings:
+                    "الإعدادات",
+
+                logout:
+                    "تسجيل الخروج",
+
+                welcomeBack:
+                    "مرحباً بعودتك",
+
+                hello:
+                    "أهلاً",
+
+                workspaceReady:
+                    "مساحة عمل NOLX الخاصة بك جاهزة.",
+
+                purchasedTemplates:
+                    "القوالب المشتراة",
+
+                total:
+                    "الإجمالي",
+
+                availableBalance:
+                    "رصيد متاح",
+
+                downloads:
+                    "التحميلات",
+
+                totalDownloads:
+                    "إجمالي التحميلات",
+
+                status:
+                    "الحالة",
+
+                active:
+                    "نشط",
+
+                accountActive:
+                    "الحساب مفعل",
+
+                support:
+                    "الدعم الفني",
+
+                accountInformation:
+                    "معلومات الحساب",
+
+                verifiedDetails:
+                    "تفاصيل حسابك الموثق",
+
+                username:
+                    "اسم المستخدم",
+
+                email:
+                    "البريد الإلكتروني",
+
+                loginProvider:
+                    "مزود تسجيل الدخول",
+
+                emailVerification:
+                    "التحقق من البريد",
+
+                accountUid:
+                    "معرف الحساب (UID)",
+
+                logoutTitle:
+                    "تأكيد تسجيل الخروج",
+
+                logoutDescription:
+                    "هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟",
+
+                cancel:
+                    "إلغاء",
+
+                footer:
+                    "NOLX Pages — لوحة تحكم متميزة v2.0",
+
+                loading:
+                    "جاري تحميل لوحة التحكم..."
+
+            },
+
+            en: {
+
+                dashboard:
+                    "Dashboard",
+
+                balance:
+                    "Balance",
+
+                myTemplates:
+                    "My Templates",
+
+                explore:
+                    "Explore Templates",
+
+                recharge:
+                    "Recharge",
+
+                history:
+                    "Transaction History",
+
+                settings:
+                    "Settings",
+
+                logout:
+                    "Log Out",
+
+                welcomeBack:
+                    "Welcome back",
+
+                hello:
+                    "Hello",
+
+                workspaceReady:
+                    "Your NOLX workspace is ready.",
+
+                purchasedTemplates:
+                    "Purchased Templates",
+
+                total:
+                    "Total",
+
+                availableBalance:
+                    "Available balance",
+
+                downloads:
+                    "Downloads",
+
+                totalDownloads:
+                    "Total downloads",
+
+                status:
+                    "Status",
+
+                active:
+                    "Active",
+
+                accountActive:
+                    "Account is active",
+
+                support:
+                    "Support",
+
+                accountInformation:
+                    "Account Information",
+
+                verifiedDetails:
+                    "Your verified account details",
+
+                username:
+                    "Username",
+
+                email:
+                    "Email",
+
+                loginProvider:
+                    "Login Provider",
+
+                emailVerification:
+                    "Email Verification",
+
+                accountUid:
+                    "Account UID",
+
+                logoutTitle:
+                    "Confirm Logout",
+
+                logoutDescription:
+                    "Are you sure you want to log out of your account?",
+
+                cancel:
+                    "Cancel",
+
+                footer:
+                    "NOLX Pages — Premium Dashboard v2.0",
+
+                loading:
+                    "Loading dashboard..."
+
+            }
+
+        };
+
+
+        let currentLanguage =
+            localStorage.getItem("nolxLanguage") || "ar";
+
+
+        function updateTranslations() {
+
+            const lang =
+                translations[currentLanguage];
+
+
+            document
+                .querySelectorAll("[data-i18n]")
+                .forEach(function (element) {
+
+                    const key =
+                        element.getAttribute("data-i18n");
+
+
+                    if (lang[key]) {
+
+                        element.textContent =
+                            lang[key];
+
+                    }
+
+                });
+
+
+            document.documentElement.lang =
+                currentLanguage;
+
+
+            document.documentElement.dir =
+                currentLanguage === "ar"
+                    ? "rtl"
+                    : "ltr";
+
+
+            document
+                .getElementById("arBtn")
+                .classList.toggle(
+                    "active",
+                    currentLanguage === "ar"
+                );
+
+
+            document
+                .getElementById("enBtn")
+                .classList.toggle(
+                    "active",
+                    currentLanguage === "en"
+                );
+
+
+            document.title =
+                currentLanguage === "ar"
+                    ? "NOLX PAGES | لوحة التحكم"
+                    : "NOLX PAGES | Dashboard";
+
+
+            const loadingText =
+                document.getElementById("loadingText");
+
+
+            if (loadingText) {
+
+                loadingText.textContent =
+                    lang.loading;
+
+            }
+
+
+            updateProviderText();
+
+
+            updateVerificationText();
+
+        }
+
+
+        window.setLanguage =
+            function (language) {
+
+                if (
+                    language !== "ar" &&
+                    language !== "en"
+                ) {
+
+                    return;
+
+                }
+
+
+                currentLanguage =
+                    language;
+
+
+                localStorage.setItem(
+                    "nolxLanguage",
+                    language
+                );
+
+
+                updateTranslations();
+
+            };
+
+
+        /* =====================================================
+           NETWORK BACKGROUND
+        ===================================================== */
+
+        (function () {
+
+            const canvas =
+                document.getElementById(
+                    'networkCanvas'
+                );
+
+
+            const ctx =
+                canvas.getContext('2d');
+
+
+            let width;
+            let height;
+
+            let dots = [];
+
+
+            const NUM_DOTS =
+                window.innerWidth < 768
+                    ? 30
+                    : 55;
+
+
+            const CONNECTION_DISTANCE =
+                window.innerWidth < 768
+                    ? 90
+                    : 110;
+
+
+            function resize() {
+
+                width =
+                    window.innerWidth;
+
+                height =
+                    window.innerHeight;
+
+
+                const dpr =
+                    Math.min(
+                        window.devicePixelRatio || 1,
+                        2
+                    );
+
+
+                canvas.width =
+                    width * dpr;
+
+
+                canvas.height =
+                    height * dpr;
+
+
+                canvas.style.width =
+                    width + "px";
+
+
+                canvas.style.height =
+                    height + "px";
+
+
+                ctx.setTransform(
+                    dpr,
+                    0,
+                    0,
+                    dpr,
+                    0,
+                    0
+                );
+
+            }
+
+
+            function createDots() {
+
+                dots = [];
+
+
+                for (
+                    let i = 0;
+                    i < NUM_DOTS;
+                    i++
+                ) {
+
+                    dots.push({
+
+                        x:
+                            Math.random() * width,
+
+                        y:
+                            Math.random() * height,
+
+                        vx:
+                            (Math.random() - 0.5) * 0.35,
+
+                        vy:
+                            (Math.random() - 0.5) * 0.35,
+
+                        r:
+                            1 + Math.random() * 1.8
+
+                    });
+
+                }
+
+            }
+
+
+            function draw() {
+
+                ctx.clearRect(
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+
+                for (let d of dots) {
+
+                    d.x += d.vx;
+
+                    d.y += d.vy;
+
+
+                    if (
+                        d.x < 0 ||
+                        d.x > width
+                    ) {
+
+                        d.vx *= -1;
+
+                    }
+
+
+                    if (
+                        d.y < 0 ||
+                        d.y > height
+                    ) {
+
+                        d.vy *= -1;
+
+                    }
+
+                }
+
+
+                for (
+                    let i = 0;
+                    i < dots.length;
+                    i++
+                ) {
+
+                    for (
+                        let j = i + 1;
+                        j < dots.length;
+                        j++
+                    ) {
+
+                        const dx =
+                            dots[i].x -
+                            dots[j].x;
+
+
+                        const dy =
+                            dots[i].y -
+                            dots[j].y;
+
+
+                        const dist =
+                            Math.sqrt(
+                                dx * dx +
+                                dy * dy
+                            );
+
+
+                        if (
+                            dist <
+                            CONNECTION_DISTANCE
+                        ) {
+
+                            const alpha =
+                                1 -
+                                (
+                                    dist /
+                                    CONNECTION_DISTANCE
+                                );
+
+
+                            ctx.beginPath();
+
+
+                            ctx.moveTo(
+                                dots[i].x,
+                                dots[i].y
+                            );
+
+
+                            ctx.lineTo(
+                                dots[j].x,
+                                dots[j].y
+                            );
+
+
+                            ctx.strokeStyle =
+                                `rgba(209, 248, 67, ${alpha * 0.06})`;
+
+
+                            ctx.lineWidth =
+                                0.6;
+
+
+                            ctx.stroke();
+
+                        }
+
+                    }
+
+                }
+
+
+                for (let d of dots) {
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+                        d.x,
+                        d.y,
+                        d.r,
+                        0,
+                        Math.PI * 2
+                    );
+
+
+                    ctx.fillStyle =
+                        'rgba(209, 248, 67, 0.09)';
+
+
+                    ctx.fill();
+
+                }
+
+
+                requestAnimationFrame(draw);
+
+            }
+
+
+            window.addEventListener(
+                'resize',
+                function () {
+
+                    resize();
+
+                    createDots();
+
+                }
+            );
+
+
+            resize();
+
+            createDots();
+
+            draw();
+
+        })();
+
+
+        /* =====================================================
+           GET USER DATA
+        ===================================================== */
+
+        async function getUserData(uid) {
+
+            try {
+
+                const docRef =
+                    doc(
+                        db,
+                        "users",
+                        uid
+                    );
+
+
+                const docSnap =
+                    await getDoc(docRef);
+
+
+                if (docSnap.exists()) {
+
+                    return docSnap.data();
+
+                }
+
+
+                const newUser = {
+
+                    credits: 5,
+
+                    templates: [],
+
+                    downloads: 0,
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    updatedAt:
+                        serverTimestamp(),
+
+                    uid:
+                        uid
+
+                };
+
+
+                await setDoc(
+                    docRef,
+                    newUser
+                );
+
+
+                return newUser;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "[NOLX] Error:",
+                    error
+                );
+
+
+                return {
+
+                    credits: 0,
+
+                    templates: [],
+
+                    downloads: 0
+
+                };
+
+            }
+
+        }
+
+
+        /* =====================================================
+           UPDATE UI
+        ===================================================== */
+
+        function updateUI(userData) {
+
+            const credits =
+                userData.credits || 0;
+
+
+            const templates =
+                userData.templates || [];
+
+
+            const templatesCount =
+                templates.length || 0;
+
+
+            const downloads =
+                userData.downloads || 0;
+
+
+            document.getElementById(
+                'userBalance'
+            ).textContent =
+                credits;
+
+
+            document.getElementById(
+                'statCredits'
+            ).textContent =
+                credits;
+
+
+            document.getElementById(
+                'statTemplates'
+            ).textContent =
+                templatesCount;
+
+
+            document.getElementById(
+                'statDownloads'
+            ).textContent =
+                downloads;
+
+
+            document.getElementById(
+                'balanceBadge'
+            ).textContent =
+                credits +
+                (
+                    currentLanguage === "ar"
+                        ? " EGP"
+                        : " EGP"
+                );
+
+
+            document.getElementById(
+                'templateBadge'
+            ).textContent =
+                templatesCount;
+
+        }
+
+
+        /* =====================================================
+           PROVIDER TRANSLATION
+        ===================================================== */
+
+        let currentProvider =
+            "Unknown";
+
+
+        function updateProviderText() {
+
+            const element =
+                document.getElementById(
+                    "accountProvider"
+                );
+
+
+            if (!element) {
+                return;
+            }
+
+
+            if (
+                currentProvider ===
+                "google.com"
+            ) {
+
+                element.textContent =
+                    "Google";
 
                 return;
 
             }
 
 
-            /*
-             * User exists
-             */
+            if (
+                currentProvider ===
+                "password"
+            ) {
 
-            const name =
-                user.displayName ||
-                user.email?.split("@")[0] ||
-                "User";
+                element.textContent =
+                    currentLanguage === "ar"
+                        ? "البريد الإلكتروني"
+                        : "Email";
 
-            const email =
-                user.email ||
-                "No email";
-
-
-            /*
-             * Header
-             */
-
-            document.getElementById("headerUserName").textContent =
-                name;
-
-            document.getElementById("headerUserEmail").textContent =
-                email;
-
-
-            /*
-             * Welcome
-             */
-
-            document.getElementById("welcomeName").textContent =
-                name;
-
-
-            /*
-             * Account information
-             */
-
-            document.getElementById("accountName").textContent =
-                name;
-
-            document.getElementById("accountEmail").textContent =
-                email;
-
-
-            /*
-             * Provider
-             */
-
-            const provider =
-                user.providerData?.[0]?.providerId || "Unknown";
-
-            let providerName = provider;
-
-            if (provider === "google.com") {
-
-                providerName = "Google";
-
-            }
-
-            if (provider === "password") {
-
-                providerName = "Email & Password";
-
-            }
-
-            document.getElementById("accountProvider").textContent =
-                providerName;
-
-
-            /*
-             * Email verification
-             */
-
-            document.getElementById("accountVerification").textContent =
-                user.emailVerified
-                    ? "Verified"
-                    : "Not verified";
-
-
-            /*
-             * Avatar
-             */
-
-            const avatar =
-                document.getElementById("headerAvatar");
-
-            if (user.photoURL) {
-
-                avatar.src = user.photoURL;
-
-            } else {
-
-                avatar.src =
-                    "https://ui-avatars.com/api/?name=" +
-                    encodeURIComponent(name) +
-                    "&background=005840&color=D1F843";
+                return;
 
             }
 
 
-            /*
-             * Show dashboard
-             */
+            if (
+                currentProvider ===
+                "facebook.com"
+            ) {
 
-            document.getElementById("loadingScreen").style.display =
-                "none";
+                element.textContent =
+                    "Facebook";
 
-        });
+                return;
+
+            }
 
 
+            element.textContent =
+                currentProvider;
 
-        /*
-         * Logout
-         */
+        }
+
+
+        /* =====================================================
+           VERIFICATION TRANSLATION
+        ===================================================== */
+
+        let currentVerification =
+            false;
+
+
+        function updateVerificationText() {
+
+            const element =
+                document.getElementById(
+                    "accountVerification"
+                );
+
+
+            if (!element) {
+                return;
+            }
+
+
+            element.textContent =
+                currentVerification
+
+                    ? (
+                        currentLanguage === "ar"
+                            ? "✅ مفعل"
+                            : "✅ Verified"
+                    )
+
+                    : (
+                        currentLanguage === "ar"
+                            ? "⏳ غير مفعل"
+                            : "⏳ Not verified"
+                    );
+
+        }
+
+
+        /* =====================================================
+           LOGOUT MODAL
+        ===================================================== */
+
+        function openLogoutModal() {
+
+            document
+                .getElementById(
+                    'logoutModal'
+                )
+                .classList.add('show');
+
+        }
+
+
+        window.openLogoutModal =
+            openLogoutModal;
+
+
+        window.closeLogoutModal =
+            function () {
+
+                document
+                    .getElementById(
+                        'logoutModal'
+                    )
+                    .classList.remove(
+                        'show'
+                    );
+
+            };
+
+
+        /* =====================================================
+           LOGOUT BUTTON
+        ===================================================== */
 
         document
-            .getElementById("logoutBtn")
-            .addEventListener("click", async () => {
+            .getElementById('logoutBtn')
+            .addEventListener(
+                'click',
+                openLogoutModal
+            );
 
-                try {
 
-                    await signOut(auth);
+        /* =====================================================
+           CONFIRM LOGOUT
+        ===================================================== */
 
-                    window.location.replace("index.html");
+        document
+            .getElementById(
+                'confirmLogoutBtn'
+            )
+            .addEventListener(
+                'click',
+                async function () {
 
-                } catch (error) {
+                    try {
 
-                    console.error(
-                        "Logout error:",
-                        error
-                    );
+                        await signOut(auth);
 
-                    alert(
-                        "Could not log out. Please try again."
-                    );
+
+                        window.location.replace(
+                            "index.html"
+                        );
+
+                    }
+
+                    catch (error) {
+
+                        console.error(
+                            "[NOLX] Logout:",
+                            error
+                        );
+
+
+                        alert(
+                            currentLanguage === "ar"
+
+                                ? "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى."
+
+                                : "An error occurred while signing out. Please try again."
+                        );
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           ESCAPE MODAL
+        ===================================================== */
+
+        document.addEventListener(
+            'keydown',
+            function (e) {
+
+                if (
+                    e.key === 'Escape'
+                ) {
+
+                    closeLogoutModal();
 
                 }
 
-            });
+            }
+        );
+
+
+        /* =====================================================
+           CLICK OUTSIDE MODAL
+        ===================================================== */
+
+        document
+            .getElementById(
+                'logoutModal'
+            )
+            .addEventListener(
+                'click',
+                function (e) {
+
+                    if (
+                        e.target ===
+                        e.currentTarget
+                    ) {
+
+                        closeLogoutModal();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           AUTH STATE
+        ===================================================== */
+
+        onAuthStateChanged(
+            auth,
+            async function (user) {
+
+                /* ---------------------------------------------
+                   NO USER
+                --------------------------------------------- */
+
+                if (!user) {
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ---------------------------------------------
+                   USER INFO
+                --------------------------------------------- */
+
+                const name =
+                    user.displayName ||
+                    user.email?.split("@")[0] ||
+                    "User";
+
+
+                const email =
+                    user.email ||
+                    "No email";
+
+
+                const uid =
+                    user.uid;
+
+
+                /* ---------------------------------------------
+                   HEADER
+                --------------------------------------------- */
+
+                document.getElementById(
+                    "headerUserName"
+                ).textContent =
+                    name;
+
+
+                document.getElementById(
+                    "headerUserEmail"
+                ).textContent =
+                    email;
+
+
+                document.getElementById(
+                    "welcomeName"
+                ).textContent =
+                    name;
+
+
+                /* ---------------------------------------------
+                   ACCOUNT
+                --------------------------------------------- */
+
+                document.getElementById(
+                    "accountName"
+                ).textContent =
+                    name;
+
+
+                document.getElementById(
+                    "accountEmail"
+                ).textContent =
+                    email;
+
+
+                document.getElementById(
+                    "accountUid"
+                ).textContent =
+                    uid;
+
+
+                /* ---------------------------------------------
+                   PROVIDER
+                --------------------------------------------- */
+
+                currentProvider =
+                    user.providerData?.[0]?.providerId ||
+                    "Unknown";
+
+
+                updateProviderText();
+
+
+                /* ---------------------------------------------
+                   EMAIL VERIFICATION
+                --------------------------------------------- */
+
+                currentVerification =
+                    user.emailVerified;
+
+
+                updateVerificationText();
+
+
+                /* ---------------------------------------------
+                   AVATAR
+                --------------------------------------------- */
+
+                const avatar =
+                    document.getElementById(
+                        "headerAvatar"
+                    );
+
+
+                if (user.photoURL) {
+
+                    avatar.src =
+                        user.photoURL;
+
+                }
+
+                else {
+
+                    avatar.src =
+                        "https://ui-avatars.com/api/?name=" +
+                        encodeURIComponent(name) +
+                        "&background=D1F843&color=0a0a0f";
+
+                }
+
+
+                /* ---------------------------------------------
+                   FIRESTORE DATA
+                --------------------------------------------- */
+
+                const userData =
+                    await getUserData(uid);
+
+
+                updateUI(
+                    userData
+                );
+
+
+                /* ---------------------------------------------
+                   LANGUAGE
+                --------------------------------------------- */
+
+                updateTranslations();
+
+
+                /* ---------------------------------------------
+                   HIDE LOADING
+                --------------------------------------------- */
+
+                document.getElementById(
+                    "loadingScreen"
+                ).style.display =
+                    "none";
+
+            }
+        );
+
+
+        /* =====================================================
+           INITIAL LANGUAGE
+        ===================================================== */
+
+        updateTranslations();
+
+
+        /* =====================================================
+           READY
+        ===================================================== */
+
+        console.log(
+            "[NOLX] Dashboard v2.0 - النظام جاهز."
+        );
 
     </script>
 
+
 </body>
+
 </html>

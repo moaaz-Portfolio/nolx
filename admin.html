@@ -45,7 +45,7 @@
         .sidebar-section .section-icon { font-size: 10px; opacity: 0.4; }
         .sidebar-section .count { background: rgba(0, 88, 64, 0.04); padding: 0 10px; border-radius: 99px; font-size: 8px; color: rgba(0, 88, 64, 0.3); }
         .chat-list { flex: 1; overflow-y: auto; padding: 2px 6px 6px; }
-        .chat-item { padding: 10px 14px; cursor: pointer; border-radius: 14px; margin-bottom: 2px; background: #ffffff; border: 1px solid transparent; }
+        .chat-item { padding: 10px 14px; cursor: pointer; border-radius: 14px; margin-bottom: 2px; background: #ffffff; border: 1px solid transparent; transition: all 0.2s ease; }
         .chat-item:hover { background: #f5f8f7; border-color: rgba(0, 88, 64, 0.04); transform: translateX(-2px); }
         .chat-item.active { background: #f0f5f3; border-color: rgba(0, 88, 64, 0.08); border-right: 3px solid #005840; }
         .chat-item .name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
@@ -71,7 +71,7 @@
         .chat-header .sub { font-size: 10px; color: rgba(0, 0, 0, 0.2); margin-top: 1px; }
         .chat-header .sub .user-info { color: rgba(0, 0, 0, 0.3); }
         .chat-actions { display: flex; gap: 4px; flex-wrap: wrap; }
-        .chat-actions button { padding: 4px 12px; border: none; border-radius: 99px; font-size: 9px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; display: flex; align-items: center; gap: 4px; }
+        .chat-actions button { padding: 4px 12px; border: none; border-radius: 99px; font-size: 9px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; display: flex; align-items: center; gap: 4px; transition: all 0.2s ease; }
         .chat-actions button:hover { transform: translateY(-2px); }
         .btn-close { background: rgba(220, 38, 38, 0.06); color: #dc2626; }
         .btn-ticket { background: rgba(245, 158, 11, 0.06); color: #f59e0b; }
@@ -98,14 +98,15 @@
         .quick-keyboard { display: none; padding: 4px 12px 2px; background: #ffffff; border-top: 1px solid rgba(0, 88, 64, 0.04); max-height: 160px; overflow-y: auto; flex-shrink: 0; }
         .quick-keyboard.show { display: block; }
         .keyboard-grid { display: flex; flex-wrap: wrap; gap: 3px; }
-        .key-btn { background: #f5f8f7; border: 1px solid rgba(0, 88, 64, 0.04); border-radius: 99px; padding: 3px 14px; font-size: 9px; color: #1a1a1a; cursor: pointer; font-family: 'Cairo', sans-serif; white-space: nowrap; font-weight: 600; flex-shrink: 0; }
+        .key-btn { background: #f5f8f7; border: 1px solid rgba(0, 88, 64, 0.04); border-radius: 99px; padding: 3px 14px; font-size: 9px; color: #1a1a1a; cursor: pointer; font-family: 'Cairo', sans-serif; white-space: nowrap; font-weight: 600; flex-shrink: 0; transition: all 0.2s ease; }
         .key-btn:hover { background: #005840; color: #D1F843; border-color: #005840; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 88, 64, 0.08); }
         .input-area { padding: 8px 14px 14px; background: #ffffff; border-top: 1px solid rgba(0, 88, 64, 0.04); display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
         .input-area input[type="text"] { flex: 1; background: #f5f8f7; border: 1px solid rgba(0, 88, 64, 0.06); border-radius: 18px; padding: 8px 16px; color: #1a1a1a; font-family: 'Cairo', sans-serif; outline: none; font-size: 13px; min-height: 40px; }
         .input-area input[type="text"]:focus { border-color: #005840; box-shadow: 0 0 0 4px rgba(0, 88, 64, 0.04); background: #ffffff; }
         .input-area input[type="text"]:disabled { opacity: 0.3; cursor: not-allowed; }
-        .btn-send { background: #005840; color: #D1F843; border: none; border-radius: 18px; padding: 8px 20px; font-weight: 800; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px; flex-shrink: 0; min-height: 40px; display: flex; align-items: center; gap: 4px; }
-        .btn-send:hover { background: #003d2d; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 88, 64, 0.12); }
+        .btn-send { background: #005840; color: #D1F843; border: none; border-radius: 18px; padding: 8px 20px; font-weight: 800; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px; flex-shrink: 0; min-height: 40px; display: flex; align-items: center; gap: 4px; transition: all 0.2s ease; }
+        .btn-send:hover:not(:disabled) { background: #003d2d; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 88, 64, 0.12); }
+        .btn-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
         .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 6px; max-width: 340px; }
         .toast { padding: 10px 18px; border-radius: 12px; font-size: 12px; font-weight: 700; animation: toastIn 0.3s ease, toastOut 0.3s ease 4s forwards; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.02); }
         .toast-success { background: #ffffff; color: #22c55e; border-color: rgba(34, 197, 94, 0.08); }
@@ -114,7 +115,14 @@
         .toast-info { background: #ffffff; color: #3b82f6; border-color: rgba(59, 130, 246, 0.08); }
         @keyframes toastIn { 0% { opacity: 0; transform: translateX(40px); } 100% { opacity: 1; transform: translateX(0); } }
         @keyframes toastOut { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(40px); } }
+        .status-online { color: #22c55e; }
+        .status-offline { color: #6b7280; }
+        .presence-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+        .presence-dot.online { background: #22c55e; animation: dotPulse 1.5s infinite; }
+        .presence-dot.offline { background: #6b7280; }
         @media (max-width: 640px) { .sidebar { width: 100%; height: 38vh; } .main-chat { height: 62vh; } }
+        .load-more-btn { text-align: center; padding: 8px; color: rgba(0, 88, 64, 0.3); font-size: 11px; cursor: pointer; font-weight: 700; }
+        .load-more-btn:hover { color: #005840; }
     </style>
 </head>
 <body>
@@ -156,7 +164,7 @@
             </div>
 
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="🔍 بحث في المحادثات..." oninput="filterChats()">
+                <input type="text" id="searchInput" placeholder="🔍 بحث في المحادثات..." oninput="filterChatsDebounced()">
             </div>
 
             <div class="sidebar-section">
@@ -228,7 +236,200 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+
+        // 🔥 Firestore offline cache
+        try {
+            db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+                if (err.code === 'failed-precondition') {
+                    console.warn('Firestore persistence: multiple tabs open');
+                } else if (err.code === 'unimplemented') {
+                    console.warn('Firestore persistence is not supported here');
+                } else {
+                    console.warn('Firestore persistence error:', err);
+                }
+            });
+        } catch (e) {
+            console.warn('Firestore persistence setup error:', e);
+        }
         const auth = firebase.auth();
+
+        // ============================================================
+        // 📦 SMART CACHE CLASS
+        // ============================================================
+        class SmartCache {
+            constructor() {
+                this.ttl = 5 * 60 * 1000; // 5 دقائق
+                this.cache = new Map();
+            }
+
+            get(key) {
+                const item = this.cache.get(key);
+                if (!item) return null;
+                if (Date.now() - item.timestamp > this.ttl) {
+                    this.cache.delete(key);
+                    return null;
+                }
+                return item.data;
+            }
+
+            set(key, data) {
+                this.cache.set(key, {
+                    data: data,
+                    timestamp: Date.now()
+                });
+            }
+
+            getImportant(key) {
+                const item = this.cache.get('important_' + key);
+                if (!item) return null;
+                if (Date.now() - item.timestamp > 30 * 60 * 1000) {
+                    this.cache.delete('important_' + key);
+                    return null;
+                }
+                return item.data;
+            }
+
+            setImportant(key, data) {
+                this.cache.set('important_' + key, {
+                    data: data,
+                    timestamp: Date.now()
+                });
+            }
+
+            getFresh(key) {
+                const item = this.cache.get('fresh_' + key);
+                if (!item) return null;
+                if (Date.now() - item.timestamp > 30 * 1000) {
+                    this.cache.delete('fresh_' + key);
+                    return null;
+                }
+                return item.data;
+            }
+
+            setFresh(key, data) {
+                this.cache.set('fresh_' + key, {
+                    data: data,
+                    timestamp: Date.now()
+                });
+            }
+
+            clear() {
+                this.cache.clear();
+            }
+        }
+
+        const smartCache = new SmartCache();
+
+        // ============================================================
+        // 💾 INDEXEDDB STORAGE
+        // ============================================================
+        class ChatStorage {
+            constructor() {
+                this.db = null;
+                this.ready = this.init();
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open('ChatStorage_V2', 1);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('messages')) {
+                            const store = db.createObjectStore('messages', { keyPath: 'id' });
+                            store.createIndex('chatId', 'chatId', { unique: false });
+                            store.createIndex('timestamp', 'timestamp', { unique: false });
+                        }
+                        if (!db.objectStoreNames.contains('chats')) {
+                            db.createObjectStore('chats', { keyPath: 'id' });
+                        }
+                    };
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve();
+                    };
+                    request.onerror = reject;
+                });
+            }
+
+            async saveMessages(chatId, messages) {
+                await this.ready;
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction('messages', 'readwrite');
+                    const store = tx.objectStore('messages');
+                    messages.forEach(msg => {
+                        store.put({ ...msg, chatId, savedAt: Date.now() });
+                    });
+                    tx.oncomplete = resolve;
+                    tx.onerror = reject;
+                });
+            }
+
+            async getMessages(chatId, limit = 50) {
+                await this.ready;
+                return new Promise((resolve) => {
+                    const tx = this.db.transaction('messages', 'readonly');
+                    const store = tx.objectStore('messages');
+                    const index = store.index('chatId');
+                    const request = index.getAll(chatId);
+                    request.onsuccess = () => {
+                        const results = request.result || [];
+                        results.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+                        resolve(results.slice(-limit));
+                    };
+                    request.onerror = () => resolve([]);
+                });
+            }
+
+            async deleteMessages(chatId) {
+                await this.ready;
+                return new Promise((resolve) => {
+                    const tx = this.db.transaction('messages', 'readwrite');
+                    const store = tx.objectStore('messages');
+                    const index = store.index('chatId');
+                    const request = index.getAll(chatId);
+                    request.onsuccess = () => {
+                        const results = request.result || [];
+                        results.forEach(msg => store.delete(msg.id));
+                        tx.oncomplete = resolve;
+                    };
+                    request.onerror = () => resolve();
+                });
+            }
+
+            async saveChat(chatId, data) {
+                await this.ready;
+                return new Promise((resolve) => {
+                    const tx = this.db.transaction('chats', 'readwrite');
+                    const store = tx.objectStore('chats');
+                    store.put({ id: chatId, ...data, savedAt: Date.now() });
+                    tx.oncomplete = resolve;
+                });
+            }
+
+            async getChat(chatId) {
+                await this.ready;
+                return new Promise((resolve) => {
+                    const tx = this.db.transaction('chats', 'readonly');
+                    const store = tx.objectStore('chats');
+                    const request = store.get(chatId);
+                    request.onsuccess = () => resolve(request.result || null);
+                    request.onerror = () => resolve(null);
+                });
+            }
+
+            async deleteChat(chatId) {
+                await this.ready;
+                await this.deleteMessages(chatId);
+                return new Promise((resolve) => {
+                    const tx = this.db.transaction('chats', 'readwrite');
+                    const store = tx.objectStore('chats');
+                    store.delete(chatId);
+                    tx.oncomplete = resolve;
+                });
+            }
+        }
+
+        const chatStorage = new ChatStorage();
 
         // ============================================================
         // VARIABLES
@@ -238,26 +439,41 @@
         let unsubscribeChats = null;
         let unsubscribeMessages = null;
         let totalReads = 0;
+        let searchTimeout = null;
+        let lastMessageRef = null;
+        let hasMoreMessages = true;
+        let isFirstLoad = true;
 
         // ============================================================
-        // 🔥 SUPER CACHE (دائم)
+        // TOAST
         // ============================================================
-        function getPermanentCache(key) {
-            try {
-                const data = localStorage.getItem('admin_perm_' + key);
-                if (data) return JSON.parse(data).data;
-            } catch (e) {}
-            return null;
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, 4500);
         }
 
-        function setPermanentCache(key, data) {
-            try {
-                localStorage.setItem('admin_perm_' + key, JSON.stringify({ data: data, timestamp: Date.now() }));
-            } catch (e) {}
+        // ============================================================
+        // 🔥 1. PRESENCE SYSTEM
+        // ============================================================
+        function setAdminPresence() {
+            if (!auth.currentUser) return;
+            const adminRef = db.collection("admins").doc(auth.currentUser.uid);
+            adminRef.set({
+                online: true,
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            adminRef.onDisconnect().set({
+                online: false,
+                lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
         }
 
         // ============================================================
-        // 🔥 1. LOAD CHATS (onSnapshot مع limit 10)
+        // 🔥 2. LOAD CHATS REALTIME
         // ============================================================
         function loadChatsRealtime() {
             if (unsubscribeChats) {
@@ -265,22 +481,28 @@
                 unsubscribeChats = null;
             }
 
-            console.log('📊 [REALTIME] Chats listener started (limit 10)');
+            console.log('📊 [REALTIME] Chats listener started');
             
             unsubscribeChats = db.collection("chats")
                 .orderBy("updatedAt", "desc")
-                .limit(10) // 🔥 آخر 10 محادثات بس
+                .limit(30)
                 .onSnapshot((snapshot) => {
                     console.log('📊 [READ] Chats updated');
                     renderChats(snapshot);
                     updateStats(snapshot);
+                    
+                    // Preload next chat
+                    if (isFirstLoad) {
+                        isFirstLoad = false;
+                        setTimeout(preloadNextChat, 1000);
+                    }
                 }, (error) => {
                     console.error("Chats listener error:", error);
                 });
         }
 
         // ============================================================
-        // 🔥 2. RENDER CHATS
+        // 🔥 3. RENDER CHATS
         // ============================================================
         function renderChats(snapshot) {
             const pendingList = document.getElementById('pending-list');
@@ -316,10 +538,14 @@
                 if (data.userEmail) infoText += (infoText ? ' | ' : '') + `✉️ ${data.userEmail}`;
                 if (!infoText) infoText = 'لا توجد معلومات';
 
+                // Presence dot
+                const isOnline = data.online === true;
+                const presenceHtml = `<span class="presence-dot ${isOnline ? 'online' : 'offline'}"></span>`;
+
                 item.innerHTML = `
                     <div class="flex justify-between items-start">
                         <div>
-                            <div class="name">${displayName}</div>
+                            <div class="name">${presenceHtml} ${displayName}</div>
                             <span class="user-email">${infoText}</span>
                             <div class="last-msg">${lastMsg}</div>
                         </div>
@@ -360,186 +586,43 @@
         }
 
         // ============================================================
-        // 🔥 3. OPEN CHAT (onSnapshot مع limit 10)
+        // 🔥 4. PRELOAD NEXT CHAT
         // ============================================================
-        async function openChat(userId) {
-            if (currentChatId === userId) return;
-            currentChatId = userId;
-
-            // 🔥 جلب بيانات المستخدم من cache
-            const cachedUser = getPermanentCache('user_' + userId);
-            if (cachedUser) {
-                const name = cachedUser.username || `مستخدم ${userId.substring(0, 6)}...`;
-                const phone = cachedUser.phone || 'لا يوجد رقم';
-                const email = cachedUser.email || 'لا يوجد بريد';
-                document.getElementById('chatSub').innerHTML = `
-                    <span class="user-info">👤 ${name}</span> | 
-                    <span class="user-info">📱 ${phone}</span> | 
-                    <span class="user-info">✉️ ${email}</span>
-                `;
-            } else {
-                try {
-                    const userDoc = await db.collection("users").doc(userId).get();
-                    totalReads += 1;
-                    console.log(`📊 [READ] +1 user data (total: ${totalReads})`);
-                    if (userDoc.exists) {
-                        currentUserData = userDoc.data();
-                        setPermanentCache('user_' + userId, currentUserData);
-                        const name = currentUserData.username || `مستخدم ${userId.substring(0, 6)}...`;
-                        const phone = currentUserData.phone || 'لا يوجد رقم';
-                        const email = currentUserData.email || 'لا يوجد بريد';
-                        document.getElementById('chatSub').innerHTML = `
-                            <span class="user-info">👤 ${name}</span> | 
-                            <span class="user-info">📱 ${phone}</span> | 
-                            <span class="user-info">✉️ ${email}</span>
-                        `;
+        function preloadNextChat() {
+            const visibleItems = document.querySelectorAll('.chat-item:not([style*="display: none"])');
+            for (let item of visibleItems) {
+                if (!item.classList.contains('active')) {
+                    const userId = item.dataset.user;
+                    if (userId && userId !== currentChatId) {
+                        // تحميل آخر 5 رسائل مسبقاً
+                        db.collection("chats").doc(userId)
+                            .collection("messages")
+                            .orderBy('timestamp', 'desc')
+                            .limit(5)
+                            .get()
+                            .then(snapshot => {
+                                const messages = [];
+                                snapshot.forEach(doc => messages.push({ id: doc.id, ...doc.data() }));
+                                messages.reverse();
+                                chatStorage.saveMessages(userId, messages);
+                                console.log(`📦 [PRELOAD] ${userId} messages ready`);
+                            });
+                        break;
                     }
-                } catch (err) { console.error("User data error:", err); }
-            }
-
-            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
-            document.querySelector(`.chat-item[data-user="${userId}"]`)?.classList.add('active');
-
-            document.getElementById('chatTitle').textContent = '🟢 محادثة مع المستخدم';
-            document.getElementById('chatActions').style.display = 'flex';
-            document.getElementById('chatInput').style.display = 'flex';
-            document.getElementById('adminInput').disabled = false;
-            document.getElementById('adminInput').focus();
-            document.getElementById('quickKeyboard').classList.add('show');
-
-            // 🔥 تحديث حالة المحادثة
-            try {
-                const doc = await db.collection("chats").doc(userId).get();
-                totalReads += 1;
-                console.log(`📊 [READ] +1 chat status (total: ${totalReads})`);
-                if (doc.exists && doc.data().status === 'pending') {
-                    await db.collection("chats").doc(userId).set({
-                        status: 'active',
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                    await db.collection("chats").doc(userId).collection("messages").add({
-                        text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
-                        sender: 'system',
-                        type: 'admin_join',
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    showToast('🟢 انضممت إلى المحادثة', 'success');
                 }
-            } catch (err) { console.error("Chat status update error:", err); }
-
-            // 🔥 onSnapshot للرسائل مع limit 10 (فوري + قراءات قليلة)
-            if (unsubscribeMessages) {
-                unsubscribeMessages();
-                unsubscribeMessages = null;
-            }
-
-            console.log('📊 [REALTIME] Messages listener started (limit 10)');
-            
-            unsubscribeMessages = db.collection("chats")
-                .doc(userId)
-                .collection("messages")
-                .orderBy('timestamp', 'asc')
-                .limit(10) // 🔥 آخر 10 رسالة بس
-                .onSnapshot((snapshot) => {
-                    console.log('📊 [READ] Messages updated');
-                    const messages = [];
-                    snapshot.forEach((doc) => {
-                        messages.push({ id: doc.id, ...doc.data() });
-                    });
-                    renderMessages(messages);
-                }, (error) => {
-                    console.error("Messages listener error:", error);
-                    showToast('⚠️ خطأ في تحميل الرسائل', 'error');
-                });
-        }
-
-        // ============================================================
-        // 🔥 4. RENDER MESSAGES
-        // ============================================================
-        function renderMessages(messages) {
-            const container = document.getElementById('messages-area');
-            container.innerHTML = '';
-
-            if (!messages || messages.length === 0) {
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-comment"></i><h3>لا توجد رسائل</h3></div>`;
-                return;
-            }
-
-            messages.forEach((msg) => {
-                const isUser = msg.sender === 'user';
-                const isAdmin = msg.sender === 'admin';
-                const isSystem = msg.sender === 'system';
-                const isAdminJoin = msg.type === 'admin_join';
-
-                const div = document.createElement('div');
-                div.className = `flex ${isUser ? 'justify-end' : isSystem || isAdminJoin ? 'justify-center' : 'justify-start'} mb-2`;
-
-                if (isAdminJoin) {
-                    div.innerHTML = `<div class="admin-join-card"><div class="icon"><i class="fas fa-user-shield"></i></div><div class="info"><div class="name">🟢 فريق الدعم</div><div class="status"><span class="dot"></span> انضم إلى المحادثة</div></div></div>`;
-                    container.appendChild(div);
-                    return;
-                }
-
-                if (isSystem) {
-                    div.innerHTML = `<div class="msg-system">${msg.text}</div>`;
-                    container.appendChild(div);
-                    return;
-                }
-
-                const bubble = document.createElement('div');
-                bubble.className = isUser ? 'msg-user' : 'msg-admin';
-                let badge = '';
-                if (isAdmin) {
-                    badge = `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
-                }
-                const time = msg.timestamp?.toDate?.() || new Date();
-                const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-                bubble.innerHTML = `${badge}${msg.text}<span class="msg-time">${timeStr}</span>`;
-                div.appendChild(bubble);
-                container.appendChild(div);
-            });
-
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // ============================================================
-        // 🔥 5. SEND ADMIN MESSAGE (فوري)
-        // ============================================================
-        async function sendAdminMessage() {
-            const input = document.getElementById('adminInput');
-            const text = input.value.trim();
-            if (!text || !currentChatId) return;
-
-            try {
-                input.disabled = true;
-                document.querySelector('.btn-send').disabled = true;
-
-                await db.collection("chats").doc(currentChatId).collection("messages").add({
-                    text: text,
-                    sender: 'admin',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                await db.collection("chats").doc(currentChatId).set({
-                    lastMessage: text,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-
-                input.value = '';
-                input.focus();
-                showToast('✅ تم إرسال الرسالة', 'success');
-            } catch (error) {
-                console.error("Send error:", error);
-                showToast('❌ حدث خطأ أثناء الإرسال', 'error');
-            } finally {
-                input.disabled = false;
-                document.querySelector('.btn-send').disabled = false;
             }
         }
 
         // ============================================================
-        // 🔥 6. UTILITIES
+        // 🔥 5. DEBOUNCED SEARCH
         // ============================================================
+        function filterChatsDebounced() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                filterChats();
+            }, 300);
+        }
+
         function filterChats() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const items = document.querySelectorAll('.chat-item');
@@ -552,18 +635,333 @@
             });
         }
 
-        function refreshChat() {
-            if (!currentChatId) return;
-            showToast('🔄 جاري تحديث المحادثة...', 'info');
+        // ============================================================
+        // 🔥 6. OPEN CHAT
+        // ============================================================
+        async function openChat(userId) {
+            if (currentChatId === userId) return;
+
             if (unsubscribeMessages) {
                 unsubscribeMessages();
                 unsubscribeMessages = null;
             }
-            openChat(currentChatId);
+
+            currentChatId = userId;
+            const chatData = await chatStorage.getChat(userId) || {};
+
+            // Try to get fresh data from cache
+            const cachedChat = smartCache.getImportant('chat_' + userId);
+            const finalData = cachedChat || chatData;
+
+            currentUserData = {
+                username: finalData.userName || `مستخدم ${userId.substring(0, 6)}...`,
+                phone: finalData.userPhone || 'لا يوجد رقم',
+                email: finalData.userEmail || 'لا يوجد بريد'
+            };
+
+            document.getElementById('chatSub').innerHTML = `
+                <span class="user-info">👤 ${currentUserData.username}</span> |
+                <span class="user-info">📱 ${currentUserData.phone}</span> |
+                <span class="user-info">✉️ ${currentUserData.email}</span>
+            `;
+
+            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.chat-item[data-user="${userId}"]`)?.classList.add('active');
+
+            document.getElementById('chatTitle').textContent = '🟢 محادثة مع المستخدم';
+            document.getElementById('chatActions').style.display = 'flex';
+            document.getElementById('chatInput').style.display = 'flex';
+            document.getElementById('adminInput').disabled = false;
+            document.getElementById('adminInput').focus();
+            document.getElementById('quickKeyboard').classList.add('show');
+
+            // Update status to active if pending
+            if (finalData.status === 'pending') {
+                try {
+                    await db.collection("chats").doc(userId).set({
+                        status: 'active',
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+
+                    await db.collection("chats").doc(userId).collection("messages").add({
+                        text: 'انضم أحد أعضاء فريق الدعم إلى المحادثة',
+                        sender: 'system',
+                        type: 'admin_join',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showToast('🟢 انضممت إلى المحادثة', 'success');
+                } catch (err) {
+                    console.error("Chat status update error:", err);
+                }
+            }
+
+            // 📦 Load from IndexedDB first
+            let cachedMessages = await chatStorage.getMessages(userId, 50);
+            if (cachedMessages.length) {
+                renderMessages(cachedMessages);
+                console.log('📦 [INDEXEDDB] Rendered', cachedMessages.length, 'messages');
+            } else {
+                // Fallback to localStorage
+                cachedMessages = getMessageCache(userId);
+                if (cachedMessages.length) {
+                    renderMessages(cachedMessages);
+                    chatStorage.saveMessages(userId, cachedMessages);
+                } else {
+                    document.getElementById('messages-area').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <h3>جاري تحميل الرسائل</h3>
+                            <p>أول مرة فقط من Firestore</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // 🔥 Listen for NEW messages only
+            let query = db.collection("chats")
+                .doc(userId)
+                .collection("messages")
+                .orderBy('timestamp', 'asc');
+
+            const lastCached = cachedMessages[cachedMessages.length - 1];
+            if (lastCached?.timestamp) {
+                const lastDate = new Date(lastCached.timestamp);
+                if (!isNaN(lastDate.getTime())) {
+                    query = query.startAfter(firebase.firestore.Timestamp.fromDate(lastDate));
+                }
+            } else {
+                query = query.limitToLast(30);
+            }
+
+            console.log('📊 [REALTIME] Messages listener started');
+
+            unsubscribeMessages = query.onSnapshot(async (snapshot) => {
+                if (snapshot.empty) {
+                    if (!cachedMessages.length) {
+                        renderMessages([]);
+                    }
+                    return;
+                }
+
+                const incoming = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    incoming.push({
+                        id: doc.id,
+                        ...data,
+                        timestamp: data.timestamp?.toDate?.() || new Date()
+                    });
+                });
+
+                // Merge with existing
+                const merged = mergeMessages(cachedMessages, incoming);
+                await chatStorage.saveMessages(userId, merged);
+                saveMessageCache(userId, merged);
+                renderMessages(merged);
+                cachedMessages = merged;
+
+                console.log('📊 [READ] New messages:', incoming.length, '| Total:', merged.length);
+            }, (error) => {
+                console.error("Messages listener error:", error);
+                showToast('⚠️ خطأ في تحميل الرسائل', 'error');
+            });
+
+            // Save chat data to cache
+            smartCache.setImportant('chat_' + userId, finalData);
+            chatStorage.saveChat(userId, finalData);
+
+            // Preload next chat
+            setTimeout(preloadNextChat, 500);
         }
 
         // ============================================================
-        // 🔥 7. CLOSE / DELETE / TICKET
+        // 🔥 7. MERGE MESSAGES
+        // ============================================================
+        function mergeMessages(existing, incoming) {
+            const map = new Map(existing.map(m => [m.id, m]));
+            incoming.forEach(m => map.set(m.id, m));
+            return Array.from(map.values()).sort((a, b) => 
+                new Date(a.timestamp) - new Date(b.timestamp)
+            );
+        }
+
+        // ============================================================
+        // 💾 MESSAGE CACHE HELPERS
+        // ============================================================
+        function getMessageCache(chatId) {
+            try {
+                const raw = localStorage.getItem('nolx_admin_messages_' + chatId);
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return parsed.map(m => ({
+                    ...m,
+                    timestamp: m.timestamp ? new Date(m.timestamp) : new Date()
+                }));
+            } catch (e) { return []; }
+        }
+
+        function saveMessageCache(chatId, messages) {
+            try {
+                const compact = messages.map(m => ({
+                    id: m.id,
+                    text: m.text || '',
+                    sender: m.sender || 'system',
+                    type: m.type || '',
+                    timestamp: m.timestamp instanceof Date ? m.timestamp.toISOString() : m.timestamp
+                }));
+                localStorage.setItem('nolx_admin_messages_' + chatId, JSON.stringify(compact));
+            } catch (e) { console.warn('Cache write error:', e); }
+        }
+
+        // ============================================================
+        // 🔥 8. RENDER MESSAGES
+        // ============================================================
+        function renderMessages(messages) {
+            const container = document.getElementById('messages-area');
+            container.innerHTML = '';
+
+            if (!messages || messages.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-comment"></i>
+                        <h3>لا توجد رسائل</h3>
+                        <p>كن أول من يراسل</p>
+                    </div>
+                `;
+                return;
+            }
+
+            messages.forEach((msg) => {
+                const isUser = msg.sender === 'user';
+                const isAdmin = msg.sender === 'admin';
+                const isSystem = msg.sender === 'system';
+                const isAdminJoin = msg.type === 'admin_join';
+                const isAutoReply = msg.type === 'auto_reply';
+
+                const div = document.createElement('div');
+                div.className = `flex ${isUser ? 'justify-end' : isSystem || isAdminJoin || isAutoReply ? 'justify-center' : 'justify-start'} mb-2`;
+
+                if (isAdminJoin) {
+                    div.innerHTML = `
+                        <div class="admin-join-card">
+                            <div class="icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="info">
+                                <div class="name">🟢 فريق الدعم</div>
+                                <div class="status"><span class="dot"></span> انضم إلى المحادثة</div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                    return;
+                }
+
+                if (isSystem || isAutoReply) {
+                    const icon = isAutoReply ? 'fas fa-reply' : 'fas fa-info-circle';
+                    div.innerHTML = `
+                        <div class="msg-system">
+                            <i class="${icon} ml-1"></i> ${msg.text}
+                        </div>
+                    `;
+                    container.appendChild(div);
+                    return;
+                }
+
+                const bubble = document.createElement('div');
+                bubble.className = isUser ? 'msg-user' : 'msg-admin';
+                
+                let badge = '';
+                if (isAdmin) {
+                    badge = `<div class="message-badge"><i class="fas fa-user-shield ml-1"></i> فريق الدعم</div>`;
+                }
+                
+                const time = msg.timestamp || new Date();
+                const timeStr = time.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                
+                bubble.innerHTML = `
+                    ${badge}
+                    ${msg.text}
+                    <span class="msg-time">${timeStr}</span>
+                `;
+                
+                div.appendChild(bubble);
+                container.appendChild(div);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // ============================================================
+        // 🔥 9. SEND ADMIN MESSAGE (مع Batch Writes)
+        // ============================================================
+        async function sendAdminMessage() {
+            const input = document.getElementById('adminInput');
+            const text = input.value.trim();
+            if (!text || !currentChatId) {
+                if (!text) showToast('⚠️ الرجاء كتابة رسالة', 'warning');
+                return;
+            }
+
+            // 🎯 Optimistic Update
+            const tempId = 'temp_' + Date.now();
+            const tempMessage = {
+                id: tempId,
+                text: text,
+                sender: 'admin',
+                timestamp: new Date(),
+                isTemp: true
+            };
+
+            const cached = await chatStorage.getMessages(currentChatId) || [];
+            cached.push(tempMessage);
+            await chatStorage.saveMessages(currentChatId, cached);
+            renderMessages(cached);
+
+            input.value = '';
+            input.focus();
+
+            try {
+                // 📦 Batch write
+                const batch = db.batch();
+                const chatRef = db.collection("chats").doc(currentChatId);
+                
+                const msgRef = chatRef.collection("messages").doc();
+                batch.set(msgRef, {
+                    text: text,
+                    sender: 'admin',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                batch.update(chatRef, {
+                    lastMessage: text,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                await batch.commit();
+
+                // Replace temp message with real one
+                const realMessages = await chatStorage.getMessages(currentChatId) || [];
+                const index = realMessages.findIndex(m => m.id === tempId);
+                if (index !== -1) {
+                    realMessages[index] = { ...realMessages[index], id: msgRef.id, isTemp: false };
+                    await chatStorage.saveMessages(currentChatId, realMessages);
+                    saveMessageCache(currentChatId, realMessages);
+                    renderMessages(realMessages);
+                }
+
+                showToast('✅ تم إرسال الرسالة', 'success');
+            } catch (error) {
+                console.error("Send error:", error);
+                // Remove temp message
+                const realMessages = await chatStorage.getMessages(currentChatId) || [];
+                const filtered = realMessages.filter(m => m.id !== tempId);
+                await chatStorage.saveMessages(currentChatId, filtered);
+                renderMessages(filtered);
+                showToast('❌ حدث خطأ أثناء الإرسال', 'error');
+            }
+        }
+
+        // ============================================================
+        // 🔥 10. CLOSE CHAT
         // ============================================================
         async function closeChat() {
             if (!currentChatId || !confirm('⚠️ هل تريد إنهاء هذه المحادثة؟')) return;
@@ -580,11 +978,39 @@
                     closedReason: 'admin',
                     closedBy: 'admin'
                 }, { merge: true });
+                
+                // Clear cache
+                await chatStorage.deleteChat(currentChatId);
+                try { localStorage.removeItem('nolx_admin_messages_' + currentChatId); } catch (e) {}
+                
                 resetChatView();
                 showToast('✅ تم إنهاء المحادثة بنجاح', 'success');
             } catch (error) {
                 console.error("Close error:", error);
                 showToast('❌ حدث خطأ أثناء إنهاء المحادثة', 'error');
+            }
+        }
+
+        // ============================================================
+        // 🔥 11. DELETE CHAT
+        // ============================================================
+        async function deleteChat() {
+            if (!currentChatId || !confirm('⚠️ هل تريد حذف هذه المحادثة نهائياً؟')) return;
+            try {
+                const messages = await db.collection("chats").doc(currentChatId).collection("messages").get();
+                const batch = db.batch();
+                messages.forEach((doc) => batch.delete(doc.ref));
+                await batch.commit();
+                await db.collection("chats").doc(currentChatId).delete();
+                
+                await chatStorage.deleteChat(currentChatId);
+                try { localStorage.removeItem('nolx_admin_messages_' + currentChatId); } catch (e) {}
+                
+                resetChatView();
+                showToast('🗑️ تم حذف المحادثة نهائياً', 'error');
+            } catch (error) {
+                console.error("Delete error:", error);
+                showToast('❌ حدث خطأ أثناء الحذف', 'error');
             }
         }
 
@@ -611,9 +1037,56 @@
         }
 
         // ============================================================
-        // 🔥 8. INIT
+        // 🔥 12. REFRESH
         // ============================================================
-        const quickPhrases = ['أهلاً بيك', 'أقدر أساعد حضرتك؟', 'لحظات معايا', 'تم الحل'];
+        function refreshChat() {
+            if (!currentChatId) return;
+            const id = currentChatId;
+            showToast('🔄 جاري فحص الرسائل الجديدة...', 'info');
+            if (unsubscribeMessages) {
+                unsubscribeMessages();
+                unsubscribeMessages = null;
+            }
+            currentChatId = null;
+            openChat(id);
+        }
+
+        // ============================================================
+        // 🔥 13. CONVERT TO TICKET
+        // ============================================================
+        async function convertToTicket() {
+            if (!currentChatId || !confirm('📌 هل تريد تحويل هذه المحادثة إلى تذكرة دعم؟')) return;
+            try {
+                const messages = await db.collection("chats").doc(currentChatId).collection("messages")
+                    .orderBy('timestamp', 'asc').get();
+                let messagesText = '';
+                messages.forEach((doc) => {
+                    const msg = doc.data();
+                    const sender = msg.sender === 'user' ? 'المستخدم' :
+                        msg.sender === 'admin' ? 'فريق الدعم' : 'النظام';
+                    messagesText += `[${sender}] ${msg.text || ''}\n`;
+                });
+                await db.collection("tickets").add({
+                    chatId: currentChatId,
+                    messages: messagesText,
+                    status: 'open',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: currentChatId,
+                    userName: currentUserData?.username || '',
+                    userEmail: currentUserData?.email || '',
+                    userPhone: currentUserData?.phone || ''
+                });
+                showToast('✅ تم تحويل المحادثة إلى تذكرة بنجاح', 'success');
+            } catch (error) {
+                console.error("Ticket error:", error);
+                showToast('❌ حدث خطأ أثناء التحويل للتذكرة', 'error');
+            }
+        }
+
+        // ============================================================
+        // 🔥 14. INIT
+        // ============================================================
+        const quickPhrases = ['أهلاً بيك', 'أقدر أساعد حضرتك؟', 'لحظات معايا', 'تم الحل', 'شكراً لتواصلك'];
         const grid = document.getElementById('keyboardGrid');
         quickPhrases.forEach(phrase => {
             const btn = document.createElement('button');
@@ -626,15 +1099,29 @@
             grid.appendChild(btn);
         });
 
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                loadChatsRealtime();
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && document.activeElement?.id === 'adminInput') {
+                e.preventDefault();
+                sendAdminMessage();
+            }
+            if (e.key === 'Escape' && currentChatId) {
+                e.preventDefault();
+                resetChatView();
+                showToast('📤 تم الخروج من المحادثة', 'info');
             }
         });
 
-        console.log('🔥 [REALTIME + CHEAP] Admin panel - realtime + cheap!');
-        console.log('📊 Reads: ~240/day (limit 10)');
-        console.log('💰 Firebase bill: ~$0.01/month');
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                setAdminPresence();
+                loadChatsRealtime();
+                console.log('✅ Admin panel ready! (Optimized)');
+            }
+        });
+
+        console.log('🔥 [OPTIMIZED] Admin panel with all enhancements!');
+        console.log('💾 Smart Cache + IndexedDB + Batch Writes + Prefetch');
     </script>
 
 </body>
